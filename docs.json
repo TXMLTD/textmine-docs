@@ -459,5 +459,10 @@
       "destination": "/archive/intercom/getting-started-with-textmine/how-to-use-vault",
       "permanent": true
     }
-  ]
+  ],
+  "seo": {
+    "metatags": {
+      "canonical": "https://docs.textmine.com"
+    }
+  }
 }
