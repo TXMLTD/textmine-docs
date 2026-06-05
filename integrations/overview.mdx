@@ -1,0 +1,39 @@
+---
+title: "Integrations overview"
+description: "How TextMine connects to external systems and agent clients."
+---
+
+TextMine has several integration surfaces. Availability depends on the organisation configuration, connected user account, and enabled product features.
+
+## Two supported directions
+
+TextMine supports both directions:
+
+- Import from connected providers into TextMine, such as browsing Google Drive or SharePoint and bringing selected files into Workbench or Vault.
+- Expose TextMine's own tools to external agent clients through the hosted TextMine MCP server.
+
+## User-connected providers
+
+User-connected providers are OAuth-backed integrations available from Settings, Workbench, and the TextMine MCP server.
+
+| Provider | Current capabilities |
+| --- | --- |
+| Google Drive | Create documents, list folders, list files in folders, and download files for import. |
+| SharePoint | List folders, list files in folders, and download files for import. |
+| Notion | Create pages in a connected Notion workspace. |
+
+## Workbench MCP providers
+
+Workbench can use enabled provider connections to browse external storage and import selected files into the current Workbench chat. This is useful for asking questions over a file before deciding whether it should be saved into Vault.
+
+Provider imports can stop at Workbench context or continue into Vault. Workbench context is useful for one-off analysis. Vault import is the durable path when the file should be processed, classified, tagged, reviewed, and later published to Legislate if validated.
+
+## Native and workflow integrations
+
+The backend also contains native integration services for enterprise and document workflows, including Box, DocuSign, SharePoint vault integrations, Ariba, Finastra, OpenCorporates, SEC company filings, ServiceNow, and Vault email processing.
+
+Workflow steps can also call generic REST APIs, send webhooks, import from integrations, submit to integrations, fetch SEC filings, and send email.
+
+## TextMine MCP server
+
+The hosted TextMine MCP server exposes TextMine Public API tools to agent clients. It can work with TextMine data directly and can also use integration tools where the underlying provider connection supports the requested action.

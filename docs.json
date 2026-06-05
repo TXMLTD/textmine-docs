@@ -1,0 +1,463 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "TextMine Documentation",
+  "theme": "mint",
+  "colors": {
+    "primary": "#145C5C",
+    "light": "#1F7A76",
+    "dark": "#0F3F3E"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Overview",
+        "pages": [
+          "index",
+          "getting-started/product-map",
+          "getting-started/quick-start"
+        ]
+      },
+      {
+        "group": "Workbench",
+        "pages": [
+          "workbench/overview",
+          "workbench/uploads-and-integrations",
+          "workbench/goals-tasks-and-artifacts"
+        ]
+      },
+      {
+        "group": "Vault",
+        "pages": [
+          "vault/overview",
+          "vault/document-types-and-tags",
+          "vault/ask-vault-and-reports"
+        ]
+      },
+      {
+        "group": "Legislate",
+        "pages": [
+          "legislate/overview"
+        ]
+      },
+      {
+        "group": "Workflows",
+        "pages": [
+          "workflows/overview",
+          "workflows/create-a-workflow",
+          "workflows/email-intake-and-approvals",
+          "workflows/records-and-integrations"
+        ]
+      },
+      {
+        "group": "Integrations",
+        "pages": [
+          "integrations/overview",
+          "integrations/workbench-mcp-providers",
+          "integrations/textmine-mcp-server"
+        ]
+      },
+      {
+        "group": "Playbooks",
+        "pages": [
+          "playbooks/overview",
+          "playbooks/create-and-run"
+        ]
+      },
+      {
+        "group": "Records",
+        "pages": [
+          "records/overview",
+          "records/schemas-and-candidates",
+          "records/ask-graph-and-enrichment"
+        ]
+      },
+      {
+        "group": "Agents",
+        "pages": [
+          "agents/overview"
+        ]
+      },
+      {
+        "group": "Scribe",
+        "pages": [
+          "scribe/overview"
+        ]
+      },
+      {
+        "group": "Administration",
+        "pages": [
+          "administration/permissions"
+        ]
+      },
+      {
+        "group": "Release notes",
+        "pages": [
+          "release-notes/index"
+        ]
+      },
+      {
+        "group": "Archive",
+        "pages": [
+          "archive/intercom/index"
+        ]
+      }
+    ]
+  },
+  "redirects": [
+    {
+      "source": "/en/articles/15264338-26-may-2026",
+      "destination": "/archive/intercom/product-updates/26-may-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/15031216-8-may-2026",
+      "destination": "/archive/intercom/product-updates/8-may-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/14185025-25-march-2026",
+      "destination": "/archive/intercom/product-updates/25-march-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/14046582-12-march-2025",
+      "destination": "/archive/intercom/product-updates/12-march-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13940819-5-march-2025",
+      "destination": "/archive/intercom/product-updates/5-march-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13763619-19-february-2026",
+      "destination": "/archive/intercom/product-updates/19-february-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13709723-12-february-2026",
+      "destination": "/archive/intercom/product-updates/12-february-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13545432-28-january-2026",
+      "destination": "/archive/intercom/product-updates/28-january-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13431363-19-january-2026",
+      "destination": "/archive/intercom/product-updates/19-january-2026",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13177269-17-december-2025",
+      "destination": "/archive/intercom/product-updates/17-december-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/13015537-5-december-2025",
+      "destination": "/archive/intercom/product-updates/5-december-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12943378-26-nov-2025",
+      "destination": "/archive/intercom/product-updates/26-nov-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12870171-19-november-2025",
+      "destination": "/archive/intercom/product-updates/19-november-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12770752-6-november-2025",
+      "destination": "/archive/intercom/product-updates/6-november-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12701080-30-october-2025",
+      "destination": "/archive/intercom/product-updates/30-october-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12595058-16-october-2025",
+      "destination": "/archive/intercom/product-updates/16-october-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12414209-25-september-2025",
+      "destination": "/archive/intercom/product-updates/25-september-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12302368-16-september-2025",
+      "destination": "/archive/intercom/product-updates/16-september-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12097142-27-august-2025",
+      "destination": "/archive/intercom/product-updates/27-august-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/12037212-18-august-2025",
+      "destination": "/archive/intercom/product-updates/18-august-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11792925-17-july-2025",
+      "destination": "/archive/intercom/product-updates/17-july-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11703623-3-july-2025",
+      "destination": "/archive/intercom/product-updates/3-july-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11364357-user-permission-settings",
+      "destination": "/archive/intercom/organisation-settings/user-permission-settings",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11418905-21-may-2025",
+      "destination": "/archive/intercom/product-updates/21-may-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11393387-14-may-2025",
+      "destination": "/archive/intercom/product-updates/14-may-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11183590-2-may-2025",
+      "destination": "/archive/intercom/product-updates/2-may-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11064676-10-april-2025",
+      "destination": "/archive/intercom/product-updates/10-april-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/11017269-2-april-2025",
+      "destination": "/archive/intercom/product-updates/2-april-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9229963-10-april-2024",
+      "destination": "/archive/intercom/product-updates/10-april-2024",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9251187-vault-supported-documents-and-tags",
+      "destination": "/archive/intercom/vault/vault-supported-documents-and-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10816997-18-march-2025",
+      "destination": "/archive/intercom/product-updates/18-march-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10742609-10-march-2025",
+      "destination": "/archive/intercom/product-updates/10-march-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10657329-26-feb-2025",
+      "destination": "/archive/intercom/product-updates/26-feb-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10559277-14-feb-2025",
+      "destination": "/archive/intercom/product-updates/14-feb-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10603335-20-feb-2025",
+      "destination": "/archive/intercom/product-updates/20-feb-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10521717-6-february-2025",
+      "destination": "/archive/intercom/product-updates/6-february-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10492265-30-january-2025",
+      "destination": "/archive/intercom/product-updates/30-january-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10446926-22-january-2025",
+      "destination": "/archive/intercom/product-updates/22-january-2025",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10191547-18-november-2024",
+      "destination": "/archive/intercom/product-updates/18-november-2024",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10221032-december-2-2024",
+      "destination": "/archive/intercom/product-updates/december-2-2024",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/10073053-1-november-2024",
+      "destination": "/archive/intercom/product-updates/1-november-2024",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9288839-6-may-2024",
+      "destination": "/archive/intercom/product-updates/6-may-2024",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9259788-vault-utility-bill-tags",
+      "destination": "/archive/intercom/vault/vault-utility-bill-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9259772-vault-order-form-tags",
+      "destination": "/archive/intercom/vault/vault-order-form-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9259764-vault-purchase-order-tags",
+      "destination": "/archive/intercom/vault/vault-purchase-order-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9259752-vault-invoice-tags",
+      "destination": "/archive/intercom/vault/vault-invoice-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9251255-vault-service-agreement-tags",
+      "destination": "/archive/intercom/vault/vault-service-agreement-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9251241-vault-nda-tags",
+      "destination": "/archive/intercom/vault/vault-nda-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9251271-vault-consultancy-agreement-tags",
+      "destination": "/archive/intercom/vault/vault-consultancy-agreement-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9251206-vault-master-service-agreement-tags",
+      "destination": "/archive/intercom/vault/vault-master-service-agreement-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9251225-vault-supplier-agreement-tags",
+      "destination": "/archive/intercom/vault/vault-supplier-agreement-tags",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9227549-how-to-create-custom-alerts",
+      "destination": "/archive/intercom/document-lifecycle-management/how-to-create-custom-alerts",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9234104-how-do-i-log-out-of-textmine",
+      "destination": "/archive/intercom/technical-faqs/how-do-i-log-out-of-textmine",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9227639-how-to-sign-a-document",
+      "destination": "/archive/intercom/document-lifecycle-management/how-to-sign-a-document",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9227437-a-quick-tour-of-legislate-video",
+      "destination": "/archive/intercom/legislate/a-quick-tour-of-legislate-video",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9227362-how-to-change-a-document-type-in-vault",
+      "destination": "/archive/intercom/vault/how-to-change-a-document-type-in-vault",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9227354-creating-manual-fields-in-vault",
+      "destination": "/archive/intercom/vault/creating-manual-fields-in-vault",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9220936-exploring-document-data-with-advanced-search",
+      "destination": "/archive/intercom/legislate/exploring-document-data-with-advanced-search",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9220892-creating-contracts-and-documents-in-legislate",
+      "destination": "/archive/intercom/legislate/creating-contracts-and-documents-in-legislate",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9220877-a-quick-tour-of-vault-video",
+      "destination": "/archive/intercom/vault/a-quick-tour-of-vault-video",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9220860-a-quick-tour-of-scribe-video",
+      "destination": "/archive/intercom/scribe/a-quick-tour-of-scribe-video",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9220737-template-fields",
+      "destination": "/archive/intercom/scribe/template-fields",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9220328-how-to-add-conditional-logic-into-your-scribe-templates",
+      "destination": "/archive/intercom/scribe/how-to-add-conditional-logic-into-your-scribe-templates",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9215771-editing-modes-in-scribe",
+      "destination": "/archive/intercom/scribe/editing-modes-in-scribe",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9177917-how-to-use-scribe",
+      "destination": "/archive/intercom/getting-started-with-textmine/how-to-use-scribe",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9210137-how-to-import-word-templates-into-scribe",
+      "destination": "/archive/intercom/scribe/how-to-import-word-templates-into-scribe",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9209636-validating-predictions-in-vault",
+      "destination": "/archive/intercom/vault/validating-predictions-in-vault",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9209265-an-introduction-to-vault-teams",
+      "destination": "/archive/intercom/vault/an-introduction-to-vault-teams",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9208466-making-corrections-in-vault",
+      "destination": "/archive/intercom/vault/making-corrections-in-vault",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9177855-welcome-to-textmine",
+      "destination": "/archive/intercom/getting-started-with-textmine/welcome-to-textmine",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/9177886-how-to-use-vault",
+      "destination": "/archive/intercom/getting-started-with-textmine/how-to-use-vault",
+      "permanent": true
+    }
+  ]
+}

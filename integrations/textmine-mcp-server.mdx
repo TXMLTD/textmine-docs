@@ -1,0 +1,41 @@
+---
+title: "TextMine MCP server"
+description: "Expose TextMine Public API tools to MCP-compatible agent clients."
+---
+
+The TextMine MCP server is a hosted MCP surface for external agent clients. It is separate from Workbench MCP providers.
+
+## What it exposes
+
+The MCP server is implemented as a thin wrapper over Public API V3. Each MCP tool should map to an existing V3 endpoint rather than adding new business logic in the MCP service.
+
+Current tool areas include:
+
+- Vaults and Vault documents.
+- Document search, create, update, and delete.
+- Reports and report templates.
+- Workflows and workflow catalogs.
+- Agents.
+- Alerts.
+- Team and Vault users.
+- Integrations, provider connection status, provider folder listing, and provider file listing.
+
+## Import and provider support
+
+TextMine MCP clients can use provider-facing tools where the connected provider supports them. That includes listing integrations, checking provider connection status, listing provider folders or files, and uploading a provider file into Vault through TextMine.
+
+This is separate from Workbench's in-app provider import, but both use the same product concept: external provider files can become TextMine context or TextMine Vault documents.
+
+## Authentication model
+
+The current MCP service forwards the caller's Authorization header to Public API. In practice, MCP clients should call the server with a TextMine bearer key so Public API can resolve the real user and organisation.
+
+Requests without a valid forwarded bearer are rejected by Public API. Do not rely on a shared service user for user-facing MCP clients.
+
+## Adding a new MCP tool
+
+Add the Public API V3 endpoint first. Then add a small tool class in the MCP service that implements the MCP tools marker interface, injects the Public API client, and exposes one or more tool methods. Keep provider-specific logic, OAuth flows, database access, validation, and business rules in the API service rather than the MCP service.
+
+## When to use it
+
+Use the TextMine MCP server when Codex, another LLM client, or an automation needs a direct agent-friendly way to read or act on TextMine data. Use the web app when a human is operating interactively inside Workbench, Vault, Workflows, Playbooks, Records, Scribe, or Legislate.

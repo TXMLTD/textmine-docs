@@ -1,0 +1,22 @@
+---
+title: "Create a workflow"
+description: "Design a reusable workflow with a trigger and steps."
+---
+
+Create a workflow when a process should run more than once or should start automatically from a trigger.
+
+## 1. Choose a trigger
+
+Pick the event that starts the workflow: manual, document imported, document processed, document published, email received, intake form, or scheduled.
+
+## 2. Add steps
+
+Add action and condition blocks in the order they should run. Prefer specific actions when available, such as Apply Playbook, Lookup Record, Create/Update Record, Fill Template, Request Approval, Send Email, or API Request. Use Run General Action for reusable AI-led analysis that produces a named output for later steps.
+
+## 3. Configure outputs
+
+Use output labels and variables when later steps need values from earlier steps. Record, template, report, email, and API steps can all depend on prior outputs.
+
+## 4. Test and monitor
+
+Run the workflow manually first when possible. Use the run history to inspect trigger, step status, generated files, playbook applications, approval state, errors, and outputs.

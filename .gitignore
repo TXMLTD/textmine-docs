@@ -1,0 +1,5 @@
+.DS_Store
+.workspace/
+.mintlify/
+.mintlify-last/
+node_modules/

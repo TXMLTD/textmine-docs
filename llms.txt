@@ -1,0 +1,23 @@
+# TextMine Documentation
+
+This docs site is organized for humans and agents. Prefer the current product sections over archive pages.
+
+## Current sections
+
+- Product map: /getting-started/product-map
+- Workbench: /workbench/overview
+- Vault: /vault/overview
+- Legislate: /legislate/overview
+- Workflows: /workflows/overview
+- Integrations: /integrations/overview
+- Workbench MCP providers: /integrations/workbench-mcp-providers
+- TextMine MCP server: /integrations/textmine-mcp-server
+- Playbooks: /playbooks/overview
+- Records: /records/overview
+- Agents: /agents/overview
+- Scribe: /scribe/overview
+- Permissions: /administration/permissions
+
+## Archive
+
+Original Intercom articles are preserved under /archive/intercom and may contain older terminology.

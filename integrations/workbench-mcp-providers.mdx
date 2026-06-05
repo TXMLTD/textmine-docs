@@ -1,0 +1,32 @@
+---
+title: "Workbench MCP providers"
+description: "Browse and import connected provider files inside Workbench."
+---
+
+Workbench MCP providers let users bring files from connected external sources into a Workbench conversation.
+
+## What Workbench can do
+
+Workbench has backend capabilities to:
+
+- List enabled MCP providers.
+- List folders from an enabled file-storage provider.
+- List files from a selected provider folder.
+- Import selected provider files into the current Workbench chat.
+
+Imported files become uploaded-file context for the Workbench task. If the user later asks to save those files into Vault, Workbench uses the normal Vault import pipeline and may require approval.
+
+This means provider import has two natural destinations:
+
+- Import into Workbench for chat context, comparison, summarization, or template filling.
+- Import into Vault for durable processing, extraction, review, workflow triggers, and eventual publication to Legislate.
+
+## Supported provider shapes
+
+Provider capabilities are explicit. A provider can support document creation, folder listing, file listing, file download, or a subset of those capabilities.
+
+Google Drive currently supports document creation plus folder/file browsing and download. SharePoint supports folder/file browsing and download. Notion currently supports page creation.
+
+## When Workbench should use MCP providers
+
+Use MCP provider routing when the user explicitly names an external source, connected tool, integration, or MCP provider. Native TextMine requests about Vault, Agents, Workflows, Playbooks, Document Types, Records, or Workbench skills should stay on their native capabilities.

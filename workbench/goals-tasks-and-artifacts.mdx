@@ -1,0 +1,18 @@
+---
+title: "Goals, tasks, and artifacts"
+description: "How Workbench handles longer-running work."
+---
+
+Workbench can turn a request into a task plan, execute capability steps, wait for long-running operations, verify the result, and save a final artifact.
+
+## Tasks
+
+Tasks are used when a request needs backend execution, asynchronous processing, or approval. Examples include running table extraction, generating reports, running agents, applying playbooks, importing documents, creating workflows, or updating records.
+
+## Approvals
+
+Some Workbench capabilities mutate reusable data or trigger broad processing. These actions require approval, such as creating workflows, creating playbooks, importing documents into Vault, creating tags, running agents, updating records, or changing record schemas.
+
+## Artifacts
+
+When a task produces a useful answer, report, table, or structured output, Workbench can save it back to the session as an artifact so it can be reviewed later.

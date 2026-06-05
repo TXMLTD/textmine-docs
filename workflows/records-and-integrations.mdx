@@ -1,0 +1,22 @@
+---
+title: "Records and integrations in workflows"
+description: "Connect workflows to records, APIs, SEC data, and external systems."
+---
+
+Workflows can update TextMine data and connect to external systems.
+
+## Records
+
+Use Lookup Record to read existing business records during a workflow. Use Create/Update Record to create or update records based on document evidence, extracted values, intake form values, or earlier workflow outputs.
+
+## APIs and webhooks
+
+Use API Request for generic REST calls. Use Webhook for outbound callbacks. Store secrets in the workflow configuration rather than hard-coding credentials in request bodies or headers.
+
+## SEC and EDGAR
+
+Workflow steps can search EDGAR filings or fetch SEC filings for supported filing types. Use these steps when a document process depends on public company filings or recurring filing imports.
+
+## Integrations
+
+Use integration import or submit steps when the workflow should move data or files between TextMine and a connected external system.

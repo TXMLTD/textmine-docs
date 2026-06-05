@@ -1,0 +1,25 @@
+---
+title: "Use files and integrations in Workbench"
+description: "Upload files or import from connected MCP providers."
+---
+
+Workbench can use files from several sources.
+
+## Uploaded files
+
+Attach files directly to a Workbench request when you want a quick answer, comparison, template fill, or a later import into Vault. Workbench can answer from uploaded text-like documents without requiring Vault processing.
+
+If you ask Workbench to save uploaded files into a Vault, it will use the Vault document pipeline and may ask for approval before mutating Vault content.
+
+## Connected providers
+
+When Workbench MCP providers are enabled, Workbench can list providers, browse folders, list files, and import selected files into the current Workbench chat. Imported provider files become context for the current task; saving them into Vault is a separate approved action.
+
+Workbench MCP providers are different from the hosted TextMine MCP server. Workbench MCP providers let a user bring external files into Workbench. The TextMine MCP server exposes TextMine tools to external agent clients.
+
+## Good prompts
+
+- "Import the NDA from Google Drive and summarize it."
+- "Compare this uploaded spreadsheet with the documents in BU1."
+- "Save these uploaded contracts into the Finance Vault."
+- "Fill this uploaded Excel template from the values we discussed."

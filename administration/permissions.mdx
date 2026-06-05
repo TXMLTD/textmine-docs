@@ -1,0 +1,20 @@
+---
+title: "Permissions and feature access"
+description: "Control access to newer TextMine surfaces."
+---
+
+TextMine exposes newer product areas through feature flags, guards, and permissions.
+
+## Key permissions
+
+| Area | Permissions |
+| --- | --- |
+| Workflows | workflow:read, workflow:create |
+| Playbooks | playbook:read, playbook:create |
+| Records | records:read, records:write, records:delete |
+| Vault | Vault access is controlled by Vault/team permissions and business scope. |
+| Workbench | Workbench access is guarded separately and may require feature access. |
+
+## Admin guidance
+
+Only grant create/write permissions to users who should change reusable configuration or durable business data. Running agents, workflows, playbooks, imports, record updates, and document reprocessing can have broad operational effects.
