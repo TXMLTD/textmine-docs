@@ -61,7 +61,8 @@
           "integrations/catalog",
           "integrations/workbench-mcp-providers",
           "integrations/textmine-mcp-server",
-          "integrations/api-and-developer-docs"
+          "integrations/api-and-developer-docs",
+          "integrations/zapier"
         ]
       },
       {
