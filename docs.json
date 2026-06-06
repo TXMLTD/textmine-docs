@@ -22,6 +22,7 @@
         "group": "Workbench",
         "pages": [
           "workbench/overview",
+          "workbench/capabilities",
           "workbench/uploads-and-integrations",
           "workbench/goals-tasks-and-artifacts"
         ]
@@ -30,6 +31,7 @@
         "group": "Vault",
         "pages": [
           "vault/overview",
+          "vault/capabilities",
           "vault/document-types-and-tags",
           "vault/ask-vault-and-reports"
         ]
@@ -54,6 +56,7 @@
         "group": "Integrations",
         "pages": [
           "integrations/overview",
+          "integrations/catalog",
           "integrations/workbench-mcp-providers",
           "integrations/textmine-mcp-server",
           "integrations/api-and-developer-docs"

@@ -1,0 +1,137 @@
+---
+title: "Integration catalog"
+description: "Supported integration surfaces, provider capabilities, and MCP scan/import options."
+---
+
+TextMine integrations fall into several shapes: OAuth-connected providers, Vault-level native integrations, workflow integrations, the TextMine MCP server, and Workbench MCP/provider imports.
+
+Availability depends on organisation configuration, enabled features, user connection status, and provider capability support.
+
+## Integration directions
+
+| Direction | What it means |
+| --- | --- |
+| Import into Workbench | Bring an external file into the current Workbench chat as temporary context. |
+| Import into Vault | Save a file into the durable Vault pipeline for processing, extraction, review, workflows, and possible publication to Legislate. |
+| Submit out of TextMine | Send outputs, documents, reports, or files to an external system. |
+| Expose TextMine to agents | Let external agents call TextMine tools through the hosted TextMine MCP server or Public API V3. |
+| Discover API docs | Let agents use the developer hub and ReadMe MCP surface for exact schemas and API operation discovery. |
+
+## User-connected providers
+
+These providers are connected by users or organisations and expose explicit capabilities.
+
+| Provider | Connection shape | Current capabilities |
+| --- | --- | --- |
+| Google Drive | OAuth | Create documents, list folders, list files in folders, download files, and import files into Workbench or Vault. |
+| SharePoint | OAuth/native integration | List folders, list files in folders, download files, import files, and submit workflow outputs where enabled. |
+| Notion | OAuth | Create pages in a connected Notion workspace. |
+
+## Vault native integrations
+
+Vault native integrations are configured against a Vault and can participate in upload/import or workflow processes.
+
+| Integration | What it supports |
+| --- | --- |
+| ServiceNow | Configure a Vault-level ServiceNow connection, test access, list configured table records, list record attachments, and import selected attachments into Vault. |
+| DocuSign | Configure, test, enable/disable, and import agreement/envelope material where enabled. |
+| SharePoint | Configure, test, browse, import, and submit outputs where enabled. |
+| OpenCorporates | Use company data as a source for enrichment or import flows. |
+| SEC/EDGAR | Search EDGAR filing text, fetch SEC filings, and use SEC company/adviser sources in upload or workflow flows. |
+| Box, Ariba, Finastra, Companies House | Native or legacy import/source surfaces visible in document import flows where configured. |
+| Vault email | Route inbound email and attachments into Vault or workflow-triggered document processing. |
+
+## ServiceNow details
+
+The ServiceNow integration can be configured per Vault. Supported behavior includes:
+
+- Basic authentication or OAuth client credentials, depending on configuration.
+- Instance URL, table name, encoded query, and display-value settings.
+- Default table support such as `ast_contract` where configured.
+- Optional field mappings for number, name, supplier, and status display.
+- Connection testing before saving.
+- Record browsing with search, limit, offset, and optional table override.
+- Attachment browsing for selected records.
+- Importing selected attachments, selected records, or matching records into Vault.
+- Import modes: `UPSERT`, `NEW_RECORDS_ONLY`, and `UPDATE_EXISTING_ONLY`.
+
+Workflow block `import_from_integration` currently supports ServiceNow for pulling records and linked attachments into the workflow Vault. It can use a saved table/query configuration or override the table/query for a run.
+
+## Workflow integration blocks
+
+Workflows can use integration blocks without requiring a human to operate the UI each time.
+
+| Block | Integration behavior |
+| --- | --- |
+| `api_request` | Runs a structured REST request for API integrations, callbacks, and webhooks. |
+| `webhook` | Calls an outbound webhook URL or HTTP callback. |
+| `import_from_integration` | Pulls records and linked attachments from an external system into the workflow Vault. Currently supports ServiceNow. |
+| `submit_to_integration` | Pushes workflow outputs to an external system. Current implementation supports SharePoint output. |
+| `search_edgar_filings` | Searches SEC EDGAR filing text and saves matching filings for later steps. |
+| `fetch_sec_filings` | Imports recent SEC filings for companies in scope. |
+| `send_email` | Sends email notifications with optional output/report/document attachments. |
+
+See [Workflow blocks](/workflows/blocks) for the full workflow catalog.
+
+## Workbench MCP/provider scan and import
+
+Workbench can scan connected providers in a controlled sequence:
+
+1. List enabled providers for the current Workbench session.
+2. List folders when the provider supports folder browsing.
+3. List or search files in a selected folder.
+4. Import selected files into the current Workbench chat.
+5. Save imported files into Vault only when the user explicitly asks and approves.
+
+The key capabilities are:
+
+| Workbench capability | What it does |
+| --- | --- |
+| `list_mcp_providers` | Shows connected providers and capabilities. |
+| `list_mcp_folders` | Browses provider folders. |
+| `list_mcp_files` | Lists or searches provider files. |
+| `import_mcp_documents` | Imports selected files as Workbench context. |
+| `import_uploaded_documents` | Saves uploaded or imported Workbench files into Vault after approval. |
+
+Workbench imports selected files rather than scanning an entire external repository. Agents should name the provider, folder, file, or query whenever possible.
+
+## Official MCP/provider catalog
+
+The current provider catalog includes official MCP or source integrations that can be connected manually where enabled. Capabilities are declared per provider.
+
+| Provider | Provider ID | Declared capabilities |
+| --- | --- | --- |
+| Box | `box` | Search documents, list folders, list files, download files. |
+| Dropbox | `dropbox` | Search documents, list folders, list files, download files. |
+| Amazon S3 | `amazon-s3` | Search documents, list folders, list files, download files. |
+| DocuSign | `docusign` | Search documents, download files. |
+| iManage | `imanage` | Search documents, list folders, list files, download files. |
+| NetDocuments | `netdocuments` | Search documents. |
+| HighQ | `thomson-reuters-highq` | Search documents. |
+| Ironclad | `ironclad` | Search documents. |
+| CourtListener | `courtlistener` | Search documents. |
+| CoCounsel Legal | `thomson-reuters-cocounsel` | Search documents. |
+| GovInfo | `govinfo` | Search documents, download files. |
+| Federal Register | `federal-register` | Search documents, download files. |
+| Regulations.gov | `regulations-gov` | Search documents. |
+| Congress.gov | `congress-gov` | Search documents. |
+| Open States | `open-states` | Search documents. |
+| Atlassian | `atlassian` | Search documents. |
+| Salesforce | `salesforce` | Search documents. |
+| AWS | `aws` | Search documents. |
+| Azure | `azure` | Search documents. |
+| Google Cloud | `google-cloud` | Search documents. |
+| FactSet | `factset` | Search documents. |
+| LSEG | `lseg` | Search documents. |
+| Stripe | `stripe` | Search documents. |
+| Xero | `xero` | Search documents. |
+| Snowflake | `snowflake` | Search documents. |
+| Databricks | `databricks` | Search documents. |
+
+Manual provider connections store an endpoint URL and optional credential metadata. Secret-like metadata is sanitized and credentials are stored separately. A provider must be connected and Workbench-enabled before Workbench can use it for browsing or import.
+
+## TextMine MCP and developer hub
+
+The [TextMine MCP server](/integrations/textmine-mcp-server) exposes TextMine tools to external agents. The [developer hub](https://developers.textmine.com) provides Public API V3 reference, examples, client setup, and ReadMe MCP discovery.
+
+Use [API and developer docs](/integrations/api-and-developer-docs) when a developer or agent needs exact operation IDs or setup instructions.

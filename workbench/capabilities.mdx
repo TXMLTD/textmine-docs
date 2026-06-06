@@ -1,0 +1,112 @@
+---
+title: "Workbench capabilities"
+description: "Reference for what Workbench can read, create, run, import, and verify."
+---
+
+Workbench is an in-app AI workspace with a backend capability registry. Each capability has a purpose, expected inputs, outputs, approval rules, and sometimes an asynchronous wait step.
+
+Use this page to understand what Workbench can do. External agents should use [TextMine MCP server](/integrations/textmine-mcp-server) or [API and developer docs](/integrations/api-and-developer-docs) when they need direct API or MCP tool access.
+
+## Capability rules
+
+- Read capabilities can usually run without approval.
+- Mutating configuration or durable data requires approval.
+- Long-running actions have matching wait capabilities.
+- Workbench should inspect or search documents before acting on a vague source scope.
+- Saving files into Vault is different from using files as temporary Workbench context.
+
+## Document and Vault capabilities
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `inspect_vault_documents` | Reads document metadata, IDs, Vault scope, and processing state. | Use early when a task depends on Vault documents. |
+| `search_accessible_vault_documents` | Searches documents and extracted tags across accessible Vaults. | Resolves source scopes before asking Vault or creating reports. |
+| `ask_vault` | Answers using Vault documents, extracted tags, and optional uploaded reference text. | Read-only analysis, comparison, summarization, and evidence-backed answers. |
+| `answer_reference_document` | Answers directly from uploaded reference text without requiring Vault processing. | Good for quick uploaded-file analysis. |
+| `import_uploaded_documents` | Imports Workbench-uploaded files into a selected Vault. | Requires approval and uses the durable Vault document pipeline. |
+| `reprocess_documents` | Queues selected Vault documents for reprocessing. | Requires approval; use after configuration or extraction changes. |
+| `wait_for_document_processing` | Waits for document or tag processing to finish. | Used after custom tag runs, imports, or reprocessing. |
+
+## Legislate and comparison capabilities
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `read_legislate_documents` | Reads active Legislate/team documents. | Legislate is the validated team-document archive, not a Vault. |
+| `compare_legislate_vault_documents` | Compares Legislate documents with Vault documents. | Use when the user asks about published documents versus Vault source documents. |
+
+## MCP provider capabilities
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `list_mcp_providers` | Lists enabled MCP providers for the Workbench session. | Shows connection status, Workbench enablement, and capabilities. |
+| `list_mcp_folders` | Lists folders from a connected file-storage provider. | Requires a provider with folder listing capability. |
+| `list_mcp_files` | Lists or searches files in a provider folder. | Use before selecting files for import. |
+| `import_mcp_documents` | Imports selected provider files into the current Workbench chat. | Imports temporary Workbench context; saving to Vault is a separate approved step. |
+
+The provider import path is intentionally bounded: Workbench imports selected files, not entire provider repositories. The backend limits a single import batch to selected files and a total size cap.
+
+## Playbooks
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `read_playbooks` | Lists or searches available playbooks. | Read-only inventory. |
+| `create_playbook` | Creates a reusable playbook from source text or rules. | Requires approval. |
+| `run_playbook` | Runs an existing playbook against selected Vault documents. | Asynchronous; use for reusable review logic. |
+
+## Document types, tags, and extraction setup
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `read_document_types` | Lists document types for a Vault or workspace. | Read-only inventory. |
+| `create_document_type` | Creates a document type or adds default tag definitions. | Requires approval. |
+| `delete_document_type` | Deletes a custom document type. | Requires approval. |
+| `setup_image_transcription` | Creates or reuses an image type and default image tags. | Requires approval; used for embedded image transcription/classification. |
+| `create_custom_tags` | Creates or reuses custom tags/questions. | Requires approval because it changes reusable extraction configuration. |
+| `run_custom_tags` | Runs tags/questions against selected documents or a Vault. | Requires approval; often followed by `wait_for_document_processing`. |
+| `run_table_extraction` | Queues table or line-item extraction. | Asynchronous; followed by `wait_for_table_extraction`. |
+| `run_entity_extraction` | Queues entity extraction/resolution. | Asynchronous; followed by `wait_for_entity_extraction`. |
+| `read_vault_entity_graph` | Reads entities and relations from a Vault. | Read-only graph data. |
+
+## Reports and templates
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `create_report` | Creates a report, table, comparison, summary, or analysis over selected documents. | Asynchronous; should honor resolved source scope. |
+| `wait_for_report_completion` | Waits for a report job to complete. | Reads status and result. |
+| `fill_template` | Fills an uploaded Word, Excel, CSV, text, form, or spreadsheet template. | Uses uploaded template files and conversation context. |
+| `synthesize_workbench_result` | Produces a partial answer from successful prior steps if a dependent analyzer failed. | Fallback for resilient task completion. |
+
+## Workflows and agents
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `read_workflows` | Lists available workflows. | Read-only inventory. |
+| `create_workflow` | Creates a reusable workflow using the workflow block catalog. | Requires approval; see [Workflow blocks](/workflows/blocks). |
+| `run_workflow` | Runs an existing workflow or one-off workflow-backed action. | Asynchronous; followed by `wait_for_workflow_completion`. |
+| `cleanup_one_off_workflow` | Soft-deletes a temporary one-off workflow after completion. | Host-inserted cleanup. |
+| `read_agents` | Lists on-demand agents. | Read-only inventory. |
+| `create_agent` | Creates an on-demand agent. | Requires approval. |
+| `run_agent` | Runs an existing on-demand agent against selected documents. | Requires approval; followed by `wait_for_agent_completion`. |
+
+## Records and schemas
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `inspect_record_schemas` | Reads accessible record schemas. | Use before record mutation. |
+| `lookup_records` | Reads or searches business records. | Read-only. |
+| `upsert_record` | Creates or updates business records. | Requires approval. |
+| `update_record_schema` | Creates or replaces record schemas. | Requires approval. |
+
+## Workbench skills and task lifecycle
+
+| Capability | What it does | Notes |
+| --- | --- | --- |
+| `read_workbench_skills` | Reads saved Workbench skills from task context. | Use when the user references recurring instructions or review style. |
+| `apply_workbench_skill` | Applies saved skill guidance to planning and execution. | Guidance-only capability. |
+| `verify_goal_completion` | Verifies that completed task steps satisfy the original goal. | Used near the end of a plan. |
+| `save_workbench_artifact` | Saves a result, report, table, or structured output back to the session. | Final persistence step. |
+| `ask_for_approval` | Pauses for user approval before a proposed action. | Reserved for host-created approval steps. |
+
+## Safe-use guidance for agents
+
+Agents should return the capability names they used, the IDs they touched, and any approvals they requested. For durable mutations, include enough context for audit: Vault IDs, document IDs, workflow IDs, run IDs, record IDs, report IDs, provider IDs, and imported file names.
