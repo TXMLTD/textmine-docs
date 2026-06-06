@@ -3,9 +3,9 @@
   "name": "TextMine Documentation",
   "theme": "mint",
   "colors": {
-    "primary": "#145C5C",
-    "light": "#1F7A76",
-    "dark": "#0F3F3E"
+    "primary": "#009BFF",
+    "light": "#80CDFF",
+    "dark": "#002740"
   },
   "navigation": {
     "groups": [
@@ -480,5 +480,11 @@
     "metatags": {
       "canonical": "https://docs.textmine.com"
     }
-  }
+  },
+  "logo": {
+    "light": "https://app.textmine.com/assets/text-mine-logo.svg",
+    "dark": "https://app.textmine.com/assets/text-mine-logo.svg",
+    "href": "https://www.textmine.com"
+  },
+  "favicon": "https://app.textmine.com/favicon.ico"
 }
