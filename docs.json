@@ -33,6 +33,7 @@
           "vault/overview",
           "vault/capabilities",
           "vault/document-types-and-tags",
+          "vault/tags-and-extraction",
           "vault/ask-vault-and-reports"
         ]
       },

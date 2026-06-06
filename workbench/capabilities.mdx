@@ -61,7 +61,7 @@ The provider import path is intentionally bounded: Workbench imports selected fi
 | `create_document_type` | Creates a document type or adds default tag definitions. | Requires approval. |
 | `delete_document_type` | Deletes a custom document type. | Requires approval. |
 | `setup_image_transcription` | Creates or reuses an image type and default image tags. | Requires approval; used for embedded image transcription/classification. |
-| `create_custom_tags` | Creates or reuses custom tags/questions. | Requires approval because it changes reusable extraction configuration. |
+| `create_custom_tags` | Creates or reuses custom tags/questions. | Requires approval because it changes reusable extraction configuration. See [Tags and extraction](/vault/tags-and-extraction). |
 | `run_custom_tags` | Runs tags/questions against selected documents or a Vault. | Requires approval; often followed by `wait_for_document_processing`. |
 | `run_table_extraction` | Queues table or line-item extraction. | Asynchronous; followed by `wait_for_table_extraction`. |
 | `run_entity_extraction` | Queues entity extraction/resolution. | Asynchronous; followed by `wait_for_entity_extraction`. |

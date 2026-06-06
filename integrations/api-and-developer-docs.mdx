@@ -20,6 +20,27 @@ TextMine product documentation lives at this site. API reference, ReadMe MCP, ex
 | ReadMe llms.txt | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
 | Agent context pack | [developers.textmine.com/page/llms-full](https://developers.textmine.com/page/llms-full) |
 
+## How to access the API
+
+Use Public API V3 for new integrations and agent work.
+
+1. Confirm the user has access to the relevant TextMine organization, team, Vault, provider, or workflow.
+2. Create or request an API credential through the TextMine admin/developer access flow for that organization.
+3. Store the credential as an environment variable such as `TEXTMINE_API_KEY` or in the secret store for the agent client.
+4. Send the credential as a bearer token on API requests.
+5. Use the operation IDs, request schemas, and response schemas from the [API reference](https://developers.textmine.com/reference).
+6. Poll asynchronous operations after uploads, provider imports, report generation, workflow runs, document reprocessing, and exports.
+
+Use this shape for scripts and examples:
+
+```bash
+curl "<TEXTMINE_API_BASE_URL>/v3/..." \
+  -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+Use the base URL and environment shown in the developer hub or provided by the TextMine team. Do not paste bearer tokens into prompts, tickets, screenshots, source code, or shared documentation.
+
 ## Client setup guides
 
 The developer hub has setup pages for common agent clients:
@@ -28,6 +49,18 @@ The developer hub has setup pages for common agent clients:
 - [Claude MCP Setup](https://developers.textmine.com/docs/claude-mcp)
 - [Cursor and Windsurf MCP Setup](https://developers.textmine.com/docs/cursor-windsurf-mcp)
 - [ChatGPT and OpenAI MCP Setup](https://developers.textmine.com/docs/chatgpt-mcp)
+
+## MCP access
+
+Use MCP when an agent client should discover and call TextMine tools from documentation or from an MCP-compatible tool surface.
+
+| MCP surface | Use it for |
+| --- | --- |
+| TextMine MCP server | TextMine-hosted tools backed by Public API V3. Use this for product actions where TextMine exposes an MCP tool directly. |
+| ReadMe MCP endpoint | Documentation-backed API discovery and execution from [developers.textmine.com/mcp](https://developers.textmine.com/mcp). |
+| Workbench MCP providers | In-app provider scan/import flows that let Workbench browse external repositories and import files into a Workbench session. |
+
+For setup, start with [MCP quickstart](https://developers.textmine.com/docs/textmine-mcp), then use the client-specific guide for Codex, Claude, Cursor/Windsurf, or ChatGPT/OpenAI.
 
 ## How to choose the right layer
 
@@ -44,7 +77,7 @@ Use ReadMe when the question is:
 - What is the exact request or response schema?
 - Which operation ID should an agent use?
 - How do I connect an MCP-compatible client?
-- How do I safely execute provider import, report generation, workflow creation, metadata validation, or exports?
+- How do I safely execute provider import, report generation, workflow creation, metadata validation, records, or exports?
 
 ## API-backed agent pattern
 
@@ -55,6 +88,7 @@ For API-backed work, agents should follow this pattern:
 3. Use Public API V3 operation IDs from the API reference.
 4. Discover IDs before mutating data.
 5. Ask for confirmation before destructive or broad actions.
+6. Keep secrets out of logs, prompts, screenshots, commits, and docs.
 
 ## Current API focus
 
