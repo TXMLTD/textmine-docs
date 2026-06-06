@@ -1,0 +1,120 @@
+---
+title: "Workflow examples"
+description: "Workflow patterns for financial services, legal, risk advisory, and procurement teams."
+---
+
+Use these examples as starting points for repeatable TextMine automations. They are deliberately written as patterns rather than rigid templates, because most workflows need to be scoped to a Vault, document type, approval policy, and integration setup.
+
+For the full block catalog, see [Workflow blocks](/workflows/blocks).
+
+## Financial services
+
+Financial services workflows usually prioritize intake control, source evidence, exception handling, and audit-ready outputs.
+
+| Workflow | Trigger | Core blocks | Output |
+| --- | --- | --- | --- |
+| Credit agreement covenant review | Document imported or manual run | Wait for processing, extract tables, run playbook, calculate values, request approval, send report | Covenant exceptions, source-linked review, approval record |
+| SEC filing monitor | Scheduled | Fetch SEC filings, search filings, extract text, run general action, create alert, send email | Filing summary and exceptions for monitored issuers |
+| Fund document risk scan | Document processed | Default tags, aggregation tags, entity checks, AI review, report template | Risk summary by fund, party, obligation, and date |
+| KYC or onboarding evidence review | Intake form | Upload to Vault, wait for processing, extract entities, reconcile data, create or update record | Reviewed customer/vendor record with evidence links |
+| Regulatory change impact check | Scheduled or manual | Enrich values, search filings or sources, run agent, create alerts | Impact summary and affected document list |
+
+### Example: covenant exception workflow
+
+1. Start when a credit agreement or amendment is imported into a lending Vault.
+2. Wait for processing and table extraction.
+3. Run default tags for borrower, facility amount, dates, governing law, and key covenants.
+4. Apply a covenant playbook.
+5. Use `calculate_values` to compare extracted thresholds against policy limits.
+6. Use `reconcile_data` to flag breaks between agreement text, tables, and accepted policy outputs.
+7. Request approval from legal or credit risk for exceptions.
+8. Send a report with source passages, table references, and reviewer decisions.
+
+Use this pattern when the answer must be defensible to risk, compliance, or audit teams.
+
+## Legal teams
+
+Legal workflows usually focus on review consistency, negotiation guidance, clause risk, publication, and reusable work product.
+
+| Workflow | Trigger | Core blocks | Output |
+| --- | --- | --- | --- |
+| NDA review and escalation | Document imported | Wait for processing, apply playbook, condition on red flags, request approval, send email | Approved NDA review or escalation packet |
+| Contract playbook application | Manual or document processed | Apply playbook, AI review, fill template, send report | Clause-by-clause review memo |
+| MSA deviation tracker | Document processed | Default tags, chained tags, compare to accepted output, create record | Deviation register with evidence |
+| Signature and execution check | Document imported | Embedded image detection, image tags, entity tags, AI review | Signature/completion checklist |
+| Publish validated contracts | Approval completed | Send to Legislate, create alert, update record | Published archive document and audit trail |
+
+### Example: legal playbook review
+
+1. Start manually from Vault or after document processing.
+2. Confirm the document type and processing status.
+3. Apply the correct playbook for the agreement type.
+4. Extract parties, dates, governing law, assignment, termination, liability, confidentiality, and data protection fields.
+5. Use chained tags to connect extracted parties to obligations and rights.
+6. Route red flags to a reviewer.
+7. Generate a report or Word artifact for the matter file.
+8. Publish to Legislate after validation if the document should become part of the archive.
+
+Use this pattern when a legal team wants consistent review outputs without turning every review into a bespoke Workbench conversation.
+
+## Risk advisory
+
+Risk advisory workflows usually combine document review, sampling, evidence, and exception reporting.
+
+| Workflow | Trigger | Core blocks | Output |
+| --- | --- | --- | --- |
+| Control evidence sample | Scheduled or manual | Sample population, wait for processing, extract tags, AI review, report | Sample register and exceptions |
+| Third-party risk review | Intake form or provider import | Upload to Vault, extract entities, enrich values, apply playbook, create record | Risk profile with evidence and recommended action |
+| Policy compliance sweep | Scheduled | Select documents, run aggregation tags, decision matrix, create alerts | Compliance exception queue |
+| Internal audit document test | Manual | Extract tables, compare to accepted output, reconcile data, send report | Test result with supporting documents |
+| Regulatory impact assessment | Scheduled | Enrich values, run agent, lookup records, create alerts | Impacted controls, vendors, contracts, or teams |
+
+### Example: third-party risk workflow
+
+1. Start from an intake form or provider import.
+2. Upload questionnaires, contracts, security reports, or policies to Vault.
+3. Wait for processing and run default tags.
+4. Extract entities such as supplier, parent company, locations, systems, and services.
+5. Enrich supplier context where configured.
+6. Apply a risk playbook or decision policy matrix.
+7. Create or update a supplier risk record.
+8. Request approval for high-risk findings.
+9. Send a final report and retain source evidence.
+
+Use this pattern when the workflow must produce a structured risk outcome rather than a one-off summary.
+
+## Procurement
+
+Procurement workflows usually prioritize supplier intake, obligation extraction, renewal visibility, approval routing, and integration with source systems.
+
+| Workflow | Trigger | Core blocks | Output |
+| --- | --- | --- | --- |
+| Supplier contract intake | Intake form or email received | Upload to Vault, wait for processing, default tags, entity tags, create record | Supplier/contract record with extracted terms |
+| Renewal and notice monitoring | Scheduled | Lookup records, check dates, create alert, send email | Renewal queue with owners and dates |
+| ServiceNow contract import | Scheduled or manual | Import from integration, wait for processing, extract tags, create/update record | Updated contract inventory from ServiceNow |
+| Spend and fee table extraction | Document processed | Extract tables, chained tags, calculate values, report | Pricing and fee summary |
+| Procurement approval packet | Manual | Apply playbook, request approval, fill template, send email | Approved procurement memo and supporting evidence |
+
+### Example: renewal monitoring workflow
+
+1. Run on a schedule against a procurement Vault or contract record schema.
+2. Look up contracts with renewal, expiry, or notice dates within the review window.
+3. Confirm dates against validated Vault tags or record evidence.
+4. Create alerts for owners.
+5. Send a report to procurement and legal stakeholders.
+6. Update records when decisions are made.
+
+Use this pattern when procurement needs durable operational follow-up rather than another spreadsheet reminder.
+
+## Design guidance
+
+Before building any workflow, define:
+
+- The business event that should trigger it.
+- The Vault, provider, document type, or record scope.
+- The human decisions that require approval.
+- The extracted tags, tables, entities, or records that downstream steps depend on.
+- The expected output: alert, report, record, email, Legislate publication, external submission, or all of these.
+- The run history details needed for audit and debugging.
+
+Agents should present workflows as a proposed sequence first when the workflow will send messages, create records, change assignments, call integrations, or publish documents.

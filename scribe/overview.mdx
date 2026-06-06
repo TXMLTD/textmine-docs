@@ -3,17 +3,62 @@ title: "Scribe overview"
 description: "Create and fill smart document templates."
 ---
 
-Scribe is the template surface for TextMine. Use it to import Word templates, define fields, add conditional logic, and publish templates to teams.
+Scribe is the template and document-generation surface for TextMine. Use it to import Word templates, define fields, add conditional logic, publish templates to teams, and generate documents from structured answers or TextMine data.
 
 ## What Scribe is for
 
-- Creating reusable templates.
-- Adding fields and field groups.
-- Adding conditional logic.
-- Importing Word templates.
-- Publishing templates to the right teams.
-- Filling templates from Workbench or Workflows where configured.
+Scribe helps teams create repeatable documents from structured inputs. Typical uses include:
 
-## Modern template filling
+- Supplier onboarding forms.
+- Contract templates.
+- Review memos.
+- Internal approval documents.
+- Engagement letters.
+- Policy documents.
+- Generated summaries or packs from Workbench and Workflows.
 
-Template filling can now be part of broader automation. Workbench can infer fill values from uploaded templates and context. Workflows can fill spreadsheet or form templates and use generated files in later steps, reports, or emails.
+## Template building blocks
+
+| Building block | What it does |
+| --- | --- |
+| Template | The reusable document or form structure. |
+| Field | A variable value that can be filled by a user, workflow, Workbench, or extracted data. |
+| Field group | A logical set of related fields. |
+| Conditional logic | Shows, hides, or changes content based on answers or values. |
+| Word import | Converts a Word document into a Scribe template while preserving as much structure as possible. |
+| Team publishing | Makes a template available to selected teams or users. |
+
+## Word template import
+
+Use Word import when a team already has a document template. After import, review the converted structure, map placeholders to Scribe fields, define field groups, and test generated output before publishing.
+
+Imported templates should be checked for:
+
+- Repeated clauses or sections.
+- Tables and numbering.
+- Conditional language.
+- Placeholder names.
+- Required and optional fields.
+- Team visibility.
+- Generated document formatting.
+
+## Filling templates
+
+Templates can be filled manually or as part of broader TextMine workflows. Values may come from:
+
+- User answers.
+- Workbench context and generated values.
+- Workflow outputs.
+- Vault tags and extracted fields.
+- Records data.
+- Uploaded or imported documents.
+
+Workbench can help infer fill values from context. Workflows can fill spreadsheet, CSV, text, Word, or form templates and use the generated file in later steps, reports, emails, approvals, or exports.
+
+## When to use Scribe
+
+Use Scribe when the desired output is a generated document or template. Use Reports when the output is primarily analysis or evidence. Use Workflows when template generation should be triggered, approved, emailed, or integrated with another system.
+
+## Agent guidance
+
+Agents should inspect available templates and fields before proposing new ones. When creating or updating a template, return the intended fields, field groups, conditional logic, source data, and publication scope. Ask for confirmation before publishing a template to a team or using a generated document externally.

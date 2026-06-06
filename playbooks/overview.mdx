@@ -3,18 +3,72 @@ title: "Playbooks overview"
 description: "Reusable document reviews for policies, checklists, and negotiation rules."
 ---
 
-Playbooks turn review policies, clause checklists, rule tables, and negotiation guidance into reusable document reviews.
+Playbooks turn review policies, clause checklists, rule tables, fallback positions, and negotiation guidance into reusable document reviews.
 
 ![Playbooks screenshot](/images/intercom/product-updates/26-may-2026/05-screenshot-2026-05-26-at-14-22-25.png)
 
+Use Playbooks when a team wants consistent review logic across documents. Use Workbench when the review is still exploratory, and use Workflows when the review should run automatically or require approvals, reports, records, or integrations.
+
 ## What a playbook contains
 
-A playbook contains rules, expected positions, fallback positions, red flags, and review guidance. TextMine can parse playbook content from source text or documents and create structured rules.
+A playbook can include:
 
-## Types
+- Review rules.
+- Expected positions.
+- Fallback positions.
+- Red flags.
+- Clause examples.
+- Risk severity.
+- Recommended actions.
+- Reviewer guidance.
+- Comparison criteria.
 
-Playbooks can represent classical review playbooks, policies, or master agreement style review guidance.
+TextMine can parse playbook content from source text, policies, checklists, tables, or uploaded documents and convert it into structured review rules.
+
+## Playbook types
+
+| Type | Use it for |
+| --- | --- |
+| Contract review playbook | Review clauses in NDAs, MSAs, supplier agreements, credit agreements, leases, or other contracts. |
+| Policy playbook | Check documents against a policy or compliance standard. |
+| Negotiation playbook | Compare document language against preferred and fallback positions. |
+| Risk playbook | Identify red flags, severity, mitigations, and escalation requirements. |
+| Master agreement playbook | Compare amendments, order forms, schedules, or statements of work against a master agreement position. |
 
 ## Where playbooks run
 
-Playbooks can be run manually, from Workbench, from Vault processing, or as a Workflow step. Runs are tracked as playbook applications with status, reviewed documents, results, and comparisons.
+Playbooks can be run manually, from Workbench, from Vault, after Vault processing, or as a Workflow step. Runs are tracked as playbook applications with status, reviewed documents, results, and comparison details.
+
+Typical run sources:
+
+- A user runs a playbook against selected Vault documents.
+- Workbench applies a playbook during supervised analysis.
+- A workflow applies a playbook after document import or processing.
+- A document type or Vault configuration auto-applies a playbook where enabled.
+
+## Playbook outputs
+
+A playbook run can produce:
+
+- Clause-by-clause findings.
+- Risk issue lists.
+- Pass/fail or accepted/deviation status.
+- Comparison against preferred and fallback positions.
+- Review memos or Word artifacts.
+- Evidence references to the underlying document.
+- Escalation or approval inputs for a workflow.
+
+## Example use cases
+
+| Team | Playbook | Output |
+| --- | --- | --- |
+| Legal | NDA review | Red flags, fallback positions, and approval recommendations. |
+| Procurement | Supplier contract review | Renewal, termination, liability, pricing, and data-protection issues. |
+| Financial services | Credit agreement review | Covenant, reporting obligation, security, and jurisdiction exceptions. |
+| Risk advisory | Control evidence review | Exceptions, missing evidence, and recommended remediation. |
+
+## Agent guidance
+
+Agents should inspect existing playbooks before creating a new one. If the user wants a repeatable policy review, propose a playbook. If the user wants routing, scheduling, approvals, emails, or integration steps, propose a workflow that applies a playbook.
+
+Before running a playbook across many documents, confirm the scope, Vault, document type, and expected output.

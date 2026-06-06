@@ -48,6 +48,7 @@
         "pages": [
           "workflows/overview",
           "workflows/blocks",
+          "workflows/examples",
           "workflows/create-a-workflow",
           "workflows/email-intake-and-approvals",
           "workflows/records-and-integrations"
@@ -82,6 +83,12 @@
         "group": "Agents",
         "pages": [
           "agents/overview"
+        ]
+      },
+      {
+        "group": "Reports and exports",
+        "pages": [
+          "reports-and-exports/overview"
         ]
       },
       {

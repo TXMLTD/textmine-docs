@@ -3,18 +3,67 @@ title: "Ask, graph, and enrich records"
 description: "Use records as a queryable business knowledge layer."
 ---
 
+Records are not just a data store. They are a business knowledge layer that can be queried, visualized, enriched, reviewed, and connected back to source evidence.
+
 ## Ask Records
 
-Ask Records answers questions over structured records, source evidence, and related documents. It is useful for questions such as "which records need review?", "which fields are missing?", or "what evidence supports this value?".
+Ask Records answers questions over structured records, source evidence, and related documents.
+
+Use Ask Records for questions such as:
+
+- Which suppliers have high-risk findings and upcoming renewals?
+- Which agreements are missing governing law or expiry date?
+- Which obligations belong to this counterparty?
+- Which records need review?
+- What evidence supports this value?
+- Which records changed after the latest Vault import?
+
+Good answers should identify the record, field, relationship, and evidence used.
 
 ## Graph view
 
-Use the graph view to inspect relationships between records. This is especially useful for connected entities such as companies, agreements, counterparties, obligations, and ownership structures.
+Use the graph view to inspect relationships between records. This is especially useful for connected entities such as companies, agreements, counterparties, obligations, systems, risks, controls, and ownership structures.
+
+Common graph tasks:
+
+- Explore all agreements connected to a supplier.
+- Find obligations linked to a contract and responsible party.
+- Inspect ownership or affiliate relationships.
+- Review which documents support a record.
+- Identify missing or unexpected relationships.
 
 ## Enrichment
 
 Records can be enriched from configured sources such as web, Wikipedia, SEC, FT Markets, or news sources where enabled. Use enrichment when records need supplemental context beyond the documents already in Vault.
 
+Examples:
+
+| Record type | Enrichment use |
+| --- | --- |
+| Company | Jurisdiction, public filings, market context, or profile information. |
+| Supplier | External risk signals or ownership context. |
+| Fund or issuer | SEC/filing context and public-market references. |
+| Risk | News, regulatory, or market context that may affect severity. |
+
+Enrichment should not overwrite validated internal data without review. Treat it as supplemental evidence or candidate input unless the organization has configured a trusted update flow.
+
 ## Import and export
 
 Use import/export when records need to move between TextMine and another data system or review workflow.
+
+Typical patterns:
+
+- Import source documents into Vault, then create record candidates.
+- Export accepted record data for review or downstream reporting.
+- Use workflows to create or update records from validated document evidence.
+- Use API or MCP access for controlled system-to-system record operations.
+
+## Agent guidance
+
+Agents should distinguish three kinds of answers:
+
+- **Structured answer**: comes directly from record fields.
+- **Evidence-backed answer**: combines records with source documents, tags, or passages.
+- **Enriched answer**: includes external context and should name the enrichment source.
+
+Before mutating records, agents should show candidate changes and evidence, then ask for approval.

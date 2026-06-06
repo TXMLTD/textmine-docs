@@ -3,14 +3,75 @@ title: "Schemas and review candidates"
 description: "Define record structure and review proposed changes."
 ---
 
+Record schemas define the structured data model. Candidates are proposed records or field changes generated from Vault evidence, Workbench activity, workflows, or other configured sources.
+
 ## Schemas
 
-A record schema defines what records exist, which fields they contain, and how records can relate to one another. Schemas can be created or updated when the business needs a new structured data model.
+A record schema defines:
+
+- Record type name.
+- Fields and field types.
+- Required and optional fields.
+- Relationships to other record types.
+- Evidence expectations.
+- Review rules and ownership where configured.
+
+Examples:
+
+| Schema | Typical fields | Relationships |
+| --- | --- | --- |
+| Supplier | Name, jurisdiction, risk rating, status, contact, source documents | Agreements, systems, controls, issues |
+| Agreement | Parties, effective date, expiry, renewal, value, governing law | Counterparties, obligations, amendments |
+| Obligation | Owner, due date, trigger, clause source, status | Agreement, party, control |
+| Risk | Description, severity, mitigation, owner, review date | Supplier, agreement, control, evidence |
 
 ## Candidates
 
-TextMine can scan Vault tags and documents to suggest records, field values, and changes. Review candidates before accepting them so records stay trustworthy.
+TextMine can suggest candidates from source evidence. A candidate may propose:
+
+- A new record.
+- A field value for an existing record.
+- A relationship between records.
+- A changed value.
+- A missing-field recommendation.
+- A duplicate or merge candidate.
+
+Candidates should be reviewed before acceptance so records remain trustworthy.
+
+## Candidate review flow
+
+1. Generate or discover candidates from documents, tags, entities, tables, or workflows.
+2. Group candidates by schema, record, field, or source document.
+3. Inspect the proposed value and confidence where available.
+4. Review the source evidence.
+5. Accept, reject, edit, or defer the candidate.
+6. Record the review outcome and keep the evidence link.
 
 ## Evidence
 
-Each record field should remain connected to the documents and extracted evidence that support it. Use evidence links and audit events to understand where a value came from and when it changed.
+Each record field should remain connected to the documents and extracted evidence that support it. Evidence can include:
+
+- Vault document IDs and names.
+- Extracted default or custom tags.
+- Entity extraction outputs.
+- Table rows or line items.
+- Source passages and page numbers.
+- Image tags or embedded image regions.
+- Workflow run outputs.
+- Reviewer decisions.
+
+Use evidence links and audit events to understand where a value came from and when it changed.
+
+## Schema design guidance
+
+Good schemas are specific enough to be useful but not so rigid that every document creates exceptions.
+
+- Start with the business object users already understand.
+- Keep fields stable and reviewable.
+- Use relationships for connected objects instead of packing everything into one record.
+- Prefer controlled fields where reporting depends on consistent values.
+- Keep source evidence mandatory for high-risk or regulated fields.
+
+## Agent guidance
+
+Agents should read schemas before creating candidates. They should avoid inventing fields when an existing schema can be used, and should ask before accepting, deleting, or bulk-updating records.

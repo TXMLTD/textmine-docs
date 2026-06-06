@@ -1,0 +1,95 @@
+---
+title: "Reports and exports"
+description: "Generate, review, automate, and export TextMine outputs with source evidence."
+---
+
+Reports and exports turn TextMine analysis into shareable outputs. They can be generated from Vault, Workbench, Workflows, Playbooks, Records, and API-backed processes.
+
+Use reports when a user needs a narrative, table, review memo, exception list, or evidence-backed summary. Use exports when the output should move into another system, spreadsheet, archive, or workflow step.
+
+## Where reports come from
+
+| Source | Common report type | Notes |
+| --- | --- | --- |
+| Vault / Ask Vault | Document summaries, comparison reports, extracted-field reports, table summaries | Best when the report is grounded in selected Vault documents. |
+| Workbench | Exploratory research outputs, multi-file analysis, generated tables, documents, charts, and follow-up files | Best for supervised, iterative work. |
+| Workflows | Scheduled reports, approval packets, exception reports, template-based reports | Best for repeatable processes and audit history. |
+| Playbooks | Clause review outputs, policy checklists, negotiation guidance, comparison artifacts | Best for reusable review rules. |
+| Records | Entity summaries, missing-field reports, graph or relationship summaries, candidate review reports | Best for structured business data. |
+| Public API / MCP | Programmatic report generation and status polling | Best for developer and agent workflows. |
+
+## Report types
+
+TextMine can support several output shapes depending on the originating surface and configuration:
+
+- Free-form narrative reports.
+- Structured tables and CSV-style outputs.
+- Word or document-style review artifacts.
+- Spreadsheet or template-filled outputs.
+- Exception registers.
+- Approval packets.
+- Evidence-backed summaries with source documents and passages.
+- Export files for external systems.
+
+## Workflow report blocks
+
+Workflows can generate reports as part of a repeatable process.
+
+| Block | Use it for |
+| --- | --- |
+| `send_report_template` | A standard report template exists and should be reused. |
+| `send_report_custom` | The report should be generated from a prompt or custom instruction. |
+| `fill_template` | A spreadsheet, CSV, text, Word, or form template should be filled from workflow values. |
+| `send_email` | The generated report or export should be delivered to recipients. |
+| `submit_to_integration` | The output should be sent to an external system such as SharePoint where enabled. |
+
+## Exports and external systems
+
+Exports can be used to move TextMine outputs into downstream systems. Depending on configuration, this may include:
+
+- Downloading generated files from Workbench or report outputs.
+- Sending workflow outputs by email.
+- Submitting workflow outputs to SharePoint.
+- Publishing validated documents from Vault to Legislate.
+- Exporting Records data for review or external sync.
+- Using Public API V3 to retrieve generated outputs or poll asynchronous jobs.
+
+Use [API and developer docs](/integrations/api-and-developer-docs) when an agent or developer needs exact endpoints, operation IDs, schemas, or MCP setup.
+
+## Evidence and audit guidance
+
+High-quality reports should include enough context for a reviewer to trust and reproduce the result:
+
+- Source document names and IDs.
+- Vault, folder, workflow, report, or record IDs where available.
+- Extracted tags, tables, entities, or record fields used.
+- Source passages, table references, image regions, or page numbers where available.
+- Processing status and validation state.
+- Reviewer or approver decisions when applicable.
+
+Agents should avoid presenting generated reports as validated evidence unless the report includes source references or a human has reviewed the output.
+
+## When to automate a report
+
+Automate a report with Workflows when it should run repeatedly, on a schedule, after import, after processing, or after approval. Keep the report in Workbench when the user is still exploring the question and changing the shape of the output.
+
+Good automation candidates include:
+
+- Weekly renewal or expiry reports.
+- Procurement intake summaries.
+- Legal playbook review packets.
+- Risk exception registers.
+- SEC filing monitor summaries.
+- Records candidate review reports.
+- Table extraction QA reports.
+
+## Agent guidance
+
+Before generating or exporting a report, agents should confirm:
+
+1. Which documents, records, workflow run, or provider import are in scope.
+2. Whether the output is exploratory or final.
+3. Whether a template should be used.
+4. Whether the report should include source evidence.
+5. Who should receive the output.
+6. Whether the output should be saved, emailed, exported, submitted to an integration, or published to Legislate.
