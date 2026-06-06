@@ -3,20 +3,58 @@ title: "Document types and tags"
 description: "Configure extraction fields for Vault documents."
 ---
 
-Document types and tags define what Vault should extract and review.
+Document types and tags define what Vault should extract and review. For the full tag and extraction reference, see [Tags and extraction](/vault/tags-and-extraction). For the broader Vault editor reference, see [Vault and editor capabilities](/vault/capabilities).
 
 ## Document types
 
-Use document types to group documents with similar extraction needs, such as NDAs, service agreements, invoices, purchase orders, utility bills, or custom business documents.
+Use document types to group documents with similar extraction needs, such as NDAs, service agreements, invoices, purchase orders, utility bills, SEC filings, or custom business documents.
 
-## Default tags and custom questions
+A document type can define the expected default tags for that class of document. It can also be associated with Vault-specific processing settings such as table extraction, embedded image classification, extensive text extraction, and image model processing.
 
-Default tags are reusable extraction fields for a document type. Custom questions can be created and run against selected documents or a whole Vault. Workbench can help create tags, run them, wait for processing, and report on the results.
+## Default tags
 
-## Image and table extraction
+Default tags are reusable extraction fields for a document type. They are best for stable fields that should be extracted whenever a document of that type is processed.
 
-Vault can also support image transcription/classification, embedded image extraction, table extraction, and line item extraction where configured.
+Examples include parties, effective date, governing law, renewal date, termination notice period, contract value, supplier name, clause presence, and other recurring metadata.
+
+Default tags are part of the document type configuration. If default tags change, reprocess affected documents when you need updated answers.
+
+## Custom tags
+
+Custom tags are user-defined questions that can be created and run against selected documents or Vault scopes. They are useful when a team needs organisation-specific extraction beyond the default document type fields.
+
+Custom tag modes include:
+
+| Tag type | Use it for |
+| --- | --- |
+| Fact-style tags | Specific values or answers grounded in source passages. |
+| Aggregation tags | Broader synthesis across multiple passages or sections. |
+| Chained tags | Questions that depend on other tags, entities, or tables. |
+| Entity tags | Extracting named entities and descriptions for graph or record use. |
+| Image tags | Asking multimodal questions over selected or detected image regions. |
+
+Custom tags can also include reasoning, semantic-card output, validation state, source passages, page references, and processing status.
+
+## Chained tags, entities, and tables
+
+Chained tags let a later question use earlier extraction as context. Sources can include custom tags, default tags, extracted entities, and extracted tables.
+
+Use chained tags when the answer requires intermediate structure. For example, first extract parties, then ask which party has each termination right; or extract a pricing table, then ask for the highest-risk pricing obligation.
+
+Entity tags are designed for people, organisations, parties, assets, obligations, or other named concepts that should feed records, graphs, or relationship-aware workflows.
+
+Table extraction detects tables and line items so they can be reviewed in the Vault editor, used in reports, or passed into chained tags and workflows.
+
+## Image and embedded-image extraction
+
+Vault can support image transcription/classification, embedded image extraction, table extraction, and line item extraction where configured.
+
+Image tags use multimodal question answering over image regions. Embedded image detection can render document pages, classify visual regions against configured image types, and run image-type questions on the detected image context.
+
+Use this for ownership charts, signatures, scanned schedules, diagrams, and visual tables that are not reliably represented as ordinary text.
 
 ## Reprocessing
 
 When document configuration changes, selected documents can be reprocessed so extracted values reflect the latest tags, document type configuration, or processing pipeline.
+
+Reprocess after changing default tags, extraction settings, image settings, table settings, or upstream sources used by chained tags.

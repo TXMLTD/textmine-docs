@@ -3,18 +3,67 @@ title: "Permissions and feature access"
 description: "Control access to newer TextMine surfaces."
 ---
 
-TextMine exposes newer product areas through feature flags, guards, and permissions.
+TextMine exposes product areas through organization access, team membership, Vault scope, feature flags, guards, and permissions. Use this page as a practical guide for deciding who should be able to view, create, run, approve, publish, or export work.
 
-## Key permissions
+## Permission principles
 
-| Area | Permissions |
+- Grant read access broadly only where the user should be able to see the underlying documents or data.
+- Limit create/write access to users who can change reusable configuration or durable business data.
+- Treat workflow triggers, provider imports, API keys, MCP tools, exports, and publication as higher-risk capabilities.
+- Use approvals before actions that publish, email, submit externally, or update records at scale.
+
+## Product access matrix
+
+| Area | Read access allows | Create/write access allows | Higher-risk actions |
+| --- | --- | --- | --- |
+| Vault | View in-scope documents, folders, processing status, extracted fields, tables, images, and entities. | Upload/import documents, edit tags, assign reviewers, reprocess documents, validate values. | Bulk imports, reprocessing large scopes, changing document types, changing extraction settings. |
+| Legislate | View published team documents. | Publish or manage validated documents where enabled. | Publishing from Vault to Legislate or treating unpublished Vault data as archive data. |
+| Workbench | Run supervised analysis against permitted context. | Create outputs, import files into Workbench, request Vault import where enabled. | Importing provider files into Vault, running broad actions, using external tools. |
+| Workflows | View workflow definitions and run history. | Create, edit, enable, run, or delete workflows depending on permission. | Sending emails, approvals, provider imports, record updates, external API calls, publishing to Legislate. |
+| Playbooks | View and run available playbooks. | Create, edit, enable, disable, or delete playbooks. | Applying playbooks across many documents or using outputs for approvals/publication. |
+| Records | View record schemas, records, candidates, evidence, and graph. | Create schemas, accept candidates, create/update/delete records. | Bulk record updates, schema changes, exports, enrichment that affects durable records. |
+| Agents | View and run available agents. | Create or edit reusable agents. | Shared agent changes, scheduled/bulk runs, agent output used to mutate records or trigger workflows. |
+| Scribe | View templates and generated documents. | Create, import, edit, publish, or fill templates. | Publishing templates, generating documents for external use, using sensitive source data. |
+| Reports and exports | View generated reports and outputs. | Generate, download, email, export, or submit outputs. | External delivery, integration submission, large exports, reports without evidence. |
+| Integrations | View connected providers and integration status. | Connect, configure, test, import from, or submit to providers. | Credential changes, provider disconnects, bulk imports, external submissions. |
+| API and MCP | Read developer docs or discover tools. | Use API keys, bearer tokens, or MCP tools to act. | Secret creation, broad automated actions, destructive changes, high-volume data access. |
+
+## Known permission labels
+
+TextMine uses explicit permission labels for some newer surfaces. Current examples include:
+
+| Area | Permission examples |
 | --- | --- |
-| Workflows | workflow:read, workflow:create |
-| Playbooks | playbook:read, playbook:create |
-| Records | records:read, records:write, records:delete |
-| Vault | Vault access is controlled by Vault/team permissions and business scope. |
-| Workbench | Workbench access is guarded separately and may require feature access. |
+| Workflows | `workflow:read`, `workflow:create` |
+| Playbooks | `playbook:read`, `playbook:create` |
+| Records | `records:read`, `records:write`, `records:delete` |
+| Vault | Controlled by Vault/team permissions and business scope. |
+| Workbench | Guarded by feature access and user/team scope. |
 
-## Admin guidance
+Permission labels may be combined with feature flags and organization configuration. If a page or action is not visible, check both the user's permission set and whether the feature is enabled for the organization.
 
-Only grant create/write permissions to users who should change reusable configuration or durable business data. Running agents, workflows, playbooks, imports, record updates, and document reprocessing can have broad operational effects.
+## API keys and MCP access
+
+API and MCP access should be treated like operational access, not just documentation access.
+
+Recommended rules:
+
+- Create API credentials only for users or systems that need them.
+- Store tokens in a secret manager or local environment variable, not in prompts or docs.
+- Scope tokens to the minimum organization/team/data access available.
+- Rotate credentials if they are pasted into chat, screenshots, issues, or logs.
+- Confirm before using MCP/API tools that send emails, import provider files, update records, publish documents, or call external systems.
+
+See [API and developer docs](/integrations/api-and-developer-docs) for the developer entry points.
+
+## Admin checklist
+
+Before enabling a user or team, decide:
+
+1. Which Vaults, teams, and data scopes they should see.
+2. Whether they can create reusable configuration such as workflows, playbooks, agents, schemas, or templates.
+3. Whether they can trigger actions with side effects.
+4. Whether they can approve or publish outputs.
+5. Whether they can connect providers or manage credentials.
+6. Whether they can export, email, or submit data externally.
+7. Whether API/MCP access is needed and how credentials will be stored.

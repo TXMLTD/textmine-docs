@@ -5,18 +5,46 @@ description: "Design a reusable workflow with a trigger and steps."
 
 Create a workflow when a process should run more than once or should start automatically from a trigger.
 
+Before choosing steps, review [Workflow blocks](/workflows/blocks) for the available triggers, conditions, and actions.
+
 ## 1. Choose a trigger
 
 Pick the event that starts the workflow: manual, document imported, document processed, document published, email received, intake form, or scheduled.
+
+Choose the narrowest trigger that matches the business process. If the workflow should only run for a certain Vault, document type, team, intake form, or schedule, capture that in the workflow design instead of relying on manual filtering later.
 
 ## 2. Add steps
 
 Add action and condition blocks in the order they should run. Prefer specific actions when available, such as Apply Playbook, Lookup Record, Create/Update Record, Fill Template, Request Approval, Send Email, or API Request. Use Run General Action for reusable AI-led analysis that produces a named output for later steps.
 
+Common building blocks include:
+
+- Wait for document processing before reading extracted text or tags.
+- Apply a playbook when the workflow needs reusable review rules.
+- Fill a template when the output should become a document.
+- Lookup or create a record when the output should become structured business data.
+- Request approval before publishing, sending, or making high-impact changes.
+- Send to Legislate when validated data or documents should be published to the Legislate archive.
+
 ## 3. Configure outputs
 
 Use output labels and variables when later steps need values from earlier steps. Record, template, report, email, and API steps can all depend on prior outputs.
 
+Name outputs for the business meaning of the value, not just the step that produced it. For example, use `counterparty_name`, `renewal_notice_date`, or `risk_summary` rather than `step_2_output`.
+
 ## 4. Test and monitor
 
 Run the workflow manually first when possible. Use the run history to inspect trigger, step status, generated files, playbook applications, approval state, errors, and outputs.
+
+When testing with agents, ask them to summarize:
+
+- The trigger and input documents.
+- Each completed, skipped, or failed step.
+- Any records, reports, alerts, approvals, emails, or Legislate publications created.
+- The identifiers a human should use for audit or follow-up.
+
+## Developer and agent setup
+
+External agents should use product docs for workflow semantics and the developer hub for exact operations. Start with [For agents](/getting-started/for-agents), then use [API and developer docs](/integrations/api-and-developer-docs) for Public API V3 reference, examples, and MCP setup.
+
+Before creating or triggering workflows through API or MCP, agents should check for an existing workflow catalog entry and ask for confirmation if the workflow has external side effects.

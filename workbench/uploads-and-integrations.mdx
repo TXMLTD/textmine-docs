@@ -15,7 +15,13 @@ If you ask Workbench to save uploaded files into a Vault, it will use the Vault 
 
 When Workbench MCP providers are enabled, Workbench can list providers, browse folders, list files, and import selected files into the current Workbench chat. Imported provider files become context for the current task; saving them into Vault is a separate approved action.
 
-Workbench MCP providers are different from the hosted TextMine MCP server. Workbench MCP providers let a user bring external files into Workbench. The TextMine MCP server exposes TextMine tools to external agent clients.
+Workbench MCP providers are different from the hosted TextMine MCP server:
+
+- Workbench MCP providers let a user bring external files into Workbench.
+- The TextMine MCP server exposes TextMine tools to external agent clients.
+- The ReadMe developer MCP surface helps agents discover API documentation and generated API operations from the developer hub.
+
+Use [Workbench MCP providers](/integrations/workbench-mcp-providers) for provider import behavior, [TextMine MCP server](/integrations/textmine-mcp-server) for external agent tool access, and [API and developer docs](/integrations/api-and-developer-docs) for API setup and examples.
 
 ## Good prompts
 
@@ -23,3 +29,10 @@ Workbench MCP providers are different from the hosted TextMine MCP server. Workb
 - "Compare this uploaded spreadsheet with the documents in BU1."
 - "Save these uploaded contracts into the Finance Vault."
 - "Fill this uploaded Excel template from the values we discussed."
+- "Find the latest supplier file in SharePoint, use it as context, and draft a playbook from the obligations."
+
+## Durable versus temporary context
+
+Use uploaded files or provider imports as temporary context when the user is asking a one-off question. Save files into Vault when they need extraction, review, permissions, workflow triggers, audit history, or publication to Legislate.
+
+Agents should make this distinction explicit before taking action. Importing a file into Workbench does not automatically make it a governed Vault document.

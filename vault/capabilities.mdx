@@ -1,0 +1,143 @@
+---
+title: "Vault and editor capabilities"
+description: "Reference for Vault document management, extraction, Ask Vault, and the validation editor."
+---
+
+Vault is the governed document intelligence surface in TextMine. It stores source documents, runs processing and extraction, supports review in the Vault editor, and feeds Workbench, Workflows, Playbooks, Records, Agents, Reports, and Legislate.
+
+Use this page as a functional map for Vault and the Vault editor.
+
+## Vault surfaces
+
+| Surface | What it is for |
+| --- | --- |
+| Vault document list | Browse, search, filter, sort, assign, archive, and open documents in a Vault or folder. |
+| Document types | Configure the categories and default fields used for extraction and review. |
+| Custom tags | Create and run reusable questions, chained tags, entity extraction tags, table-aware tags, and image tags. |
+| Ask Vault | Ask questions, create reports, run Vault-scoped agents/workflows, and inspect long-running outputs. |
+| Vault editor | Review a single processed document, validate extracted values, inspect sources, tables, images, and entity graph. |
+| Pop-out views | Open tag cards, extracted tables, or entity graph in focused full-window views. |
+
+## Document management
+
+Vault can manage documents through the full document lifecycle:
+
+- Upload or import files into a Vault.
+- Organize documents into folders.
+- Browse document tables with configurable columns.
+- Search, filter, and sort by document name, type, folder, status, assignee, and extracted values where available.
+- Select documents for batch actions.
+- Assign or unassign reviewers and assignees.
+- Archive, restore, or remove documents where permissions allow.
+- Open documents in the validation editor.
+- Track processing, publication, failure, and completion states.
+
+Agents should distinguish document identifiers carefully. A Vault document often has both a document/Vault ID and a contract-configuration-style ID used by older app surfaces.
+
+## Document types and default tags
+
+Document types define the extraction profile for a class of documents. They can include default tags, prompts, validation expectations, and Vault-specific processing settings.
+
+Vault settings support:
+
+- Creating document types.
+- Updating document type settings.
+- Deleting custom document types when not in use and permitted.
+- Assigning document types to Vaults.
+- Copying or reusing default tags.
+- Promoting or sharing document type configuration where supported.
+- Enabling Vault-specific processing settings, such as table extraction, embedded image classification, extensive text extraction, and image model processing.
+
+## Custom tags and questions
+
+Custom tags let a team ask repeatable questions over documents and persist the answers. See [Tags and extraction](/vault/tags-and-extraction) for the detailed reference.
+
+Supported patterns include:
+
+- Fact-style questions over document text.
+- Aggregation tags for broader retrieval and synthesis.
+- Chained tags that use custom tags, default tags, entities, or tables as context.
+- Entity resolution tags that extract named entities and descriptions.
+- Image tags that use selected screenshots or embedded images.
+- Tags with reasoning or semantic card output.
+- Bulk tag runs over selected documents or whole Vault scopes.
+
+After creating or changing tags, selected documents may need to be processed or reprocessed before answers are current.
+
+## Extraction and processing
+
+Vault processing can include:
+
+- Document type prediction or assignment.
+- Text extraction and OCR where applicable.
+- Default tag extraction.
+- Custom tag/question extraction.
+- Embedded image extraction and classification.
+- Image transcription through image types and image tags.
+- Table extraction and line-item extraction.
+- Entity extraction and entity relationship resolution.
+- Document reprocessing after configuration changes.
+
+Long-running extraction should expose status to users or agents. Workbench and workflows should wait for processing before using extracted values.
+
+## Ask Vault
+
+Ask Vault answers questions using Vault documents, extracted tags, selected documents, and optional uploaded reference files.
+
+Ask Vault can support:
+
+- Quick answers with source documents.
+- Comparisons between documents or uploaded reference material.
+- Saved report generation.
+- Tables and chart-ready summaries.
+- Running on-demand agents over Vault documents.
+- Running workflows from a Vault context.
+- Tracking report, tag, document-processing, workflow, and agent status.
+
+Good answers should include the source document names, IDs, and fields or passages used.
+
+## Vault editor
+
+The Vault editor is the single-document review and validation surface. It is used after a document has been uploaded or imported and processing has begun or completed.
+
+The editor supports:
+
+- Viewing the document with pagination and search.
+- Reviewing extracted default tags and custom tags in cards.
+- Editing extracted values where permitted.
+- Validating or correcting values against source evidence.
+- Seeing source passages and highlights linked to fields.
+- Sorting and organizing field cards.
+- Opening tag cards in a pop-out view.
+- Viewing extracted tables and line items.
+- Opening tables in a dedicated pop-out table view.
+- Viewing resolved entities and relationships in an entity graph.
+- Opening the graph in a pop-out view with zoom, filtering, and PNG export.
+- Creating new custom questions from the document context.
+- Creating image tags from selected document screenshots.
+- Viewing uploaded Word or PDF-style documents through the appropriate visualizer.
+
+The editor should be used when a human needs to inspect evidence, correct values, approve extraction, or understand how the system reached an answer.
+
+## Tables, entities, and images
+
+Vault-specific analysis features include:
+
+| Feature | What it does |
+| --- | --- |
+| Table extraction | Detects and extracts tables or line items from in-scope documents. |
+| Table editor/pop-out | Lets users inspect extracted tables in a focused view. |
+| Entity extraction | Extracts entities such as parties, people, organisations, or domain-specific entities. |
+| Entity graph | Displays entity relationships and evidence, with pop-out graph controls. |
+| Screenshot selector | Lets users select image regions from a document for image-based tags. |
+| Image type settings | Configure image transcription/classification behavior for a Vault/document type. |
+
+## Publishing to Legislate
+
+Vault is the source and review layer. Legislate is the validated archive. When documents or data are ready, TextMine can publish from Vault to Legislate so the validated version appears in the Legislate team-document surface.
+
+Agents should not treat a Vault document as published just because it exists in Vault. Look for the document state or the Legislate record when the question is about published data.
+
+## Vault integrations
+
+Vault can receive documents from uploads, Workbench imports, connected providers, native integration flows, and workflows. See [Integration catalog](/integrations/catalog) for the provider list, including ServiceNow, SharePoint, DocuSign, Google Drive, and MCP/provider scan-import options.

@@ -3,16 +3,94 @@ title: "Agents overview"
 description: "Configure and run reusable AI agents."
 ---
 
-Agents are reusable AI instructions that can run against documents or Vault context.
+Agents are reusable AI instructions that can run against documents, Vault context, Workbench context, workflow inputs, or other configured TextMine data. Use them when a repeated analysis needs consistent instructions but does not need the full branching, approval, and side-effect model of a workflow.
 
 ## When to use agents
 
-Use an agent when the same analysis should be run repeatedly but does not need the full branching structure of a workflow. Use a workflow when the process needs triggers, conditions, approvals, email, records, reports, or integrations.
+| Use case | Use Agents when | Use something else when |
+| --- | --- | --- |
+| Repeated analysis | The same prompt or reasoning task should run many times. | Use Workbench for one-off exploration. |
+| Document review support | The agent should summarize, classify, compare, or extract reasoning from documents. | Use Playbooks for formal review policies and clause checklists. |
+| Workflow step | The agent should produce an output inside a repeatable process. | Use a Workflow when the process itself has triggers, routing, approvals, emails, records, or integrations. |
+| Product assistant | The agent should help a team follow a recurring review method. | Use Records when the output must become durable structured data. |
 
 ## Where agents run
 
-Agents can be run from the Agents page, from Vault, from Workbench, or as a Workflow step. Workbench can list available agents, create a new agent when approved, run an existing agent, and wait for completion.
+Agents can be used from several surfaces:
+
+- **Agents page**: create, edit, list, and run reusable agents where permitted.
+- **Vault**: run an agent against selected documents or Vault context.
+- **Workbench**: list agents, create a new agent when approved, run agents, and wait for completion.
+- **Workflows**: use `run_agent` as a step in a repeatable automation.
+- **API/MCP**: discover and run exposed agent operations where enabled.
+
+## Agent inputs
+
+An agent should state which context it expects. Common inputs include:
+
+- Selected Vault documents.
+- Uploaded Workbench files.
+- Extracted tags, tables, entities, or records.
+- A workflow run payload.
+- A user-provided instruction or question.
+- External context imported from a provider.
+
+If an agent depends on processed Vault data, wait for document processing before running it. If it depends on tags, tables, or entities, confirm those upstream outputs are current.
+
+## Agent outputs
+
+Good agents produce predictable output formats. Examples:
+
+| Output | Use it for |
+| --- | --- |
+| Narrative summary | Human-readable analysis, review notes, or issue explanation. |
+| Bullet list | Findings, risks, recommendations, or missing evidence. |
+| Table | Comparisons, issue registers, review matrices, or extracted values. |
+| JSON-like structure | Downstream workflow steps, API clients, or repeatable automation. |
+| Decision with rationale | Escalation, approval support, or triage routing. |
+
+For durable updates, connect the agent to a workflow, record update, report, or approval process. Do not rely on free-form output alone when the result changes business data.
+
+## Run lifecycle
+
+A typical agent run follows this lifecycle:
+
+1. Select or discover the agent.
+2. Confirm the scope, such as documents, Vault, record set, or workflow input.
+3. Run the agent.
+4. Wait for completion if the run is asynchronous.
+5. Review the output and source evidence.
+6. Use the output in Workbench, a workflow, a report, or a record process.
+
+Agents should return run IDs and relevant document or record IDs when available so users can audit what happened.
 
 ## Good agent design
 
-Give agents clear instructions, a narrow scope, and expected output format. If an agent should write durable data, connect it to a workflow or records process instead of relying on free-form output alone.
+A strong agent definition includes:
+
+- Purpose and boundaries.
+- Required inputs.
+- Output format.
+- Source and evidence expectations.
+- What the agent should not do.
+- When to escalate to a human.
+- Whether it can be used inside workflows.
+
+Example instruction pattern:
+
+```text
+Review the selected supplier agreement for renewal, termination, assignment, liability, and data protection risk. Return a table with issue, severity, source evidence, recommended action, and whether legal approval is required.
+```
+
+## Governance
+
+Agents can have broad operational impact when run over many documents or embedded in workflows. Treat the following as higher-risk actions:
+
+- Creating or editing shared agents.
+- Running agents over large Vault scopes.
+- Using agent output to update Records.
+- Triggering workflows from agent output.
+- Sending agent-generated reports externally.
+- Scheduling agents to run without human review.
+
+Agents should ask for approval before creating shared agents, changing reusable agent instructions, or running an agent across a large scope.

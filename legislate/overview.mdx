@@ -7,21 +7,51 @@ Legislate remains a valid TextMine surface. In the current product model, it is 
 
 ## How Legislate relates to Vault
 
-Vault is where documents are uploaded, processed, classified, tagged, reviewed, reprocessed, and analyzed. Once a document is validated, it can be published from Vault to Legislate.
+Vault is where documents are uploaded, imported, processed, classified, tagged, reviewed, reprocessed, and analyzed. Once a document or its extracted data is validated, it can be published from Vault to Legislate.
 
-Legislate is where published team documents can be listed and reviewed. Workbench treats Legislate/team-document inventory as a separate read target from Vault documents.
+Legislate is where published team documents can be listed, searched, and reviewed as validated archive data. Workbench treats Legislate/team-document inventory as a separate read target from active Vault documents.
+
+## Publication lifecycle
+
+A common lifecycle is:
+
+1. Import or upload the source document into Vault.
+2. Assign or confirm the document type.
+3. Process the document and extract tags, tables, entities, or image-based evidence.
+4. Review and validate extracted values in the Vault editor.
+5. Run any required playbooks, approvals, reports, or workflows.
+6. Publish the validated document from Vault to Legislate.
+7. Use Legislate for archive search, team document review, and comparison with future Vault activity.
 
 ## When to use Legislate
 
-- Review documents that have already been published from Vault.
-- List published team documents for a business unit or team.
-- Compare published Legislate documents with current Vault documents when the user explicitly asks to compare both.
-- Use workflows that send documents to Legislate or respond when documents are published.
+Use Legislate when the task is about:
+
+- Published team documents.
+- Validated archive data.
+- Documents already sent from Vault to Legislate.
+- Comparing published archive content with active Vault content.
+- Workflows that publish documents or respond to publication events.
 
 ## When to use Vault instead
 
-Use Vault when the task is about document processing, folders, document types, extracted tags, custom questions, Ask Vault, reports, reprocessing, or documents that have not yet been published.
+Use Vault when the task is about:
+
+- Document upload or provider import.
+- Processing or reprocessing.
+- Document types and extraction settings.
+- Default tags, custom tags, chained tags, entity tags, image tags, tables, and embedded image detection.
+- Ask Vault and reports over active document sets.
+- Human validation in the Vault editor.
+
+## Workflows and Legislate
+
+Workflows can publish documents to Legislate after validation or approval. They can also react to publication-related events where configured. Use approval steps before publication when a workflow could move documents into the validated archive.
 
 ## Workbench behavior
 
 Workbench routes Legislate inventory questions to Legislate/team-document reading. It should not answer those questions by searching Vault unless the user explicitly asks for Vault, or asks to compare Vault and Legislate.
+
+## Agent guidance
+
+Agents should not assume a Vault document has been published. When the user asks about validated archive data, search or reference Legislate. When the user asks about processing, extraction, tags, or validation, use Vault. When comparing both, name which answer came from Vault and which came from Legislate.

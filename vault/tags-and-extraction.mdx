@@ -1,0 +1,179 @@
+---
+title: "Tags and extraction"
+description: "Default tags, custom tags, chained tags, entity tags, image tags, tables, and extraction settings."
+---
+
+Tags define what TextMine should extract, review, and reuse from Vault documents. They can be document-type defaults, one-off document questions, reusable custom tags, chained outputs, entity extraction prompts, image tags, or table-aware questions.
+
+Use this page when designing extraction configuration or explaining how Vault tags work.
+
+## Tag scopes
+
+| Scope | What it means | Common use |
+| --- | --- | --- |
+| Document type default tags | Tags attached to a document type and applied to matching documents. | Standard fields such as parties, dates, governing law, value, renewal terms, or document-specific metadata. |
+| Vault custom tags | Reusable questions configured for a Vault, document type, or selected documents. | Organisation-specific extraction and review fields. |
+| Document-level tags | Tags or questions created from the validation editor for a specific document context. | Ad hoc review, follow-up extraction, or evidence correction. |
+| Image type tags | Tags configured for image types and applied to detected or selected image regions. | Ownership charts, signatures, diagrams, tables captured as images, or other embedded visual content. |
+
+A tag result can include a value, reasoning, source passages, preview offsets, page number, validation state, status, model metadata, and whether the tag came from a default configuration.
+
+## Default tags
+
+Default tags are reusable extraction fields for a document type. They are the best fit when the same field should be extracted every time a document of that type is processed.
+
+Use default tags for stable fields such as:
+
+- Effective date.
+- Counterparty.
+- Governing law.
+- Termination notice period.
+- Contract value.
+- Renewal date.
+- Supplier name.
+- Clause presence or absence.
+
+Default tags can be copied, reused, and applied when documents are processed or reprocessed. If a document type or its default tags change, affected documents may need reprocessing before results reflect the new configuration.
+
+## Custom tags
+
+Custom tags are user-defined questions that can be run against selected documents or a Vault scope. They are useful when the field is not part of the standard document type or when a team needs temporary or evolving extraction.
+
+Common custom tag modes include:
+
+| Mode | Internal analysis type | Use it when |
+| --- | --- | --- |
+| Fact-style tag | `FACT_FLOW_RAG` | The answer should come from a specific fact or passage in the document. |
+| Aggregation tag | `DEEP_RAG` | The answer needs broader retrieval, synthesis, or aggregation across multiple passages. |
+| Entity tag | `ENTITY_RESOLUTION` | The output should be a list of entities with optional descriptions. |
+| Image tag | `MULTI_MODAL_QA` | The answer should come from a selected image or detected embedded image. |
+
+Custom tags can also request reasoning, produce semantic-card style output, or be chained from earlier extraction context, depending on configuration.
+
+## Aggregation tags
+
+Aggregation tags use a deeper retrieval and reasoning path. Use them when a simple field extraction is too narrow.
+
+Good examples:
+
+- Summarise all payment obligations in this agreement.
+- Identify every termination right and group by party.
+- Compare all references to change-of-control restrictions.
+- Aggregate all dates that affect renewal, notice, or expiry.
+
+Avoid aggregation tags when the desired answer is a single obvious field. A default or fact-style tag is usually easier to validate and rerun.
+
+## Chained tags
+
+Chained tags use earlier context as inputs for a new question. A chained tag can reference:
+
+- Other custom tags.
+- Default tags.
+- Extracted entities.
+- Extracted tables.
+
+Use chained tags when the answer depends on intermediate extraction. For example:
+
+- Use extracted parties and governing law to assess jurisdiction-specific risk.
+- Use table extraction as context for a covenant or pricing answer.
+- Use entity extraction plus contract dates to build a party-obligation summary.
+- Use a default tag value as a filter or comparison point for a custom tag.
+
+Chained tags cannot be treated like independent extraction. Agents should inspect the source tags first, confirm their status, and rerun upstream tags or tables if the context is stale.
+
+## Entity tags
+
+Entity tags use entity resolution. Instead of a free-form question, the user defines entity names or categories, optionally with descriptions. TextMine extracts and resolves those entities from the document context.
+
+Use entity tags for:
+
+- Parties and affiliates.
+- People, roles, signatories, or contacts.
+- Products, assets, facilities, suppliers, or properties.
+- Legal concepts that should become nodes in a graph.
+- Domain-specific entities that Records or Workbench should use later.
+
+Entity extraction can feed the Vault entity graph, Records, workflows, and chained tags. Include descriptions when entity names are ambiguous.
+
+## Image tags
+
+Image tags use multimodal question answering over an image region. They can be created from a selected screenshot region in the Vault editor or from embedded image detection.
+
+Image tags store image context such as page number, coordinates, width, height, and the uploaded image asset. They are useful for:
+
+- Ownership charts.
+- Signature blocks.
+- Scanned tables.
+- Organograms and diagrams.
+- Embedded images that contain legally or commercially meaningful text.
+
+Image tags are different from text tags. Aggregation and semantic-card modes are disabled for image tags because the source is the selected image context rather than text retrieval over the full document.
+
+## Embedded image detection
+
+Embedded image detection is a Vault/document-type processing setting. When enabled, TextMine can render document pages, classify visual regions against configured image types, and apply image-type questions to detected image content.
+
+The flow is:
+
+1. Configure image types and image tags for the Vault or document type.
+2. Enable embedded image classification/image processing where appropriate.
+3. Process or reprocess documents.
+4. TextMine detects matching embedded image regions.
+5. Matching image tags run as multimodal questions against the detected image context.
+6. Users review the image-tag answers in the editor like other extracted values.
+
+Use embedded image detection when important evidence is visually embedded rather than available as ordinary text. It is especially useful for charts, scanned excerpts, diagrams, and visual schedules.
+
+## Table extraction
+
+Table extraction detects tables and line items from documents so they can be reviewed, exported, used by reports, or used as context for chained tags and workflows.
+
+Use table extraction for:
+
+- Pricing schedules.
+- Fee tables.
+- Covenant calculations.
+- Line-item invoices.
+- Obligation matrices.
+- Disclosure schedules.
+- SEC filing tables.
+
+Tables can be viewed in the Vault editor and in a pop-out table view. Workbench and workflows can also queue table extraction and wait for completion before using table outputs.
+
+## Extraction settings
+
+Vault/document-type settings can control several processing behaviors:
+
+| Setting | What it affects |
+| --- | --- |
+| Table extraction | Whether tables and line items should be detected and extracted. |
+| Embedded image classification | Whether document pages should be scanned for configured image types. |
+| Extensive text extraction | Whether TextMine should use a broader text extraction path for documents that need it. |
+| Image model processing | Whether image-oriented model processing should be used for image/document contexts. |
+
+These settings may be inherited from Vault defaults or overridden at a document-type/Vault association. Reprocess documents after changing settings if existing results need to be refreshed.
+
+## Status and validation
+
+Tag answers move through processing states and may need human validation. A good review should check:
+
+- The extracted value.
+- The source passage, table, entity, or image region.
+- The page and preview offsets where available.
+- Whether the tag is current with the latest document type/settings.
+- Whether upstream chained sources completed successfully.
+
+For durable downstream use, prefer validated tags or outputs with clear source evidence.
+
+## Agent guidance
+
+Agents should not create tags blindly. Before creating or running tags, they should:
+
+1. Read existing document types and tags.
+2. Prefer default tags for stable document-type fields.
+3. Use custom tags for team-specific or evolving questions.
+4. Use aggregation tags only when synthesis is needed.
+5. Use chained tags only after checking upstream tags, entities, or tables.
+6. Use entity tags when output should feed graphs, records, or relationship-aware workflows.
+7. Use image tags for visual evidence.
+8. Ask for approval before creating tags, running tags across many documents, changing extraction settings, or reprocessing documents.

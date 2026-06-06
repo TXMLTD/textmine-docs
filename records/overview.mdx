@@ -3,17 +3,62 @@ title: "Records overview"
 description: "Create structured business records from document evidence."
 ---
 
-Records turn document evidence into structured business data.
+Records turn document evidence into structured business data. Use Records when a fact from documents should become a durable business object rather than remain only as a tag, report, or Workbench answer.
 
 ![Records screenshot](/images/intercom/product-updates/26-may-2026/07-screenshot-2026-05-26-at-14-24-10.png)
 
-Use Records when you need durable entities such as companies, agreements, people, vendors, properties, obligations, or custom business objects.
+## When to use Records
+
+Use Records for durable entities such as:
+
+- Companies and counterparties.
+- Agreements and amendments.
+- Vendors and suppliers.
+- Customers and accounts.
+- People, signatories, and contacts.
+- Properties, assets, facilities, or systems.
+- Obligations, controls, risks, and issues.
+- Custom business objects defined by the team.
+
+Use Vault tags when the fact is mainly document metadata. Use Records when the fact should be reviewed, related to other objects, queried later, enriched, or maintained over time.
 
 ## Core concepts
 
-- A schema defines record types, fields, and relationships.
-- Candidate facts come from Vault documents and extracted tags.
-- Review queues help confirm suggested changes before they update records.
-- Evidence links keep records traceable back to source documents.
-- The graph view shows relationships between records.
-- Ask Records answers questions over structured records and supporting evidence.
+| Concept | Meaning |
+| --- | --- |
+| Schema | Defines record types, fields, and relationships. |
+| Record | A durable object such as a supplier, contract, obligation, or risk. |
+| Candidate | A proposed record or field change extracted from documents or tags. |
+| Evidence | Source document, tag, passage, table, entity, or file that supports a value. |
+| Review queue | Human review of proposed candidates before accepting changes. |
+| Graph | Relationship view across records and entities. |
+| Enrichment | Supplemental context from configured external or internal sources. |
+
+## How Records relate to Vault
+
+Vault is usually the evidence source. Records use Vault documents, extracted tags, entities, tables, and validated fields to suggest or update structured data.
+
+A common flow is:
+
+1. Upload or import documents into Vault.
+2. Process the documents and extract default/custom tags.
+3. Extract entities and relationships where useful.
+4. Generate record candidates from the evidence.
+5. Review and accept candidates.
+6. Use Records for graph queries, reporting, workflow routing, and downstream exports.
+
+## Common record workflows
+
+| Workflow | Records role |
+| --- | --- |
+| Supplier intake | Create supplier, contract, system, and risk records from intake documents. |
+| Contract inventory | Turn validated contract metadata into searchable agreement records. |
+| Obligation tracking | Extract obligations and link them to parties, dates, and source clauses. |
+| Risk register | Create risk or control records from reviewed evidence. |
+| Entity graph | Connect companies, people, agreements, assets, and obligations. |
+
+## Agent guidance
+
+Agents should not update Records directly from unvalidated guesses. A good agent flow is to discover schemas, inspect existing records, identify candidate changes, cite source evidence, and ask for approval before accepting or creating durable records.
+
+For API-backed work, use [API and developer docs](/integrations/api-and-developer-docs) and the Public API V3 reference.

@@ -14,13 +14,15 @@
         "pages": [
           "index",
           "getting-started/product-map",
-          "getting-started/quick-start"
+          "getting-started/quick-start",
+          "getting-started/for-agents"
         ]
       },
       {
         "group": "Workbench",
         "pages": [
           "workbench/overview",
+          "workbench/capabilities",
           "workbench/uploads-and-integrations",
           "workbench/goals-tasks-and-artifacts"
         ]
@@ -29,7 +31,9 @@
         "group": "Vault",
         "pages": [
           "vault/overview",
+          "vault/capabilities",
           "vault/document-types-and-tags",
+          "vault/tags-and-extraction",
           "vault/ask-vault-and-reports"
         ]
       },
@@ -43,6 +47,8 @@
         "group": "Workflows",
         "pages": [
           "workflows/overview",
+          "workflows/blocks",
+          "workflows/examples",
           "workflows/create-a-workflow",
           "workflows/email-intake-and-approvals",
           "workflows/records-and-integrations"
@@ -52,8 +58,10 @@
         "group": "Integrations",
         "pages": [
           "integrations/overview",
+          "integrations/catalog",
           "integrations/workbench-mcp-providers",
-          "integrations/textmine-mcp-server"
+          "integrations/textmine-mcp-server",
+          "integrations/api-and-developer-docs"
         ]
       },
       {
@@ -75,6 +83,12 @@
         "group": "Agents",
         "pages": [
           "agents/overview"
+        ]
+      },
+      {
+        "group": "Reports and exports",
+        "pages": [
+          "reports-and-exports/overview"
         ]
       },
       {

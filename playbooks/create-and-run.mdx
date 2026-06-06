@@ -3,18 +3,71 @@ title: "Create and run a playbook"
 description: "Create a playbook and apply it to Vault documents."
 ---
 
+Use this page when creating a reusable document review or applying an existing playbook to Vault documents.
+
 ## Create a playbook
 
-Create a playbook from source text, a checklist, a policy, or a review guide. TextMine parses rules and saves them into a reusable playbook. Scope the playbook to the relevant Vaults when it should only be available for certain document sets.
+Create a playbook from source text, a checklist, a policy, a review guide, a rule table, or an uploaded document. TextMine parses the content and saves it into a reusable playbook.
 
-## Enable or edit
+Good source material includes:
 
-Playbooks can be active or draft. Users with playbook create permissions can edit, enable, disable, or delete playbooks.
+- Preferred clause positions.
+- Fallback positions.
+- Red flag language.
+- Escalation requirements.
+- Required fields or clauses.
+- Review questions.
+- Risk severity guidance.
+- Examples of acceptable and unacceptable wording.
+
+## Structure rules clearly
+
+A useful playbook rule should answer:
+
+| Rule part | Example |
+| --- | --- |
+| Topic | Limitation of liability |
+| Preferred position | Liability cap equals fees paid in the last 12 months. |
+| Fallback position | Higher cap allowed for data breach, confidentiality, or indemnity. |
+| Red flag | Unlimited liability for indirect damages. |
+| Reviewer action | Escalate to legal if cap is missing or uncapped. |
+| Evidence expectation | Cite clause text and page/section where available. |
+
+## Scope and availability
+
+Scope the playbook to the relevant teams, Vaults, or document sets when it should only be available for certain work. Keep draft playbooks disabled until they have been tested on representative documents.
+
+Users with playbook create permissions can edit, enable, disable, or delete playbooks depending on organization policy.
 
 ## Run a playbook
 
-Run a playbook against selected Vault documents from the Playbooks page, Vault, Workbench, or a Workflow. Use the runs view to inspect status, source, document, output, and comparison details.
+Run a playbook against selected Vault documents from:
+
+- The Playbooks page.
+- Vault or the Vault editor.
+- Workbench.
+- A Workflow step.
+
+Use the runs view to inspect status, source, document, output, and comparison details.
+
+## Review outputs
+
+After a run, review:
+
+- Findings and recommendations.
+- Source passages and evidence.
+- Pass/fail or accepted/deviation status.
+- Risk severity.
+- Missing clauses or missing evidence.
+- Generated Word artifact or review memo where available.
+- Comparison details for each reviewed document.
 
 ## Auto-apply
 
 When configured, playbooks can be applied automatically after Vault document type detection or processing. Workflows can also apply playbooks as part of a larger document process.
+
+Auto-apply is useful when every document of a type should receive the same review, but it should be paired with review queues or approvals for high-risk outputs.
+
+## Agent guidance
+
+Agents should inspect existing playbooks before creating a new one. When proposing a playbook, include rule topics, preferred positions, fallback positions, red flags, output format, and scope. Ask for approval before enabling a playbook, applying it to many documents, or using results for publication or external delivery.

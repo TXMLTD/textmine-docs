@@ -1,0 +1,125 @@
+---
+title: "Workflow blocks"
+description: "Reference for workflow triggers, conditions, and action blocks."
+---
+
+Workflow blocks are the building units of a TextMine workflow. A workflow starts from a trigger, can route through one or more conditions, and then runs action blocks in order.
+
+Use this page to understand product behavior. For exact JSON schemas, API operation IDs, and examples, use the developer hub's [Public API reference](https://developers.textmine.com/reference) and workflow catalog endpoints.
+
+## How blocks work
+
+Each block has a type, configuration, input context, and output. Later blocks can use earlier outputs through labels or variables.
+
+- **Triggers** decide when the workflow starts.
+- **Conditions** decide which route should run.
+- **Actions** do work, create outputs, or change TextMine or external systems.
+
+Blocks that create durable effects should be treated carefully by agents. Request confirmation before publishing, sending email, changing assignments, creating records, submitting to integrations, or triggering a workflow with business side effects.
+
+## Trigger blocks
+
+| Block | What it does | Use it when |
+| --- | --- | --- |
+| `document_imported` | Starts as soon as a document is added to a Vault. | New documents should immediately enter an automation. |
+| `document_processed` | Starts when a Vault document finishes processing. | The workflow needs extracted text, tags, or processed document state. |
+| `document_published` | Starts when a Vault document reaches the published state. | Publication should trigger follow-up work, reporting, or Legislate handoff. |
+| `email_received` | Starts when an email arrives at the workflow's inbound address. | Email should create documents, trigger review, or route attachments. |
+| `intake_form` | Creates a public intake form and starts on submission. | External users should submit structured data or files into TextMine. |
+| `scheduled` | Runs on a recurring schedule against selected documents. | The process is periodic, such as weekly monitoring or monthly reporting. |
+| `manual` | Runs only when explicitly triggered. | A human or API client should decide when the workflow runs. |
+
+Common trigger configuration includes Vault scope, sender access rules, form fields, upload handling, schedule time, timezone, and document selection rules.
+
+## Condition blocks
+
+| Block | What it does | Use it when |
+| --- | --- | --- |
+| `confidence` | Compares a document confidence score with a threshold. | Low-confidence extraction or review should route differently. |
+| `document_type_is` | Checks whether the triggering document has a specific document type. | One workflow handles several document types but needs different routes. |
+| `entity_contains` | Checks whether a named entity contains a configured value. | A clause, party, jurisdiction, or extracted field should drive routing. |
+| `ai_logic` | Evaluates a natural-language rule and returns a true or false route. | The routing logic needs semantic judgment rather than a fixed field check. |
+| `decision_policy_matrix` | Evaluates ordered policy rules and selects a decision route. | The workflow should follow a business policy, matrix, or threshold table. |
+
+Conditions should be as specific as possible. Use deterministic conditions for known fields and AI logic only when the condition needs interpretation.
+
+## Human routing and review actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `add_reviewer` | Adds users as reviewers on the matched document. | Use for human review queues. |
+| `add_assignee` | Adds users as assignees on the matched document. | Use when work ownership should change. |
+| `create_alert` | Creates a task, reminder, or alert. | Can include recipients and due dates. |
+| `request_approval` | Pauses the workflow until approvers approve or reject. | Use before publishing, sending, external submission, or other high-impact actions. |
+
+## AI and playbook actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `ai_review` | Runs an AI review pass against extracted tags using an instruction. | Best for validating extraction or review quality. |
+| `run_general_action` | Runs an analytical instruction and captures a labeled output. | Use for summaries, classifications, or reusable reasoning outputs. |
+| `run_agent` | Triggers a preconfigured agent and waits for the result. | The agent result becomes workflow output. |
+| `apply_playbook` | Runs a playbook against documents and can create a Word artifact. | Use when review rules should be reusable and auditable. |
+
+## Values and data pipeline actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `set_values` | Seeds static labeled values for downstream steps. | Useful for controlled lists, constants, or manual inputs. |
+| `calculate_values` | Applies formulas, variables, and thresholds to workflow inputs. | Use for numeric or rule-based calculations. |
+| `organise_values` | Extracts, normalizes, deduplicates, or reformats values. | Use before records, reports, or API calls. |
+| `reconcile_data` | Compares inputs or outputs and reports breaks or exceptions. | Use for matching, variance checks, and exception reports. |
+| `compare_to_accepted_output` | Compares generated output with an approved answer, table, CSV, JSON, or Excel file. | Use for QA and regression-style checks. |
+| `enrich_values` | Searches web or named sources and can download files. | Use when external context is needed. |
+| `api_request` | Runs a structured REST API request. | cURL or Python snippets can be imported as configuration, but arbitrary code is not executed. |
+| `webhook` | Calls an outbound webhook or HTTP callback. | Uses the same structured request model as API request. |
+
+## Records and analytics actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `lookup_record` | Searches business records by query or name. | Saves matches under an output label. |
+| `create_or_update_record` | Creates or updates a business record and can link workflow documents. | Use when workflow output should become structured business data. |
+| `get_analytics_metric` | Reads an analytics metric for a scope and period. | Current catalog includes pages processed. |
+| `sample_population` | Selects a fixed or percentage sample and emits a sample register. | Use for audit, QA, and population testing. |
+
+## Document and ingest actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `workbench_uploaded_files` | Uses files attached in Workbench as workflow input. | Good for turning supervised Workbench work into automation. |
+| `upload_to_vault` | Uploads inbound attachments into the workflow Vault. | Common after email triggers. |
+| `extract_text` | Extracts plain text from submitted files. | Common after intake form upload. |
+| `search_edgar_filings` | Searches SEC EDGAR filing text and saves matching filings. | Use when filings should feed later workflow steps. |
+| `fetch_sec_filings` | Imports recent SEC filings for companies in scope. | Supports filing type and folder behavior configuration. |
+| `wait_for_document_processing` | Blocks until in-scope documents finish processing. | Use before steps that need extracted text, tags, or document state. |
+| `extract_tables_or_line_items` | Extracts tables or line items from documents. | Can target specific table questions or extract detected line items. |
+
+## Report and template actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `fill_template` | Fills a spreadsheet, CSV, text, Word, or form template from workflow data. | Can use AI field matching. |
+| `send_report_template` | Generates a report from a predefined template. | Use when a standard report exists. |
+| `send_report_custom` | Generates a report from a free-form prompt. | Use for one-off or flexible report outputs. |
+
+## Delivery and integration actions
+
+| Block | What it does | Notes |
+| --- | --- | --- |
+| `send_to_legislate` | Publishes in-scope imported documents to Legislate. | Use after validation when documents or data should enter the Legislate archive. |
+| `import_from_integration` | Pulls records and attachments from an external system into the workflow Vault. | Current catalog supports ServiceNow. |
+| `submit_to_integration` | Pushes outputs to an external system. | Current implementation supports SharePoint output. |
+| `send_email` | Sends an email notification and can attach outputs, reports, documents, templates, or intake attachments. | Use sender modes such as original sender or intake submitter for inbound workflows. |
+
+## Agent guidance
+
+Agents should read workflow catalogs before creating or editing workflow definitions. The TextMine MCP server exposes catalog tools for triggers, conditions, and actions, and the Public API exposes the same catalog for exact parameter schemas.
+
+When designing a workflow, agents should return:
+
+- Trigger kind and scope.
+- Conditions and routing assumptions.
+- Action sequence and expected outputs.
+- Side effects that need human confirmation.
+- IDs needed for audit, such as workflow ID, run ID, Vault ID, document IDs, record IDs, and report IDs.
