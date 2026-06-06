@@ -14,7 +14,8 @@
         "pages": [
           "index",
           "getting-started/product-map",
-          "getting-started/quick-start"
+          "getting-started/quick-start",
+          "getting-started/for-agents"
         ]
       },
       {
@@ -43,6 +44,7 @@
         "group": "Workflows",
         "pages": [
           "workflows/overview",
+          "workflows/blocks",
           "workflows/create-a-workflow",
           "workflows/email-intake-and-approvals",
           "workflows/records-and-integrations"
@@ -53,7 +55,8 @@
         "pages": [
           "integrations/overview",
           "integrations/workbench-mcp-providers",
-          "integrations/textmine-mcp-server"
+          "integrations/textmine-mcp-server",
+          "integrations/api-and-developer-docs"
         ]
       },
       {

@@ -5,6 +5,8 @@ description: "Browse and import connected provider files inside Workbench."
 
 Workbench MCP providers let users bring files from connected external sources into a Workbench conversation.
 
+They are not the same thing as the TextMine MCP server. Workbench MCP providers bring external files into TextMine context. The TextMine MCP server exposes TextMine tools to external agent clients.
+
 ## What Workbench can do
 
 Workbench has backend capabilities to:
@@ -30,3 +32,15 @@ Google Drive currently supports document creation plus folder/file browsing and 
 ## When Workbench should use MCP providers
 
 Use MCP provider routing when the user explicitly names an external source, connected tool, integration, or MCP provider. Native TextMine requests about Vault, Agents, Workflows, Playbooks, Document Types, Records, or Workbench skills should stay on their native capabilities.
+
+Good Workbench prompts include:
+
+- "Import the latest supplier agreement from Google Drive and compare it with this Vault document."
+- "List files in the SharePoint finance folder and bring the lease template into this chat."
+- "Use the uploaded file as context, then save the final version into the Finance Vault."
+
+## Agent routing
+
+External agents should treat Workbench MCP providers as a human-in-the-loop app capability. Do not assume that a provider file is a Vault document until it has been explicitly imported into Vault.
+
+For external agent access to TextMine data, use the [TextMine MCP server](/integrations/textmine-mcp-server) or the [developer hub](https://developers.textmine.com). For exact API operations, use the [Public API reference](https://developers.textmine.com/reference).

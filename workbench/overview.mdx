@@ -24,3 +24,22 @@ Workbench is the AI workspace for getting work done across TextMine. It can answ
 Use Workbench when the answer is not just "open this page and click a button". It is best for multi-step work, exploratory analysis, document comparison, one-off report generation, and drafting reusable automation.
 
 For straightforward document review, start in Vault. For a repeatable process, create a Workflow. For reusable review rules, create a Playbook.
+
+## Workbench and agents
+
+Workbench is the in-app agentic workspace. It is the right place for a human to supervise analysis, review generated outputs, approve Vault changes, and turn one-off work into reusable workflows or playbooks.
+
+External agents should not guess Workbench internals from the UI. They should use:
+
+- [For agents](/getting-started/for-agents) for product routing and terminology.
+- [TextMine MCP server](/integrations/textmine-mcp-server) for direct TextMine tool access.
+- [API and developer docs](/integrations/api-and-developer-docs) for Public API V3 reference, examples, MCP setup, and exact operation IDs.
+
+When an external agent needs to modify TextMine state, prefer the API or MCP tool that represents the product action directly. Use Workbench when a person needs to collaborate with the model, inspect intermediate reasoning, upload ad hoc files, or approve a change before it becomes durable.
+
+## Common patterns
+
+- Start with Workbench to explore a messy request, then save the repeatable parts as a workflow.
+- Upload files into Workbench for temporary context, then import them into Vault only when they need durable processing and governance.
+- Ask Workbench to use Legislate when the question is about validated, published document data.
+- Use records when the answer should become structured business data rather than a one-off response.

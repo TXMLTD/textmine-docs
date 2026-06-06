@@ -1,0 +1,61 @@
+---
+title: "API and developer docs"
+description: "Where developers and agents should go for API reference, MCP setup, and exact operation IDs."
+---
+
+Use this page to route developers and agents from product documentation into the API execution layer.
+
+TextMine product documentation lives at this site. API reference, ReadMe MCP, exact schemas, operation IDs, and client setup guides live at [developers.textmine.com](https://developers.textmine.com).
+
+## Developer hub links
+
+| Need | Link |
+| --- | --- |
+| Developer home | [developers.textmine.com/page/developer-home](https://developers.textmine.com/page/developer-home) |
+| Public API V3 quickstart | [developers.textmine.com/docs/getting-started](https://developers.textmine.com/docs/getting-started) |
+| API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
+| Agent instructions | [developers.textmine.com/docs/for-agents](https://developers.textmine.com/docs/for-agents) |
+| MCP quickstart | [developers.textmine.com/docs/textmine-mcp](https://developers.textmine.com/docs/textmine-mcp) |
+| ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
+| ReadMe llms.txt | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
+| Agent context pack | [developers.textmine.com/page/llms-full](https://developers.textmine.com/page/llms-full) |
+
+## Client setup guides
+
+The developer hub has setup pages for common agent clients:
+
+- [Codex MCP Setup](https://developers.textmine.com/docs/codex-mcp)
+- [Claude MCP Setup](https://developers.textmine.com/docs/claude-mcp)
+- [Cursor and Windsurf MCP Setup](https://developers.textmine.com/docs/cursor-windsurf-mcp)
+- [ChatGPT and OpenAI MCP Setup](https://developers.textmine.com/docs/chatgpt-mcp)
+
+## How to choose the right layer
+
+Use Mintlify when the question is:
+
+- What is Vault, Legislate, Workbench, Workflows, Playbooks, Records, Agents, Scribe, or Integrations?
+- What should users do in the app?
+- How do product areas relate to each other?
+- Which screenshots, release notes, and user workflows explain the current feature?
+
+Use ReadMe when the question is:
+
+- Which Public API V3 endpoint should I call?
+- What is the exact request or response schema?
+- Which operation ID should an agent use?
+- How do I connect an MCP-compatible client?
+- How do I safely execute provider import, report generation, workflow creation, metadata validation, or exports?
+
+## API-backed agent pattern
+
+For API-backed work, agents should follow this pattern:
+
+1. Read [For agents](/getting-started/for-agents) for product routing.
+2. Read the developer hub [For Agents](https://developers.textmine.com/docs/for-agents) page for API execution rules.
+3. Use Public API V3 operation IDs from the API reference.
+4. Discover IDs before mutating data.
+5. Ask for confirmation before destructive or broad actions.
+
+## Current API focus
+
+New integrations should use Public API V3. V2 remains available as legacy reference, but V3 is the agent-friendly surface for current public API work.

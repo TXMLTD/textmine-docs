@@ -3,7 +3,19 @@ title: "TextMine MCP server"
 description: "Expose TextMine Public API tools to MCP-compatible agent clients."
 ---
 
-The TextMine MCP server is a hosted MCP surface for external agent clients. It is separate from Workbench MCP providers.
+The TextMine MCP server is the TextMine-hosted MCP surface for external agent clients. It lets Codex, Claude, Cursor, Windsurf, ChatGPT, and automation clients discover and call TextMine tools through an agent-friendly protocol.
+
+Use it when an external agent needs to read or act on TextMine data. Use Workbench when a human is working inside the TextMine app.
+
+## How it fits
+
+TextMine has three agent-facing surfaces that are easy to confuse:
+
+- **TextMine MCP server** exposes TextMine product tools to external MCP clients. It is backed by Public API V3.
+- **ReadMe MCP server** is hosted by the developer hub and helps agents discover API documentation and generated API operations from [developers.textmine.com](https://developers.textmine.com).
+- **Workbench MCP providers** are in-app integrations that let Workbench browse and import files from connected providers such as storage systems.
+
+For API operation details, examples, and client setup, use [API and developer docs](/integrations/api-and-developer-docs) or the developer hub's [agent guide](https://developers.textmine.com/docs/for-agents).
 
 ## What it exposes
 
@@ -20,11 +32,19 @@ Current tool areas include:
 - Team and Vault users.
 - Integrations, provider connection status, provider folder listing, and provider file listing.
 
+When an agent needs exact request or response shapes, route it to the [Public API reference](https://developers.textmine.com/reference). When it needs product semantics, route it back to this Mintlify docs site.
+
 ## Import and provider support
 
 TextMine MCP clients can use provider-facing tools where the connected provider supports them. That includes listing integrations, checking provider connection status, listing provider folders or files, and uploading a provider file into Vault through TextMine.
 
 This is separate from Workbench's in-app provider import, but both use the same product concept: external provider files can become TextMine context or TextMine Vault documents.
+
+Use this split when documenting or building agents:
+
+- Import into **Workbench** when the file is temporary context for chat, comparison, summarization, or drafting.
+- Import into **Vault** when the file should be processed, extracted, reviewed, governed, used by workflows, or published onward to Legislate.
+- Use **Public API V3** when an external system or agent needs a durable integration point.
 
 ## Authentication model
 
@@ -32,10 +52,24 @@ The current MCP service forwards the caller's Authorization header to Public API
 
 Requests without a valid forwarded bearer are rejected by Public API. Do not rely on a shared service user for user-facing MCP clients.
 
+For setup examples, see the developer hub pages for [TextMine MCP](https://developers.textmine.com/docs/textmine-mcp), [Codex](https://developers.textmine.com/docs/codex-mcp), [Claude](https://developers.textmine.com/docs/claude-mcp), [Cursor and Windsurf](https://developers.textmine.com/docs/cursor-windsurf-mcp), and [ChatGPT/OpenAI](https://developers.textmine.com/docs/chatgpt-mcp).
+
 ## Adding a new MCP tool
 
-Add the Public API V3 endpoint first. Then add a small tool class in the MCP service that implements the MCP tools marker interface, injects the Public API client, and exposes one or more tool methods. Keep provider-specific logic, OAuth flows, database access, validation, and business rules in the API service rather than the MCP service.
+Add the Public API V3 endpoint first. Then add a small tool class in the MCP service that implements the MCP tools marker interface, injects the Public API client, and exposes one or more tool methods.
+
+Keep provider-specific logic, OAuth flows, database access, validation, and business rules in the API service rather than the MCP service. The MCP layer should stay predictable for agents: tool name, tool description, input schema, API call, response.
+
+## Agent rules
+
+- Prefer named, narrow tools over general-purpose actions.
+- Read before mutating when the current state matters.
+- Ask for confirmation before creating, deleting, publishing, sending, assigning, or triggering workflow actions.
+- Use idempotency keys for retryable create or trigger operations when the API supports them.
+- Cite document, Vault, workflow, or run identifiers in agent output so humans can audit the action later.
 
 ## When to use it
 
-Use the TextMine MCP server when Codex, another LLM client, or an automation needs a direct agent-friendly way to read or act on TextMine data. Use the web app when a human is operating interactively inside Workbench, Vault, Workflows, Playbooks, Records, Scribe, or Legislate.
+Use the TextMine MCP server when an external LLM client or automation needs a direct agent-friendly way to read or act on TextMine data. Use the web app when a human is operating interactively inside Workbench, Vault, Workflows, Playbooks, Records, Scribe, or Legislate.
+
+Start with [For agents](/getting-started/for-agents) when choosing between these surfaces.

@@ -1,0 +1,64 @@
+---
+title: "For agents"
+description: "How AI agents should interpret TextMine product docs and route to developer tools."
+---
+
+Use this page when an AI agent, automation, or coding assistant needs to understand TextMine before acting.
+
+Mintlify is the product and context layer for agents. Use it to understand what TextMine means, which surface to use, and how user-facing concepts fit together. Use the developer hub for exact API schemas, operation IDs, and MCP execution.
+
+## Canonical agent entry points
+
+| Need | Use |
+| --- | --- |
+| Product context | This docs site and [Product map](/getting-started/product-map) |
+| Current API reference | [developers.textmine.com](https://developers.textmine.com) |
+| Agent instructions for API execution | [TextMine developer For Agents](https://developers.textmine.com/docs/for-agents) |
+| ReadMe MCP server | [https://developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
+| ReadMe agent index | [https://developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
+| Full developer context pack | [Agent Context Pack](https://developers.textmine.com/page/llms-full) |
+
+## Product routing rules
+
+- Use **Vault** for active document work: upload, import, processing, document types, extracted fields, tags, Ask Vault, reports, reprocessing, and workflow triggers.
+- Use **Legislate** for validated team documents that have been published from Vault.
+- Use **Workbench** for exploratory multi-step work across TextMine capabilities.
+- Use **Workflows** when the user wants the same process to run again, run from a trigger, or produce a durable run history.
+- Use **Playbooks** for reusable document review guidance.
+- Use **Records** when document evidence should become structured business data.
+- Use **Scribe** when the output is a generated document or template.
+
+Do not describe Vault as Legislate or Legislate as Vault. A document can be processed in Vault and later published to Legislate, but those are separate surfaces.
+
+## MCP surfaces
+
+TextMine has three agent-related surfaces that sound similar but serve different jobs.
+
+| Surface | What it is for |
+| --- | --- |
+| TextMine MCP server | TextMine's own hosted MCP service for external agent clients. It exposes TextMine tools backed by Public API V3. |
+| ReadMe MCP server | The developer hub MCP endpoint generated from the API reference at `developers.textmine.com/mcp`. Use it for API discovery and execution from the docs. |
+| Workbench MCP providers | In-app provider connections that let Workbench browse and import external files into a Workbench chat. |
+
+## Safe execution rules
+
+Agents should not invent IDs or assume access. Discover first, then act.
+
+For API-backed work, use the developer hub operation IDs and follow this default order:
+
+1. Discover accessible Vaults, users, providers, document types, workflow catalogs, or report templates.
+2. Confirm the target resource with the user if names are ambiguous.
+3. Ask before destructive actions, credential creation, scheduled agents, enabled workflows, provider disconnects, or bulk imports.
+4. Poll asynchronous work after upload, provider import, reprocessing, and report generation.
+5. Keep bearer tokens out of prompts, screenshots, source code, and shared docs.
+
+## When to send agents to developer docs
+
+Send agents to [developers.textmine.com](https://developers.textmine.com) when they need:
+
+- Public API V3 operation IDs.
+- Request and response schemas.
+- MCP setup for Codex, Claude, Cursor, Windsurf, or ChatGPT/OpenAI.
+- Agent playbooks for provider import, direct upload, reports, workflows, metadata validation, records, or exports.
+
+Stay in Mintlify when the task is about product behavior, feature naming, user workflows, screenshots, or explaining how TextMine surfaces relate to each other.

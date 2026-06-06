@@ -5,6 +5,8 @@ description: "Build reusable automations for document and data processes."
 
 Workflows automate repeatable work in TextMine. A workflow has a trigger, ordered steps, optional conditions, and a run history.
 
+For a block-by-block reference, see [Workflow blocks](/workflows/blocks).
+
 ![Workflow screenshot](/images/intercom/product-updates/26-may-2026/03-screenshot-2026-05-26-at-14-19-19.png)
 
 ## Triggers
@@ -18,3 +20,21 @@ Workflow actions can run agents, upload to Vault, use Workbench-uploaded files, 
 ## Conditions
 
 Conditions include AI logic, decision policy matrices, entity checks, document type checks, and confidence checks.
+
+## Workflows and agents
+
+Agents should treat workflows as durable automation, not chat output. A workflow can create business effects such as sending emails, requesting approvals, publishing data, assigning reviewers, calling APIs, or sending documents to Legislate.
+
+For product guidance, start with this section and [Create a workflow](/workflows/create-a-workflow). For exact API operations, schemas, and examples, use the developer hub's [Public API reference](https://developers.textmine.com/reference) and [agent guide](https://developers.textmine.com/docs/for-agents).
+
+Good agent behavior:
+
+- Read the workflow catalog before creating duplicates.
+- Prefer updating or reusing an existing workflow when the process already exists.
+- Ask for confirmation before triggering a workflow that sends, publishes, assigns, approves, or mutates records.
+- Include workflow IDs, run IDs, and relevant document IDs in summaries.
+- Use workflow run history when debugging or explaining an automation.
+
+## When to create a workflow
+
+Create a workflow when a process should happen more than once, should run from a trigger, or needs auditable run history. Keep one-off exploration in Workbench until the steps are stable enough to automate.
