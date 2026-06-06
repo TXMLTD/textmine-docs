@@ -58,6 +58,7 @@
         "group": "Integrations",
         "pages": [
           "integrations/overview",
+          "integrations/third-party-agent-signup",
           "integrations/catalog",
           "integrations/workbench-mcp-providers",
           "integrations/textmine-mcp-server",

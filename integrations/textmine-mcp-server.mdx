@@ -50,6 +50,8 @@ Use this split when documenting or building agents:
 
 The current MCP service forwards the caller's Authorization header to Public API. In practice, MCP clients should call the server with a TextMine bearer key so Public API can resolve the real user and organisation.
 
+For external agents that need a dedicated organization and service-account API key in the multitenant, non-enterprise deployment, use [Third-party agent signup](/integrations/third-party-agent-signup). Enterprise and dedicated deployments should contact TextMine support.
+
 Requests without a valid forwarded bearer are rejected by Public API. Do not rely on a shared service user for user-facing MCP clients.
 
 For setup examples, see the developer hub pages for [TextMine MCP](https://developers.textmine.com/docs/textmine-mcp), [Codex](https://developers.textmine.com/docs/codex-mcp), [Claude](https://developers.textmine.com/docs/claude-mcp), [Cursor and Windsurf](https://developers.textmine.com/docs/cursor-windsurf-mcp), and [ChatGPT/OpenAI](https://developers.textmine.com/docs/chatgpt-mcp).
