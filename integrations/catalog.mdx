@@ -3,7 +3,7 @@ title: "Integration catalog"
 description: "Supported integration surfaces, provider capabilities, and MCP scan/import options."
 ---
 
-TextMine integrations fall into several shapes: OAuth-connected providers, Vault-level native integrations, workflow integrations, the TextMine MCP server, and Workbench MCP/provider imports.
+TextMine integrations fall into several shapes: OAuth-connected providers, Vault-level native integrations, workflow integrations, Zapier automations, the TextMine MCP server, and Workbench MCP/provider imports.
 
 Availability depends on organisation configuration, enabled features, user connection status, and provider capability support.
 
@@ -16,6 +16,7 @@ Availability depends on organisation configuration, enabled features, user conne
 | Submit out of TextMine | Send outputs, documents, reports, or files to an external system. |
 | Expose TextMine to agents | Let external agents call TextMine tools through the hosted TextMine MCP server or Public API V3. |
 | Discover API docs | Let agents use the developer hub and ReadMe MCP surface for exact schemas and API operation discovery. |
+| Automate with Zapier | Let Zapier triggers, searches, and actions call TextMine through Public API V3. |
 
 ## User-connected providers
 
@@ -129,6 +130,10 @@ The current provider catalog includes official MCP or source integrations that c
 | Databricks | `databricks` | Search documents. |
 
 Manual provider connections store an endpoint URL and optional credential metadata. Secret-like metadata is sanitized and credentials are stored separately. A provider must be connected and Workbench-enabled before Workbench can use it for browsing or import.
+
+## Zapier
+
+Use [Zapier](/integrations/zapier) when a Zap should automate TextMine work through Public API V3. Zapier uses a TextMine-issued service account API key and the Public API base URL shown in TextMine Settings.
 
 ## TextMine MCP and developer hub
 

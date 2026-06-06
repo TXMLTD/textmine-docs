@@ -1,0 +1,83 @@
+---
+title: "Zapier"
+description: "Set up Zapier with TextMine Public API V3 and API-key authentication."
+sidebarTitle: "Zapier"
+---
+
+Use the TextMine Zapier integration when a Zap should read from or write to TextMine through Public API V3.
+
+Zapier uses a TextMine-issued service account API key. It does not use the old OAuth connection flow.
+
+## Prerequisites
+
+Before connecting Zapier, confirm that:
+
+- Your organization has TextMine service account access enabled.
+- TextMine has issued a service account API key for the organization.
+- You have the Public API base URL for that service account.
+- You can access TextMine Settings for your organization.
+
+Do not create or guess an API key unless service account access is enabled for your organization. Contact TextMine if you need access enabled or if you do not know which API key or Public API base URL to use.
+
+## Find the TextMine setup values
+
+In TextMine, open **Settings** and find the **Zapier** section.
+
+The Zapier section shows:
+
+| Value | What to use it for |
+| --- | --- |
+| Service account status | Confirms whether Zapier API access is enabled for the organization. |
+| Public API V3 URL | Copy this into Zapier as the Public API Base URL. |
+| Authentication | Confirms that the connection uses a TextMine-issued service account API key. |
+
+If service account access is not enabled, use **Contact TextMine** from the Zapier section.
+
+## Connect TextMine in Zapier
+
+In Zapier, add or reconnect the **TextMine** app.
+
+Enter these fields:
+
+| Zapier field | Value |
+| --- | --- |
+| TextMine API Key | The TextMine-issued service account API key for your organization. |
+| Public API Base URL | The root Public API URL shown in TextMine Settings. Do not add `/v3`. |
+
+For example, if TextMine Settings shows a Public API V3 URL, copy the root host exactly as provided and leave off endpoint paths such as `/v3/documents`.
+
+Zapier tests the connection by calling the Public API health endpoint with the API key. If the key or base URL does not match the service account's environment, authentication fails.
+
+## Tenant and permission behavior
+
+The Public API base URL is an auth/config field so different TextMine deployments can connect to the correct Public API host. Users should use the URL issued by TextMine for their service account.
+
+The service account API key controls the organization, permissions, Vault access, available records, workflows, and other resources. Selecting or entering another customer's Public API host does not grant access to that customer's data.
+
+Keep API keys environment-specific. Do not use a staging key against production, or a production key against another deployment.
+
+## Available Zapier capabilities
+
+The current Zapier integration is aligned to Public API V3 and includes triggers, searches, and actions for:
+
+- Documents and provider imports.
+- Tasks, task messages, task status changes, and approval decisions.
+- Business records, record schemas, and record field values.
+- Reports and report templates.
+- Vaults and Vault tags.
+- Workflows and agents.
+- Document assignees.
+
+API key creation and organization provisioning are intentionally not available from Zapier. Contact TextMine when a new service account key is required.
+
+## Troubleshooting
+
+If the Zapier connection fails:
+
+1. Confirm the API key was issued by TextMine for the correct organization.
+2. Confirm the Public API Base URL is the root URL only, without `/v3` or another path.
+3. Confirm service account access is enabled in TextMine Settings.
+4. Confirm the key and Public API URL belong to the same TextMine environment.
+5. Contact TextMine if the Settings page says setup is required or if the key has expired.
+
+Never paste API keys into tickets, screenshots, prompts, source code, or shared documentation.
