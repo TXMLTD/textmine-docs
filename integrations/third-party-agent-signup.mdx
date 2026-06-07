@@ -8,19 +8,67 @@ Self-service third-party agent signup provisions a TextMine organization and API
 
 > **Availability:** self-service signup is only for TextMine's multitenant, non-enterprise deployment. Enterprise, private, and customer-dedicated deployments use support-led provisioning instead of the public self-service flow.
 
-## How signup is enabled
+## Discovery and availability
 
-The public signup page is available at `/third-party-agents/signup` when the current tenant allows third-party access and the self-service protection settings are ready.
+Agents and automation tools should discover signup state before submitting a signup request.
 
-The page checks `GET /v3/third-party-agents/signup/availability` before showing the form. The response includes:
+| Endpoint | Purpose |
+| --- | --- |
+| `/.well-known/textmine-agent.json` | Public discovery document for third-party agent signup, billing, API, and MCP metadata. |
+| `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
+| `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
-- Whether signup is available for this tenant.
+The discovery response includes:
+
+- Whether signup is available.
+- The signup method and signup URL.
+- Required signup fields and required acceptances.
 - Terms and privacy URLs and versions.
-- Whether human verification is required.
 - Free-credit and per-action credit settings for the current deployment.
+- Authentication format for the returned API key.
+- Billing, Public API, and MCP endpoint metadata.
 - A setup checklist for the agent workspace.
 
-If the page is unavailable, the user should contact TextMine support. Do not try to bypass the public signup flow or reuse an API key from another deployment.
+Current self-service signup does not require pre-authentication or human verification. It can still be unavailable if the deployment switch, tenant switch, or signup protection settings are disabled.
+
+## How signup is enabled
+
+Self-service signup is available only when both are true:
+
+- The deployment-level third-party agent switch is enabled.
+- Tenant-level third-party access is enabled.
+
+Backoffice administrators can view and update tenant-level third-party access from Tenant Settings. If signup is unavailable, check the availability message before trying again. Do not bypass the supported signup flow or reuse an API key from another deployment.
+
+## Submit self-service signup
+
+When signup is available, call:
+
+```http
+POST /v3/third-party-agents/signup/self-service
+```
+
+Required request fields:
+
+| Field | Description |
+| --- | --- |
+| `organizationName` | Name of the TextMine organization to create for the agent workspace. |
+| `agentName` | Display name used for the service account and service-account API key. |
+| `contactEmail` | Billing and operational contact email. |
+| `acceptedTerms` | Must be `true`. |
+| `acceptedPrivacy` | Must be `true`. |
+
+The response returns:
+
+- `organizationId` and `organizationName`.
+- `serviceAccountUserId`.
+- `apiKeyId`.
+- `apiKey` and `apiKeyPrefix`.
+- Billing status, free-credit allowance, and currency.
+- `gettingStarted` summary.
+- `setupChecklist`.
+
+Store the raw `apiKey` immediately. It is shown once and is the bearer credential agents and Zapier use.
 
 ## What signup creates
 
@@ -35,19 +83,6 @@ When signup succeeds, TextMine creates a third-party agent workspace with:
 
 The billing contact email is the human owner/contact for billing and support. It is not automatically created as a human TextMine login.
 
-## Signup fields
-
-The public signup request collects:
-
-| Field | Purpose |
-| --- | --- |
-| Organization name | Name of the TextMine organization created for the agent workspace. |
-| Agent name | Human-readable name used for the service-account API key. |
-| Billing owner email | Contact email stored on the billing account and used for owner follow-up. |
-| Terms acceptance | Required before provisioning. |
-| Privacy acceptance | Required before provisioning. |
-| Human verification token | Required only when the deployment enables human verification. |
-
 ## Agent API access
 
 The third-party agent calls Public API V3 with the returned service-account API key:
@@ -58,9 +93,17 @@ curl "<TEXTMINE_PUBLIC_API_BASE_URL>/v3/..." \
   -H "Content-Type: application/json"
 ```
 
+The Public API base URL is the root host where the agent performed discovery/signup, or the deployment-specific host issued by TextMine. Do not append `/v3` when configuring clients such as Zapier; clients append endpoint paths themselves.
+
 Public API resolves the key to the service-account actor and the organization created at signup. The key's organization determines which Vaults, document types, workflows, records, agents, and other resources the external agent can access.
 
-Store the API key immediately. The signup page and API response show the raw key once. Keep keys out of prompts, tickets, screenshots, source code, and shared documentation.
+The discovery metadata also declares an alternate API-key header:
+
+```text
+X-TextMine-Api-Key: tm_<key>
+```
+
+Use the bearer header for Public API clients unless a platform owns the `Authorization` header.
 
 ## First setup steps
 
