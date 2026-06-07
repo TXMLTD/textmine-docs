@@ -14,9 +14,9 @@ Agents and automation tools should discover signup state before submitting a sig
 
 | Endpoint | Purpose |
 | --- | --- |
-| `/.well-known/textmine-agent.json` | Public machine-readable discovery document for agent self-service signup, billing, Public API V3, and MCP metadata. |
-| `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
-| `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
+| `https://public-api.textmine.com/.well-known/textmine-agent.json` | Public machine-readable discovery document for agent self-service signup, billing, Public API V3, and MCP metadata. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
 For the UK multitenant deployment, use `https://public-api.textmine.com` as the Public API base URL. The commonly used signup URLs are:
 
@@ -59,7 +59,7 @@ Backoffice administrators can view and update tenant-level third-party access fr
 When signup is available, call:
 
 ```http
-POST /v3/third-party-agents/signup/self-service
+POST https://public-api.textmine.com/v3/third-party-agents/signup/self-service
 ```
 
 Required request fields:

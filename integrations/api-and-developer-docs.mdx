@@ -22,8 +22,8 @@ TextMine product documentation lives at this site. API reference, ReadMe MCP, ex
 | Cursor and Windsurf MCP setup | [developers.textmine.com/docs/cursor-windsurf-mcp](https://developers.textmine.com/docs/cursor-windsurf-mcp) |
 | ChatGPT/OpenAI MCP setup | [developers.textmine.com/docs/chatgpt-mcp](https://developers.textmine.com/docs/chatgpt-mcp) |
 | Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
-| Machine-readable agent discovery | `/.well-known/textmine-agent.json` |
-| Signup discovery | `/v3/third-party-agents/signup/discovery` |
+| Machine-readable agent discovery | `https://public-api.textmine.com/.well-known/textmine-agent.json` |
+| Signup discovery | `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` |
 | ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
 | ReadMe llms.txt | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
 | Agent context pack | [developers.textmine.com/page/llms-full](https://developers.textmine.com/page/llms-full) |
@@ -80,9 +80,9 @@ X-TextMine-Api-Key: tm_<key>
 For autonomous onboarding:
 
 1. Read [For agents](/getting-started/for-agents) for product routing.
-2. Fetch `/.well-known/textmine-agent.json` or `/v3/third-party-agents/signup/discovery`.
-3. Check `/v3/third-party-agents/signup/availability`.
-4. Generate a runtime RSA keypair and submit the public key with `POST /v3/third-party-agents/signup/self-service`.
+2. Fetch `https://public-api.textmine.com/.well-known/textmine-agent.json` or `https://public-api.textmine.com/v3/third-party-agents/signup/discovery`.
+3. Check `https://public-api.textmine.com/v3/third-party-agents/signup/availability`.
+4. Generate a runtime RSA keypair and submit the public key with `POST https://public-api.textmine.com/v3/third-party-agents/signup/self-service`.
 5. Decrypt `encryptedApiKey` inside the trusted runtime, store the `tm_...` key in a secret store, and keep it out of model-visible context.
 6. Use Public API V3 or the TextMine MCP server with the stored key.
 

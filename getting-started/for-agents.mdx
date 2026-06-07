@@ -10,6 +10,19 @@ TextMine supports two integration styles for agents and developer platforms:
 - **Public API V3** is the primary integration path. Use it for signup, vaults, document types, uploads, tasks, records, workflows, agents, and billing.
 - **TextMine MCP server** is optional. Use it only when the client wants MCP tool discovery and tool calls instead of direct REST calls.
 
+| Need | Use |
+| --- | --- |
+| Product context | This docs site and [Product map](/getting-started/product-map) |
+| Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
+| Machine-readable onboarding | `https://public-api.textmine.com/.well-known/textmine-agent.json` and `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` |
+| TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
+| MCP setup guides | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
+| Current API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
+| Agent instructions for API execution | [TextMine developer For Agents](https://developers.textmine.com/docs/for-agents) |
+| ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
+| ReadMe agent index | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
+| Full developer context pack | [Agent Context Pack](https://developers.textmine.com/page/llms-full) |
+| Integration and MCP provider catalog | [Integration catalog](/integrations/catalog) |
 Self-service agents do **not** need MCP. They sign up through Public API V3, receive an encrypted `tm_...` service-account API key, and then call Public API V3 directly.
 
 ## Which Path Should I Use?
@@ -175,6 +188,9 @@ Authorization: Bearer tm_...
 Clients that cannot control `Authorization`, such as some connector platforms, can send:
 
 ```text
+GET https://public-api.textmine.com/.well-known/textmine-agent.json
+GET https://public-api.textmine.com/v3/third-party-agents/signup/discovery
+GET https://public-api.textmine.com/v3/third-party-agents/signup/availability
 X-TextMine-Api-Key: tm_...
 ```
 
