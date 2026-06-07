@@ -88,6 +88,8 @@ The response returns:
 
 Decrypt `encryptedApiKey` inside the trusted agent runtime using the private key that matches `credentialDeliveryPublicKey`. Store the decrypted `tm_...` API key in a secret store and inject it into future API calls. Do not place the raw key in model-visible prompts, logs, plans, or task context. The model should only see `credentialRef`, `apiKeyPrefix`, and non-secret metadata.
 
+Agent task transcripts sanitize secret-like values before persistence. Do not send raw API keys, tokens, passwords, secrets, or credentials in task instructions, messages, context, step input/output, approvals, or events; if they are supplied accidentally, the transcript redactor stores `[REDACTED]` instead.
+
 ## What signup creates
 
 When signup succeeds, TextMine creates a third-party agent workspace with:
