@@ -1,9 +1,9 @@
 ---
 title: "Integration catalog"
-description: "Supported integration surfaces, provider capabilities, and MCP scan/import options."
+description: "Supported integrations, Zapier automations, TextMine MCP, agent self-service signup, and provider import capabilities."
 ---
 
-TextMine integrations fall into several shapes: OAuth-connected providers, Vault-level native integrations, workflow integrations, Zapier automations, the TextMine MCP server, and Workbench MCP/provider imports.
+TextMine integrations fall into several shapes: OAuth-connected providers, Vault-level native integrations, workflow integrations, Zapier automations, the TextMine MCP server, agent self-service signup, and Workbench MCP/provider imports.
 
 Availability depends on organisation configuration, enabled features, user connection status, and provider capability support.
 
@@ -17,7 +17,18 @@ Availability depends on organisation configuration, enabled features, user conne
 | Expose TextMine to agents | Let external agents call TextMine tools through the hosted TextMine MCP server or Public API V3. |
 | Discover API docs | Let agents use the developer hub and ReadMe MCP surface for exact schemas and API operation discovery. |
 | Automate with Zapier | Let Zapier triggers, searches, and actions call TextMine through Public API V3. |
-| Provision third-party agents | Create a multitenant, non-enterprise agent workspace, service-account API key, and billing account through the supported signup flow. |
+| Provision third-party agents | Create a multitenant, non-enterprise agent workspace, service-account API key, and billing account through agent self-service signup. |
+
+## Agent and automation entry points
+
+| Entry point | Use it for |
+| --- | --- |
+| [TextMine MCP server](/integrations/textmine-mcp-server) | MCP-compatible agent clients that need TextMine-hosted tools backed by Public API V3. |
+| [Agent self-service signup](/integrations/third-party-agent-signup) | External agents that need a TextMine organization, service-account API key, billing account, Public API V3 access, and MCP access. |
+| [API and developer docs](/integrations/api-and-developer-docs) | Public API V3 reference, exact operation IDs, ReadMe MCP, and client setup guides. |
+| [For agents](/getting-started/for-agents) | Routing rules for agents deciding between Mintlify, Public API V3, TextMine MCP, ReadMe MCP, Workbench, and the web app. |
+| [Zapier](/integrations/zapier) | No-code automations that call TextMine document, record, task, report, workflow, and agent actions through Public API V3. |
+| `/.well-known/textmine-agent.json` | Machine-readable agent onboarding metadata for signup, billing, Public API V3, and MCP. |
 
 ## User-connected providers
 
@@ -134,11 +145,7 @@ Manual provider connections store an endpoint URL and optional credential metada
 
 ## Zapier
 
-Use [Zapier](/integrations/zapier) when a Zap should automate TextMine work through Public API V3. Zapier uses a TextMine service-account API key from third-party agent signup or TextMine provisioning, plus the matching Public API base URL. Open [TextMine on Zapier](https://zapier.com/apps/textmine/integrations) to browse supported pairings and templates.
-
-## Third-party agent signup
-
-Use [Third-party agent signup](/integrations/third-party-agent-signup) when an external agent needs its own TextMine organization, service-account API key, and billing account in the multitenant, non-enterprise deployment. Enterprise and dedicated deployments should contact TextMine support for provisioning.
+Use [Zapier](/integrations/zapier) when a Zap should automate TextMine work through Public API V3. Zapier uses a TextMine service-account API key from agent self-service signup or TextMine provisioning, plus the matching Public API base URL. Open [TextMine on Zapier](https://zapier.com/apps/textmine/integrations) to browse supported pairings and templates.
 
 ## TextMine MCP and developer hub
 

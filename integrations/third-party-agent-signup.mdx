@@ -1,10 +1,10 @@
 ---
-title: "Third-party agent signup"
-sidebarTitle: "Third-party agents"
-description: "How third-party agents get a TextMine organization, API key, billing, human access, and task-agent service account access."
+title: "Agent self-service signup"
+sidebarTitle: "Agent self-serve"
+description: "Self-serve onboarding for third-party agents that need a TextMine organization, service-account API key, billing, Public API V3, and MCP access."
 ---
 
-Self-service third-party agent signup provisions a TextMine organization and API credential for an external agent that needs to call Public API V3.
+**Agent self-service signup** provisions a TextMine organization and service-account API credential for an external agent, automation platform, or MCP client that needs to call Public API V3 and the [TextMine MCP server](/integrations/textmine-mcp-server).
 
 > **Availability:** self-service signup is only for TextMine's multitenant, non-enterprise deployment. Enterprise, private, and customer-dedicated deployments use support-led provisioning instead of the public self-service flow.
 
@@ -14,7 +14,7 @@ Agents and automation tools should discover signup state before submitting a sig
 
 | Endpoint | Purpose |
 | --- | --- |
-| `/.well-known/textmine-agent.json` | Public discovery document for third-party agent signup, billing, API, and MCP metadata. |
+| `/.well-known/textmine-agent.json` | Public machine-readable discovery document for agent self-service signup, billing, Public API V3, and MCP metadata. |
 | `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
 | `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
@@ -22,23 +22,26 @@ For the UK multitenant app, use `https://app.textmine.com` as the root base URL.
 
 | URL | Purpose |
 | --- | --- |
-| `https://app.textmine.com/.well-known/textmine-agent.json` | Public discovery document. |
+| `https://app.textmine.com/.well-known/textmine-agent.json` | Public agent discovery document. |
 | `https://app.textmine.com/v3/third-party-agents/signup/availability` | Signup availability. |
 | `https://app.textmine.com/v3/third-party-agents/signup/discovery` | Public API V3 signup discovery. |
 | `https://app.textmine.com/v3/third-party-agents/signup/self-service` | Self-service signup request. |
+| `https://app.textmine.com/mcp` | Hosted TextMine MCP endpoint for the same environment. |
 
 Use the root base URL `https://app.textmine.com` when configuring clients. Do not use tenant names or tenant-specific aliases as selectable values for external users; the API key resolves the correct organization.
 
-The discovery response includes:
+## Machine-readable onboarding
 
-- Whether signup is available.
-- The signup method and signup URL.
-- Required signup fields and required acceptances.
-- Terms and privacy URLs and versions.
-- Free-credit and per-action credit settings for the current deployment.
-- Authentication format and encrypted credential-delivery metadata for the service-account API key.
-- Billing, Public API, and MCP endpoint metadata.
-- A setup checklist for the agent workspace.
+The discovery response is designed for autonomous onboarding. It tells an agent or trusted runtime:
+
+- Whether agent self-service signup is available.
+- Which signup URL and method to use.
+- Which signup fields, terms acceptance, and privacy acceptance are required.
+- Which credential-delivery algorithm to use for encrypted API-key return.
+- Which Public API base URL and MCP endpoint belong to the environment.
+- How the `tm_...` API key should be sent after signup.
+- Which free-credit, billing-status, checkout, and portal endpoints are available.
+- Which setup checklist steps are required before typed document processing.
 
 Current self-service signup does not require pre-authentication or human verification. It can still be unavailable if the deployment switch, tenant switch, or signup protection settings are disabled.
 
@@ -86,7 +89,7 @@ The response returns:
 - `gettingStarted` summary.
 - `setupChecklist`.
 
-Decrypt `encryptedApiKey` inside the trusted agent runtime using the private key that matches `credentialDeliveryPublicKey`. Store the decrypted `tm_...` API key in a secret store and inject it into future API calls. Do not place the raw key in model-visible prompts, logs, plans, or task context. The model should only see `credentialRef`, `apiKeyPrefix`, and non-secret metadata.
+Decrypt `encryptedApiKey` inside the trusted agent runtime using the private key that matches `credentialDeliveryPublicKey`. Store the decrypted `tm_...` API key in a secret store and inject it into future API or MCP calls. Do not place the raw key in model-visible prompts, logs, plans, or task context. The model should only see `credentialRef`, `apiKeyPrefix`, and non-secret metadata.
 
 ## What signup creates
 
@@ -101,7 +104,7 @@ When signup succeeds, TextMine creates a third-party agent workspace with:
 
 The billing contact email is the human owner/contact for billing and support. It is not automatically created as a human TextMine login.
 
-## Agent API access
+## Public API and MCP access
 
 After the trusted runtime decrypts and stores the service-account API key, the third-party agent calls Public API V3 with that credential:
 
@@ -109,6 +112,14 @@ After the trusted runtime decrypts and stores the service-account API key, the t
 curl "<TEXTMINE_PUBLIC_API_BASE_URL>/v3/..." \
   -H "Authorization: Bearer $TEXTMINE_API_KEY" \
   -H "Content-Type: application/json"
+```
+
+The same credential can call the TextMine MCP server:
+
+```text
+POST <TEXTMINE_MCP_URL>
+Authorization: Bearer tm_<key>
+Accept: application/json,text/event-stream
 ```
 
 The Public API base URL is the root host where the agent performed discovery/signup, or the deployment-specific host issued by TextMine. Do not append `/v3` when configuring clients such as Zapier; clients append endpoint paths themselves.
@@ -121,7 +132,7 @@ The discovery metadata also declares an alternate API-key header:
 X-TextMine-Api-Key: tm_<key>
 ```
 
-Use the bearer header for Public API clients unless a platform owns the `Authorization` header.
+Use the bearer header for Public API and MCP clients unless a platform owns the `Authorization` header.
 
 ## First setup steps
 
@@ -139,6 +150,7 @@ Optional setup depends on what the agent will do:
 - Configure [Playbooks](/playbooks/overview) before running review, redline, or playbook-rule checks.
 - Create or select [Workflows](/workflows/overview) before invoking workflow automation.
 - Create clear task instructions before using [task agents](/agents/overview).
+- Connect MCP clients after the API key is stored in the trusted runtime.
 
 ## Billing and upgrades
 
@@ -177,21 +189,13 @@ There are two related service-account concepts:
 
 The task-agent email route is separate from the third-party agent API key. It must be activated at the organization level before email can create task-agent work. Third-party agent organizations can have this route too, but it is not automatically enabled just because signup created an API service account.
 
-When enabled, TextMine assigns the organization an address like `agent+org-<organizationId>@<task-agent-domain>`. Incoming email to that address can create an agent task only when:
-
-- The task-agent service account route is enabled for the organization.
-- The sender is a TextMine user in that organization.
-- Agent billing allows the task-agent credit usage.
-
-If the route is disabled, TextMine does not create the task and returns an `AGENT_TASK_SERVICE_ACCOUNT_DISABLED` style error. Replies use signed task-specific reply addresses, and only the user who requested the task can reply to that task by email.
-
 Contact TextMine support to activate or troubleshoot task-agent email routing for a third-party agent organization.
 
 ## Operational notes
 
 - Self-service signup and agent billing are tenant-level capabilities for multitenant, non-enterprise TextMine.
 - Enterprise or dedicated deployments should use TextMine support-led provisioning.
-- The Public API base URL and API key must belong to the same TextMine environment.
+- The Public API base URL, MCP URL, and API key must belong to the same TextMine environment.
 - The billing contact is not the same thing as the service-account API actor.
 - Human access, support-managed activation, and task-agent email routing should be requested through TextMine support.
 - Agents should use idempotency keys where the API supports them, poll asynchronous work, and show resource IDs in user-visible audit summaries.

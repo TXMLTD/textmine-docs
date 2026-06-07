@@ -1,21 +1,38 @@
 ---
 title: "TextMine MCP server"
-description: "Expose TextMine Public API tools to MCP-compatible agent clients."
+description: "MCP setup, discovery, and registry metadata for TextMine-hosted tools backed by Public API V3."
 ---
 
-The TextMine MCP server is the TextMine-hosted MCP surface for external agent clients. It lets Codex, Claude, Cursor, Windsurf, ChatGPT, and automation clients discover and call TextMine tools through an agent-friendly protocol.
+The **TextMine MCP server** is the TextMine-hosted Streamable HTTP MCP endpoint for external agent clients. It lets Codex, Claude, Cursor, Windsurf, ChatGPT/OpenAI, Copilot Studio, and automation clients discover and call TextMine tools backed by Public API V3.
 
-Use it when an external agent needs to read or act on TextMine data. Use Workbench when a human is working inside the TextMine app.
+Use it when an external agent needs to search, read, or automate TextMine work. Use [agent self-service signup](/integrations/third-party-agent-signup) when that agent needs its own TextMine organization, service-account API key, and billing account.
+
+## Quick entry points
+
+| Need | Use |
+| --- | --- |
+| Hosted TextMine MCP endpoint | `https://app.textmine.com/mcp` for the UK multitenant host, or the environment-specific MCP host provided by TextMine |
+| MCP setup guide | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
+| Codex setup | [Codex MCP setup](https://developers.textmine.com/docs/codex-mcp) |
+| Claude setup | [Claude MCP setup](https://developers.textmine.com/docs/claude-mcp) |
+| Cursor and Windsurf setup | [Cursor and Windsurf MCP setup](https://developers.textmine.com/docs/cursor-windsurf-mcp) |
+| ChatGPT/OpenAI setup | [ChatGPT and OpenAI MCP setup](https://developers.textmine.com/docs/chatgpt-mcp) |
+| Service-account provisioning | [Agent self-service signup](/integrations/third-party-agent-signup) |
+| Machine-readable agent discovery | `/.well-known/textmine-agent.json` |
+| API reference | [Public API V3 reference](https://developers.textmine.com/reference) |
+| ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
 
 ## How it fits
 
 TextMine has three agent-facing surfaces that are easy to confuse:
 
-- **TextMine MCP server** exposes TextMine product tools to external MCP clients. It is backed by Public API V3.
-- **ReadMe MCP server** is hosted by the developer hub and helps agents discover API documentation and generated API operations from [developers.textmine.com](https://developers.textmine.com).
-- **Workbench MCP providers** are in-app integrations that let Workbench browse and import files from connected providers such as storage systems.
+| Surface | What it is for |
+| --- | --- |
+| **TextMine MCP server** | Hosted TextMine product tools for external MCP clients. It is backed by Public API V3 and uses TextMine API keys. |
+| **ReadMe MCP endpoint** | Developer-hub MCP surface for API reference discovery and generated API operations from [developers.textmine.com](https://developers.textmine.com). |
+| **Workbench MCP providers** | In-app provider browsing and import flows that let Workbench use connected systems as temporary chat context. |
 
-For API operation details, examples, and client setup, use [API and developer docs](/integrations/api-and-developer-docs) or the developer hub's [agent guide](https://developers.textmine.com/docs/for-agents). For provider and integration inventory, see [Integration catalog](/integrations/catalog).
+For product semantics, stay in this docs site. For exact operation IDs, schemas, and client configuration snippets, use [API and developer docs](/integrations/api-and-developer-docs) and the developer hub.
 
 ## What it exposes
 
@@ -27,18 +44,47 @@ Current tool areas include:
 - Document search, create, update, and delete.
 - Reports and report templates.
 - Workflows and workflow catalogs.
-- Agents.
+- Agents and long-running task-agent work.
 - Alerts.
 - Team and Vault users.
+- Business records and record schemas where enabled.
 - Integrations, provider connection status, provider folder listing, and provider file listing.
 
-When an agent needs exact request or response shapes, route it to the [Public API reference](https://developers.textmine.com/reference). When it needs product semantics, route it back to this Mintlify docs site.
+When an agent needs exact request or response shapes, route it to the [Public API reference](https://developers.textmine.com/reference). When it needs product meaning, route it back to Mintlify.
+
+## Authentication model
+
+Direct MCP clients should call the server with a TextMine API key:
+
+```text
+Authorization: Bearer tm_<key>
+```
+
+Platforms that own the `Authorization` header can use the alternate API-key header:
+
+```text
+X-TextMine-Api-Key: tm_<key>
+```
+
+The MCP server normalizes either form before forwarding the request to Public API V3. Public API resolves the key to the real service-account or user actor, organization, and permissions.
+
+For external agents that need a dedicated organization and service-account API key in the multitenant, non-enterprise deployment, use [agent self-service signup](/integrations/third-party-agent-signup). Enterprise and dedicated deployments should contact TextMine support.
+
+## MCP registry metadata
+
+TextMine keeps a registry metadata draft in the product repository as `back-end/services/mcp/server.json`. The official MCP Registry remote-server format uses a `server.json` file with a `remotes` entry, `type: "streamable-http"`, the remote MCP URL, and required auth headers. See the official [MCP remote server publishing guide](https://modelcontextprotocol.io/registry/remote-servers).
+
+Before listing TextMine MCP in external MCP catalogs:
+
+1. Confirm the production MCP endpoint is publicly reachable and stable.
+2. Confirm whether the listed endpoint should be `https://app.textmine.com/mcp` or an environment-specific host.
+3. Confirm the registry name and ownership verification strategy.
+4. Validate `server.json` with the current registry schema or publisher CLI.
+5. Publish to the official MCP Registry first, then submit the same remote endpoint to community directories if the launch plan calls for broader discovery.
 
 ## Import and provider support
 
 TextMine MCP clients can use provider-facing tools where the connected provider supports them. That includes listing integrations, checking provider connection status, listing provider folders or files, and uploading a provider file into Vault through TextMine.
-
-This is separate from Workbench's in-app provider import, but both use the same product concept: external provider files can become TextMine context or TextMine Vault documents.
 
 Use this split when documenting or building agents:
 
@@ -46,32 +92,13 @@ Use this split when documenting or building agents:
 - Import into **Vault** when the file should be processed, extracted, reviewed, governed, used by workflows, or published onward to Legislate.
 - Use **Public API V3** when an external system or agent needs a durable integration point.
 
-## Authentication model
-
-The current MCP service forwards the caller's Authorization header to Public API. In practice, MCP clients should call the server with a TextMine bearer key so Public API can resolve the real user and organisation.
-
-For external agents that need a dedicated organization and service-account API key in the multitenant, non-enterprise deployment, use [Third-party agent signup](/integrations/third-party-agent-signup). Enterprise and dedicated deployments should contact TextMine support.
-
-Requests without a valid forwarded bearer are rejected by Public API. Do not rely on a shared service user for user-facing MCP clients.
-
-For setup examples, see the developer hub pages for [TextMine MCP](https://developers.textmine.com/docs/textmine-mcp), [Codex](https://developers.textmine.com/docs/codex-mcp), [Claude](https://developers.textmine.com/docs/claude-mcp), [Cursor and Windsurf](https://developers.textmine.com/docs/cursor-windsurf-mcp), and [ChatGPT/OpenAI](https://developers.textmine.com/docs/chatgpt-mcp).
-
-## Adding a new MCP tool
-
-Add the Public API V3 endpoint first. Then add a small tool class in the MCP service that implements the MCP tools marker interface, injects the Public API client, and exposes one or more tool methods.
-
-Keep provider-specific logic, OAuth flows, database access, validation, and business rules in the API service rather than the MCP service. The MCP layer should stay predictable for agents: tool name, tool description, input schema, API call, response.
-
 ## Agent rules
 
 - Prefer named, narrow tools over general-purpose actions.
 - Read before mutating when the current state matters.
 - Ask for confirmation before creating, deleting, publishing, sending, assigning, or triggering workflow actions.
 - Use idempotency keys for retryable create or trigger operations when the API supports them.
-- Cite document, Vault, workflow, or run identifiers in agent output so humans can audit the action later.
+- Cite document, Vault, workflow, run, record, or task identifiers in agent output so humans can audit the action later.
+- Keep `tm_...` API keys out of prompts, tickets, screenshots, source code, and shared docs.
 
-## When to use it
-
-Use the TextMine MCP server when an external LLM client or automation needs a direct agent-friendly way to read or act on TextMine data. Use the web app when a human is operating interactively inside Workbench, Vault, Workflows, Playbooks, Records, Scribe, or Legislate.
-
-Start with [For agents](/getting-started/for-agents) when choosing between these surfaces.
+Start with [For agents](/getting-started/for-agents) when choosing between TextMine MCP, Public API V3, ReadMe MCP, Workbench, and the TextMine web app.

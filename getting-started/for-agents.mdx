@@ -1,6 +1,6 @@
 ---
 title: "For agents"
-description: "How AI agents should interpret TextMine product docs and route to developer tools."
+description: "How AI agents should use TextMine docs, MCP, Public API V3, and agent self-service signup."
 ---
 
 Use this page when an AI agent, automation, or coding assistant needs to understand TextMine before acting.
@@ -12,17 +12,16 @@ Mintlify is the product and context layer for agents. Use it to understand what 
 | Need | Use |
 | --- | --- |
 | Product context | This docs site and [Product map](/getting-started/product-map) |
-| Workbench capability map | [Workbench capabilities](/workbench/capabilities) |
-| Vault and editor capability map | [Vault and editor capabilities](/vault/capabilities) |
-| Tags and extraction reference | [Tags and extraction](/vault/tags-and-extraction) |
-| Workflow block catalog | [Workflow blocks](/workflows/blocks) |
-| Integration and MCP provider catalog | [Integration catalog](/integrations/catalog) |
-| Third-party agent provisioning | [Third-party agent signup](/integrations/third-party-agent-signup) |
-| Current API reference | [developers.textmine.com](https://developers.textmine.com) |
+| Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
+| Machine-readable onboarding | `/.well-known/textmine-agent.json` and `/v3/third-party-agents/signup/discovery` |
+| TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
+| MCP setup guides | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
+| Current API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
 | Agent instructions for API execution | [TextMine developer For Agents](https://developers.textmine.com/docs/for-agents) |
-| ReadMe MCP server | [https://developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
-| ReadMe agent index | [https://developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
+| ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
+| ReadMe agent index | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
 | Full developer context pack | [Agent Context Pack](https://developers.textmine.com/page/llms-full) |
+| Integration and MCP provider catalog | [Integration catalog](/integrations/catalog) |
 
 ## Product routing rules
 
@@ -43,8 +42,24 @@ TextMine has three agent-related surfaces that sound similar but serve different
 | Surface | What it is for |
 | --- | --- |
 | TextMine MCP server | TextMine's own hosted MCP service for external agent clients. It exposes TextMine tools backed by Public API V3. |
-| ReadMe MCP server | The developer hub MCP endpoint generated from the API reference at `developers.textmine.com/mcp`. Use it for API discovery and execution from the docs. |
+| ReadMe MCP endpoint | The developer hub MCP endpoint generated from the API reference at `developers.textmine.com/mcp`. Use it for API discovery and execution from the docs. |
 | Workbench MCP providers | In-app provider connections that let Workbench browse and import external files into a Workbench chat. |
+
+Use the [TextMine MCP server](/integrations/textmine-mcp-server) when the agent client should discover first-class TextMine tools. Use Public API V3 when the agent needs exact endpoint control or a system-to-system integration.
+
+## Agent self-service signup
+
+Use [agent self-service signup](/integrations/third-party-agent-signup) when an external agent or automation platform needs its own organization, service-account API key, billing account, and MCP/Public API access in the multitenant non-enterprise deployment.
+
+Autonomous clients should discover signup metadata first:
+
+```text
+GET /.well-known/textmine-agent.json
+GET /v3/third-party-agents/signup/discovery
+GET /v3/third-party-agents/signup/availability
+```
+
+The trusted runtime should decrypt and store the returned `tm_...` API key outside model-visible context. The model should only see non-secret identifiers such as `credentialRef` and `apiKeyPrefix`.
 
 ## Safe execution rules
 
@@ -52,11 +67,12 @@ Agents should not invent IDs or assume access. Discover first, then act.
 
 For API-backed work, use the developer hub operation IDs and follow this default order:
 
-1. Discover accessible Vaults, users, providers, document types, workflow catalogs, or report templates.
+1. Discover accessible Vaults, users, providers, document types, workflow catalogs, record schemas, agents, or report templates.
 2. Confirm the target resource with the user if names are ambiguous.
-3. Ask before destructive actions, credential creation, scheduled agents, enabled workflows, provider disconnects, or bulk imports.
-4. Poll asynchronous work after upload, provider import, reprocessing, and report generation.
+3. Ask before destructive actions, credential creation, scheduled agents, enabled workflows, provider disconnects, broad imports, or billing checkout.
+4. Poll asynchronous work after upload, provider import, reprocessing, task-agent work, report generation, and workflow runs.
 5. Keep bearer tokens out of prompts, screenshots, source code, and shared docs.
+6. Include document, Vault, workflow, run, record, or task identifiers in user-facing summaries.
 
 ## When to send agents to developer docs
 
