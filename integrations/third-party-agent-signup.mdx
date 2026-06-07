@@ -4,7 +4,7 @@ sidebarTitle: "Agent self-serve"
 description: "Self-serve onboarding for third-party agents that need a TextMine organization, service-account API key, billing, Public API V3, and MCP access."
 ---
 
-**Agent self-service signup** provisions a TextMine organization and service-account API credential for an external agent, automation platform, or MCP client that needs to call Public API V3 and the [TextMine MCP server](/integrations/textmine-mcp-server).
+**Agent self-service signup** provisions a TextMine organization and service-account API credential for an external agent or automation platform that needs to call Public API V3. The [TextMine MCP server](/integrations/textmine-mcp-server) is optional after the agent has a `tm_...` API key; signup itself is REST-first and does not require MCP.
 
 > **Availability:** self-service signup is only for TextMine's multitenant, non-enterprise deployment. Enterprise, private, and customer-dedicated deployments use support-led provisioning instead of the public self-service flow.
 
@@ -18,17 +18,17 @@ Agents and automation tools should discover signup state before submitting a sig
 | `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
 | `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
-For the UK multitenant app, use `https://app.textmine.com` as the root base URL. The commonly used signup URLs are:
+For the UK multitenant deployment, use `https://public-api.textmine.com` as the Public API base URL. The commonly used signup URLs are:
 
 | URL | Purpose |
 | --- | --- |
-| `https://app.textmine.com/.well-known/textmine-agent.json` | Public agent discovery document. |
-| `https://app.textmine.com/v3/third-party-agents/signup/availability` | Signup availability. |
-| `https://app.textmine.com/v3/third-party-agents/signup/discovery` | Public API V3 signup discovery. |
-| `https://app.textmine.com/v3/third-party-agents/signup/self-service` | Self-service signup request. |
-| `https://app.textmine.com/mcp` | Hosted TextMine MCP endpoint for the same environment. |
+| `https://public-api.textmine.com/.well-known/textmine-agent.json` | Public agent discovery document. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/availability` | Signup availability. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` | Public API V3 signup discovery. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/self-service` | Self-service signup request. |
+| `https://app.textmine.com/mcp` | Hosted TextMine MCP endpoint for the same production environment. |
 
-Use the root base URL `https://app.textmine.com` when configuring clients. Do not use tenant names or tenant-specific aliases as selectable values for external users; the API key resolves the correct organization.
+Use the Public API base URL returned by discovery when configuring REST clients. Do not use tenant names or tenant-specific aliases as selectable values for external users; the API key resolves the correct organization.
 
 ## Machine-readable onboarding
 
@@ -66,7 +66,7 @@ Required request fields:
 
 | Field | Description |
 | --- | --- |
-| `organizationName` | Name of the TextMine organization to create for the agent workspace. |
+| `organizationName` | Name of the TextMine organization to create for the agent account. |
 | `agentName` | Display name used for the service account and service-account API key. |
 | `contactEmail` | Billing and operational contact email. |
 | `acceptedTerms` | Must be `true`. |
@@ -95,14 +95,14 @@ Agent task transcripts sanitize secret-like values before persistence. Do not se
 
 ## What signup creates
 
-When signup succeeds, TextMine creates a third-party agent workspace with:
+When signup succeeds, TextMine creates a third-party agent account with:
 
-- A corporate TextMine organization for the agent workspace.
+- A corporate TextMine organization for the agent.
 - The standard feature set needed for agent work: [Vault](/vault/overview), [Scribe](/scribe/overview), [Agents](/agents/overview), [Workflows](/workflows/overview), and [Playbooks](/playbooks/overview).
 - An `Agent` business unit and organization role assignment for the service-account actor.
 - A service-account user for the third-party agent.
 - A `tm_...` service-account API key. For self-service signup, the key is returned as `encryptedApiKey` encrypted to the trusted runtime's public key.
-- An agent billing account with the billing contact email, accepted terms/privacy metadata, free-credit allowance, current-period usage, currency, and monthly spend cap.
+- An agent billing account with the billing contact email, accepted terms/privacy metadata, free-credit allowance, current-period usage, currency, and purchased credit balance.
 
 The billing contact email is the human owner/contact for billing and support. It is not automatically created as a human TextMine login.
 
@@ -126,7 +126,7 @@ Accept: application/json,text/event-stream
 
 The Public API base URL is the root host where the agent performed discovery/signup, or the deployment-specific host issued by TextMine. Do not append `/v3` when configuring clients such as Zapier; clients append endpoint paths themselves.
 
-Public API resolves the key to the service-account actor and the organization created at signup. The key's organization determines which [Vault](/vault/overview) workspaces, [document types](/vault/document-types-and-tags), [workflows](/workflows/overview), [records](/records/overview), [agents](/agents/overview), and other resources the external agent can access.
+Public API resolves the key to the service-account actor and the organization created at signup. The key's organization determines which [Vaults](/vault/overview), [document types](/vault/document-types-and-tags), [workflows](/workflows/overview), [records](/records/overview), [agents](/agents/overview), and other resources the external agent can access.
 
 The discovery metadata also declares an alternate API-key header:
 
@@ -144,7 +144,7 @@ Before typed document processing, complete the required steps:
 
 1. Generate a runtime keypair, send `credentialDeliveryPublicKey`, decrypt `encryptedApiKey`, and store the API key outside model context.
 2. Accept terms and privacy notices during signup.
-3. Create or select a [Vault workspace](/vault/overview), or omit `vault_id` on the first upload so TextMine creates or reuses the default `Agent Vault` workspace for the API-key organization.
+3. Create or select a [Vault](/vault/overview), or omit `vault_id` on the first upload so TextMine creates or reuses the default `Agent Vault` for the API-key organization.
 4. Configure [document types](/vault/document-types-and-tags), [default tags and extraction questions](/vault/tags-and-extraction) before uploading typed documents.
 
 Optional setup depends on what the agent will do:
@@ -160,10 +160,10 @@ Third-party agent work starts on the configured free-credit allowance for the bi
 
 When the free allowance is exhausted, API-key usage that requires more credits can return `402 Payment Required`. The agent should then:
 
-1. Call `GET /v3/agent-billing/status` to show the current billing status, remaining free credits, checkout requirement, setup checklist, and Stripe price metadata.
+1. Call `GET /v3/agent-billing/status` to show the current billing status, remaining free credits, purchased credit balance, available credits, checkout requirement, setup checklist, and credit-pack metadata.
 2. Call `POST /v3/agent-billing/checkout` to create a Stripe Checkout session.
 3. Send the returned checkout URL to the billing owner or show it in the agent's billing UI.
-4. After checkout completes and the subscription is active, continue API work.
+4. After checkout completes and the purchased credits are added to the organization, continue API work.
 
 Use `POST /v3/agent-billing/portal` when an existing billed organization needs a Stripe billing portal session. If checkout has not happened yet, the API can require checkout first.
 

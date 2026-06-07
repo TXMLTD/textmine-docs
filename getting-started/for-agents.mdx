@@ -17,7 +17,7 @@ Self-service agents do **not** need MCP. They sign up through Public API V3, rec
 | Goal | Use | Why |
 | --- | --- | --- |
 | Sign up a new autonomous agent | Public API V3 | Signup is REST-only and does not require MCP. |
-| Create the first vault/workspace | Public API V3 | `POST /v3/vaults` creates a team-backed vault for the agent organization. |
+| Create the first vault | Public API V3 | `POST /v3/vaults` with a name creates the first vault for the agent organization. The agent does not need to know a `teamId`. |
 | Create document types and extraction questions | Public API V3 | `POST /v3/document-types` configures typed processing for a vault. |
 | Upload files and read processing status | Public API V3 | `POST /v3/documents` accepts multipart uploads. |
 | Send Workbench/task-agent instructions | Public API V3 | Use `/v3/tasks` and `/v3/tasks/{taskId}/messages`. |
@@ -49,7 +49,7 @@ openssl rsa -pubout -in textmine-agent-private.pem -out textmine-agent-public.pe
 curl -X POST https://public-api.textmine.com/v3/third-party-agents/signup/self-service \
   -H 'Content-Type: application/json' \
   -d '{
-    "organizationName": "Acme Agent Workspace",
+    "organizationName": "Acme Agent Organization",
     "agentName": "Acme Contract Agent",
     "contactEmail": "billing@example.com",
     "acceptedTerms": true,
@@ -107,7 +107,7 @@ After signup:
    curl https://public-api.textmine.com/v3/agent-billing/status \
      -H "Authorization: Bearer $TEXTMINE_API_KEY"
    ```
-2. Create the first vault/workspace:
+2. Create the first vault:
    ```bash
    curl -X POST https://public-api.textmine.com/v3/vaults \
      -H "Authorization: Bearer $TEXTMINE_API_KEY" \
@@ -136,7 +136,7 @@ After signup:
      -H "Authorization: Bearer $TEXTMINE_API_KEY" \
      -F "file=@agreement.pdf"
    ```
-   `vault_id` is optional. If the agent omits it, TextMine reuses the first accessible vault or creates the default `Agent Vault` workspace for that API-key organization before uploading the document.
+   `vault_id` is optional. If the agent omits it, TextMine reuses the first accessible vault or creates the default `Agent Vault` for that API-key organization before uploading the document.
 5. Create and message a task:
    ```bash
    curl -X POST https://public-api.textmine.com/v3/tasks \
@@ -160,7 +160,7 @@ After signup:
      -H "Authorization: Bearer $TEXTMINE_API_KEY"
    ```
 
-Document credits are recorded when document processing completes. Agent-task credits are recorded when an agent task completes.
+Document credits are recorded when document processing completes. Agent-task credits are recorded when an agent task completes. If billing status returns `checkoutRequired=true`, call `POST /v3/agent-billing/checkout` and send the returned Stripe Checkout URL to the billing owner so they can buy a one-time credit pack.
 
 ## Optional TextMine MCP Server
 
