@@ -1,11 +1,11 @@
 ---
 title: "API and developer docs"
-description: "Where developers and agents should go for API reference, MCP setup, and exact operation IDs."
+description: "Where developers and agents should go for Public API V3, MCP setup, agent self-service signup, and exact operation IDs."
 ---
 
 Use this page to route developers and agents from product documentation into the API execution layer.
 
-TextMine product documentation lives at this site. API reference, ReadMe MCP, exact schemas, operation IDs, and client setup guides live at [developers.textmine.com](https://developers.textmine.com).
+TextMine product documentation lives at this site. API reference, ReadMe MCP, exact schemas, operation IDs, and client setup guides live at [developers.textmine.com](https://developers.textmine.com). Service-account provisioning for autonomous agents starts with [agent self-service signup](/integrations/third-party-agent-signup).
 
 ## Developer hub links
 
@@ -15,24 +15,31 @@ TextMine product documentation lives at this site. API reference, ReadMe MCP, ex
 | Public API V3 quickstart | [developers.textmine.com/docs/getting-started](https://developers.textmine.com/docs/getting-started) |
 | API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
 | Agent instructions | [developers.textmine.com/docs/for-agents](https://developers.textmine.com/docs/for-agents) |
+| TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
 | MCP quickstart | [developers.textmine.com/docs/textmine-mcp](https://developers.textmine.com/docs/textmine-mcp) |
-| Zapier setup | [TextMine Zapier](/integrations/zapier) |
-| TextMine on Zapier | [zapier.com/apps/textmine/integrations](https://zapier.com/apps/textmine/integrations) |
-| Third-party agent signup | [Third-party agent signup](/integrations/third-party-agent-signup) |
+| Codex MCP setup | [developers.textmine.com/docs/codex-mcp](https://developers.textmine.com/docs/codex-mcp) |
+| Claude MCP setup | [developers.textmine.com/docs/claude-mcp](https://developers.textmine.com/docs/claude-mcp) |
+| Cursor and Windsurf MCP setup | [developers.textmine.com/docs/cursor-windsurf-mcp](https://developers.textmine.com/docs/cursor-windsurf-mcp) |
+| ChatGPT/OpenAI MCP setup | [developers.textmine.com/docs/chatgpt-mcp](https://developers.textmine.com/docs/chatgpt-mcp) |
+| Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
+| Machine-readable agent discovery | `/.well-known/textmine-agent.json` |
+| Signup discovery | `/v3/third-party-agents/signup/discovery` |
 | ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
 | ReadMe llms.txt | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
 | Agent context pack | [developers.textmine.com/page/llms-full](https://developers.textmine.com/page/llms-full) |
+| Zapier setup | [TextMine Zapier](/integrations/zapier) |
+| TextMine on Zapier | [zapier.com/apps/textmine/integrations](https://zapier.com/apps/textmine/integrations) |
 
 ## How to access the API
 
-Use Public API V3 for new integrations and agent work. For self-service third-party agent provisioning in the multitenant non-enterprise deployment, start with [Third-party agent signup](/integrations/third-party-agent-signup). Enterprise and dedicated deployments should contact TextMine support.
+Use Public API V3 for new integrations and agent work. For self-service third-party agent provisioning in the multitenant non-enterprise deployment, start with [agent self-service signup](/integrations/third-party-agent-signup). Enterprise and dedicated deployments should contact TextMine support.
 
-1. Confirm the user has access to the relevant TextMine organization, team, Vault, provider, or workflow.
-2. Create or request an API credential through third-party agent signup, TextMine support, or the developer access flow available for that organization.
+1. Confirm the user has access to the relevant TextMine organization, team, Vault, provider, workflow, record schema, or agent.
+2. Create or request an API credential through agent self-service signup, TextMine support, or the developer access flow available for that organization.
 3. Store the credential as an environment variable such as `TEXTMINE_API_KEY` or in the secret store for the agent client.
-4. Send the credential as a bearer token on API requests.
+4. Send the credential as a bearer token on API and MCP requests.
 5. Use the operation IDs, request schemas, and response schemas from the [API reference](https://developers.textmine.com/reference).
-6. Poll asynchronous operations after uploads, provider imports, report generation, workflow runs, document reprocessing, and exports.
+6. Poll asynchronous operations after uploads, provider imports, report generation, workflow runs, document reprocessing, task-agent work, and exports.
 
 Use this shape for scripts and examples:
 
@@ -42,16 +49,7 @@ curl "<TEXTMINE_API_BASE_URL>/v3/..." \
   -H "Content-Type: application/json"
 ```
 
-Use the base URL and environment shown in the developer hub or provided by the TextMine team. Do not paste bearer tokens into prompts, tickets, screenshots, source code, or shared documentation.
-
-## Client setup guides
-
-The developer hub has setup pages for common agent clients:
-
-- [Codex MCP Setup](https://developers.textmine.com/docs/codex-mcp)
-- [Claude MCP Setup](https://developers.textmine.com/docs/claude-mcp)
-- [Cursor and Windsurf MCP Setup](https://developers.textmine.com/docs/cursor-windsurf-mcp)
-- [ChatGPT and OpenAI MCP Setup](https://developers.textmine.com/docs/chatgpt-mcp)
+Use the base URL and environment shown in the developer hub, returned by discovery, or provided by the TextMine team. Do not paste bearer tokens into prompts, tickets, screenshots, source code, or shared documentation.
 
 ## MCP access
 
@@ -63,7 +61,30 @@ Use MCP when an agent client should discover and call TextMine tools from docume
 | ReadMe MCP endpoint | Documentation-backed API discovery and execution from [developers.textmine.com/mcp](https://developers.textmine.com/mcp). |
 | Workbench MCP providers | In-app provider scan/import flows that let Workbench browse external repositories and import files into a Workbench session. |
 
-For setup, start with [MCP quickstart](https://developers.textmine.com/docs/textmine-mcp), then use the client-specific guide for Codex, Claude, Cursor/Windsurf, or ChatGPT/OpenAI.
+For setup, start with [MCP quickstart](https://developers.textmine.com/docs/textmine-mcp), then use the client-specific guide for Codex, Claude, Cursor/Windsurf, or ChatGPT/OpenAI. The multitenant hosted MCP URL is `https://app.textmine.com/mcp`; dedicated deployments should use their environment-specific MCP host.
+
+Direct MCP clients should send:
+
+```text
+Authorization: Bearer tm_<key>
+```
+
+Platforms that own `Authorization` can use:
+
+```text
+X-TextMine-Api-Key: tm_<key>
+```
+
+## Agent self-service pattern
+
+For autonomous onboarding:
+
+1. Read [For agents](/getting-started/for-agents) for product routing.
+2. Fetch `/.well-known/textmine-agent.json` or `/v3/third-party-agents/signup/discovery`.
+3. Check `/v3/third-party-agents/signup/availability`.
+4. Generate a runtime RSA keypair and submit the public key with `POST /v3/third-party-agents/signup/self-service`.
+5. Decrypt `encryptedApiKey` inside the trusted runtime, store the `tm_...` key in a secret store, and keep it out of model-visible context.
+6. Use Public API V3 or the TextMine MCP server with the stored key.
 
 ## How to choose the right layer
 
@@ -90,7 +111,7 @@ For API-backed work, agents should follow this pattern:
 2. Read the developer hub [For Agents](https://developers.textmine.com/docs/for-agents) page for API execution rules.
 3. Use Public API V3 operation IDs from the API reference.
 4. Discover IDs before mutating data.
-5. Ask for confirmation before destructive or broad actions.
+5. Ask for confirmation before destructive, broad, credential, billing, or workflow-triggering actions.
 6. Keep secrets out of logs, prompts, screenshots, commits, and docs.
 
 ## Current API focus
