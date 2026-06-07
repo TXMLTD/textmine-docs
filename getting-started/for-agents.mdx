@@ -1,86 +1,209 @@
 ---
-title: "For agents"
-description: "How AI agents should use TextMine docs, MCP, Public API V3, and agent self-service signup."
+title: "Agents, Public API, and MCP"
+description: "How agents and developers should choose between TextMine Public API V3, agent self-service signup, and the optional TextMine MCP server."
 ---
 
-Use this page when an AI agent, automation, or coding assistant needs to understand TextMine before acting.
+# Agents, Public API, and MCP
 
-Mintlify is the product and context layer for agents. Use it to understand what TextMine means, which surface to use, and how user-facing concepts fit together. Use the developer hub for exact API schemas, operation IDs, and MCP execution.
+TextMine supports two integration styles for agents and developer platforms:
 
-## Canonical agent entry points
+- **Public API V3** is the primary integration path. Use it for signup, vaults, document types, uploads, tasks, records, workflows, agents, and billing.
+- **TextMine MCP server** is optional. Use it only when the client wants MCP tool discovery and tool calls instead of direct REST calls.
 
-| Need | Use |
-| --- | --- |
-| Product context | This docs site and [Product map](/getting-started/product-map) |
-| Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
-| Machine-readable onboarding | `/.well-known/textmine-agent.json` and `/v3/third-party-agents/signup/discovery` |
-| TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
-| MCP setup guides | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
-| Current API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
-| Agent instructions for API execution | [TextMine developer For Agents](https://developers.textmine.com/docs/for-agents) |
-| ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
-| ReadMe agent index | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
-| Full developer context pack | [Agent Context Pack](https://developers.textmine.com/page/llms-full) |
-| Integration and MCP provider catalog | [Integration catalog](/integrations/catalog) |
+Self-service agents do **not** need MCP. They sign up through Public API V3, receive an encrypted `tm_...` service-account API key, and then call Public API V3 directly.
 
-## Product routing rules
+## Which Path Should I Use?
 
-- Use [**Vault**](/vault/overview) for active document work: upload, import, processing, document types, extracted fields, tags, Ask Vault, reports, reprocessing, and workflow triggers.
-- Use [**Legislate**](/legislate/overview) for validated team documents that have been published from Vault.
-- Use [**Workbench**](/workbench/overview) for exploratory multi-step work across TextMine capabilities.
-- Use [**Workflows**](/workflows/overview) when the user wants the same process to run again, run from a trigger, or produce a durable run history.
-- Use [**Playbooks**](/playbooks/overview) for reusable document review guidance.
-- Use [**Records**](/records/overview) when document evidence should become structured business data.
-- Use [**Scribe**](/scribe/overview) when the output is a generated document or template.
+| Goal | Use | Why |
+| --- | --- | --- |
+| Sign up a new autonomous agent | Public API V3 | Signup is REST-only and does not require MCP. |
+| Create the first vault/workspace | Public API V3 | `POST /v3/vaults` creates a team-backed vault for the agent organization. |
+| Create document types and extraction questions | Public API V3 | `POST /v3/document-types` configures typed processing for a vault. |
+| Upload files and read processing status | Public API V3 | `POST /v3/documents` accepts multipart uploads. |
+| Send Workbench/task-agent instructions | Public API V3 | Use `/v3/tasks` and `/v3/tasks/{taskId}/messages`. |
+| Track free allowance and checkout state | Public API V3 | Use `/v3/agent-billing/status`. |
+| Generate an SDK or import REST endpoints into an API client | Public API OpenAPI spec | The OpenAPI spec is the canonical REST contract. |
+| Let an MCP-native client discover TextMine tools | TextMine MCP server | Optional wrapper over TextMine capabilities for MCP clients. |
+| Search API docs from an MCP-aware docs client | ReadMe/developer hub MCP | This is the documentation MCP endpoint, not the TextMine product MCP server. |
 
-Do not describe [Vault](/vault/overview) as [Legislate](/legislate/overview), or Legislate as Vault. A document can be processed in Vault and later published to Legislate, but those are separate surfaces.
+## Self-Service Agent Signup
 
-## MCP surfaces
-
-TextMine has three agent-related surfaces that sound similar but serve different jobs.
-
-| Surface | What it is for |
-| --- | --- |
-| TextMine MCP server | TextMine's own hosted MCP service for external agent clients. It exposes TextMine tools backed by Public API V3. |
-| ReadMe MCP endpoint | The developer hub MCP endpoint generated from the API reference at `developers.textmine.com/mcp`. Use it for API discovery and execution from the docs. |
-| Workbench MCP providers | In-app provider connections that let Workbench browse and import external files into a Workbench chat. |
-
-Use the [TextMine MCP server](/integrations/textmine-mcp-server) when the agent client should discover first-class TextMine tools. Use Public API V3 when the agent needs exact endpoint control or a system-to-system integration.
-
-## Agent self-service signup
-
-Use [agent self-service signup](/integrations/third-party-agent-signup) when an external agent or automation platform needs its own organization, service-account API key, billing account, and MCP/Public API access in the multitenant non-enterprise deployment.
-
-Autonomous clients should discover signup metadata first:
+Use the Public API base URL for the environment. For the UK multitenant deployment:
 
 ```text
-GET /.well-known/textmine-agent.json
-GET /v3/third-party-agents/signup/discovery
-GET /v3/third-party-agents/signup/availability
+https://public-api.textmine.com
 ```
 
-The trusted runtime should decrypt and store the returned `tm_...` API key outside model-visible context. The model should only see non-secret identifiers such as `credentialRef` and `apiKeyPrefix`.
+Start with machine-readable discovery:
 
-## Safe execution rules
+```bash
+curl https://public-api.textmine.com/.well-known/textmine-agent.json
+```
 
-Agents should not invent IDs or assume access. Discover first, then act.
+Then create an RSA key pair in the trusted agent runtime and sign up:
 
-For API-backed work, use the developer hub operation IDs and follow this default order:
+```bash
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out textmine-agent-private.pem
+openssl rsa -pubout -in textmine-agent-private.pem -out textmine-agent-public.pem
 
-1. Discover accessible Vaults, users, providers, document types, workflow catalogs, record schemas, agents, or report templates.
-2. Confirm the target resource with the user if names are ambiguous.
-3. Ask before destructive actions, credential creation, scheduled agents, enabled workflows, provider disconnects, broad imports, or billing checkout.
-4. Poll asynchronous work after upload, provider import, reprocessing, task-agent work, report generation, and workflow runs.
-5. Keep bearer tokens out of prompts, screenshots, source code, and shared docs.
-6. Include document, Vault, workflow, run, record, or task identifiers in user-facing summaries.
+curl -X POST https://public-api.textmine.com/v3/third-party-agents/signup/self-service \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "organizationName": "Acme Agent Workspace",
+    "agentName": "Acme Contract Agent",
+    "contactEmail": "billing@example.com",
+    "acceptedTerms": true,
+    "acceptedPrivacy": true,
+    "credentialDeliveryPublicKey": "'"$(awk 'NF {sub(/\r/, ""); printf "%s\\n", $0}' textmine-agent-public.pem)"'",
+    "credentialDeliveryAlgorithm": "RSA-OAEP-256"
+  }'
+```
 
-## When to send agents to developer docs
+The response includes:
 
-Send agents to [developers.textmine.com](https://developers.textmine.com) when they need:
+- `credentialRef`: a non-secret reference such as `textmine:api-key:123`
+- `apiKeyPrefix`: a display prefix that includes `tm_`
+- `encryptedApiKey`: the encrypted service-account API key
+- `encryptedApiKeyAlgorithm`
+- `encryptedApiKeyEncoding`
+- `billingStatus`
+- `freeCreditsPerPeriod`
+- `setupChecklist`
 
-- Public API V3 operation IDs.
-- Request and response schemas.
-- MCP setup for Codex, Claude, Cursor, Windsurf, or ChatGPT/OpenAI.
-- Agent playbooks for provider import, direct upload, reports, workflows, metadata validation, records, or exports.
+Decrypt `encryptedApiKey` in the trusted runtime, store the resulting `tm_...` key in a secret store, and keep the raw key out of model-visible prompts, task messages, logs, and transcripts.
 
-Stay in Mintlify when the task is about product behavior, feature naming, user workflows, screenshots, or explaining how TextMine surfaces relate to each other.
+Use the key on future Public API calls:
+
+```text
+Authorization: Bearer tm_...
+```
+
+## OpenAPI Spec
+
+Yes: provide a Public API V3 OpenAPI spec and link it from the developer hub, agent guide, and MCP docs. Agents and developers use the OpenAPI spec for REST endpoint discovery, SDK generation, typed clients, API-client imports, and exact request/response shapes.
+
+The Public API OpenAPI spec should include the full self-service bootstrap path:
+
+- `GET /.well-known/textmine-agent.json`
+- `GET /v3/third-party-agents/signup/discovery`
+- `POST /v3/third-party-agents/signup/self-service`
+- `GET /v3/agent-billing/status`
+- `POST /v3/vaults`
+- `POST /v3/document-types`
+- `POST /v3/documents`
+- `POST /v3/tasks`
+- `POST /v3/tasks/{taskId}/messages`
+
+MCP is different. MCP clients discover runtime tools through `initialize`, `tools/list`, and `tools/call`. Connector platforms may need their own OpenAPI wrapper around `/mcp`, but that wrapper is not the canonical Public API spec.
+
+## REST-First Bootstrap Flow
+
+After signup:
+
+1. Check allowance and setup:
+   ```bash
+   curl https://public-api.textmine.com/v3/agent-billing/status \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY"
+   ```
+2. Create the first vault/workspace:
+   ```bash
+   curl -X POST https://public-api.textmine.com/v3/vaults \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Agent Vault"}'
+   ```
+3. Create a document type:
+   ```bash
+   curl -X POST https://public-api.textmine.com/v3/document-types \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "name": "Commercial Agreement",
+       "vaultId": 123,
+       "defaultTags": [
+         {
+           "name": "Summary",
+           "question": "Summarize this document in one sentence."
+         }
+       ]
+     }'
+   ```
+4. Upload a file:
+   ```bash
+   curl -X POST "https://public-api.textmine.com/v3/documents?vault_id=123&document_type_id=456" \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+     -F "file=@agreement.pdf"
+   ```
+5. Create and message a task:
+   ```bash
+   curl -X POST https://public-api.textmine.com/v3/tasks \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "title": "Review agreement",
+       "instruction": "Summarize the uploaded agreement and identify missing commercial terms.",
+       "autostart": true
+     }'
+   ```
+   ```bash
+   curl -X POST https://public-api.textmine.com/v3/tasks/789/messages \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"message":"Also flag any unusual renewal language.","autostart":true}'
+   ```
+6. Re-check billing:
+   ```bash
+   curl https://public-api.textmine.com/v3/agent-billing/status \
+     -H "Authorization: Bearer $TEXTMINE_API_KEY"
+   ```
+
+Document credits are recorded when document processing completes. Agent-task credits are recorded when an agent task completes.
+
+## Optional TextMine MCP Server
+
+The hosted TextMine MCP server is a Streamable HTTP MCP endpoint backed by Public API V3. It uses the same `tm_...` key.
+
+Direct MCP clients can send:
+
+```text
+Authorization: Bearer tm_...
+```
+
+Clients that cannot control `Authorization`, such as some connector platforms, can send:
+
+```text
+X-TextMine-Api-Key: tm_...
+```
+
+Streamable HTTP requires a session handshake:
+
+1. Send `initialize`.
+2. Keep the returned `mcp-session-id` response header.
+3. Send `notifications/initialized` with `mcp-session-id`.
+4. Call `tools/list` or `tools/call` with `mcp-session-id`.
+
+A direct `tools/call` without `mcp-session-id` is rejected.
+
+## Common Confusions
+
+- `https://developers.textmine.com/mcp` is the developer hub documentation MCP endpoint. It helps MCP-aware clients query API docs.
+- The TextMine product MCP server is the hosted endpoint used to call TextMine tools.
+- Workbench MCP providers are third-party provider connections inside Workbench. They are not the TextMine product MCP server.
+- Agent self-service signup is REST-first. MCP is never required for signup.
+- The billing owner email collected during signup is a billing contact, not automatically a human web login.
+
+## Developer Documentation Checklist
+
+Keep these phrases visible in page titles, descriptions, and first-screen copy:
+
+- TextMine Public API
+- Public API V3
+- OpenAPI spec
+- agent self-service signup
+- third-party agent API key
+- service-account API key
+- TextMine MCP server
+- MCP setup
+- `/.well-known/textmine-agent.json`
+
+Link the agent docs, API reference, and MCP docs to each other so agents can choose the right path without guessing.
