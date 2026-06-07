@@ -25,7 +25,7 @@ The discovery response includes:
 - Required signup fields and required acceptances.
 - Terms and privacy URLs and versions.
 - Free-credit and per-action credit settings for the current deployment.
-- Authentication format for the returned API key.
+- Authentication format and encrypted credential-delivery metadata for the service-account API key.
 - Billing, Public API, and MCP endpoint metadata.
 - A setup checklist for the agent workspace.
 
@@ -57,18 +57,25 @@ Required request fields:
 | `contactEmail` | Billing and operational contact email. |
 | `acceptedTerms` | Must be `true`. |
 | `acceptedPrivacy` | Must be `true`. |
+| `credentialDeliveryPublicKey` | RSA public key controlled by the trusted agent runtime, not the model. Accepts PEM or base64-encoded X.509 SubjectPublicKeyInfo. |
+
+Optional request fields:
+
+| Field | Description |
+| --- | --- |
+| `credentialDeliveryAlgorithm` | Credential delivery algorithm. Defaults to `RSA-OAEP-256`. |
 
 The response returns:
 
 - `organizationId` and `organizationName`.
 - `serviceAccountUserId`.
-- `apiKeyId`.
-- `apiKey` and `apiKeyPrefix`.
+- `apiKeyId`, `apiKeyPrefix`, and `credentialRef`.
+- `encryptedApiKey`, `encryptedApiKeyAlgorithm`, and `encryptedApiKeyEncoding`.
 - Billing status, free-credit allowance, and currency.
 - `gettingStarted` summary.
 - `setupChecklist`.
 
-Store the raw `apiKey` immediately. It is shown once and is the bearer credential agents and Zapier use.
+Decrypt `encryptedApiKey` inside the trusted agent runtime using the private key that matches `credentialDeliveryPublicKey`. Store the decrypted `tm_...` API key in a secret store and inject it into future API calls. Do not place the raw key in model-visible prompts, logs, plans, or task context. The model should only see `credentialRef`, `apiKeyPrefix`, and non-secret metadata.
 
 ## What signup creates
 
@@ -78,14 +85,14 @@ When signup succeeds, TextMine creates a third-party agent workspace with:
 - The standard feature set needed for agent work: Vault, Scribe, Agents, Workflows, and Playbooks.
 - An `Agent` business unit and organization role assignment for the service-account actor.
 - A service-account user for the third-party agent.
-- A `tm_...` service-account API key. The raw key is returned once in the signup response.
+- A `tm_...` service-account API key. For self-service signup, the key is returned as `encryptedApiKey` encrypted to the trusted runtime's public key.
 - An agent billing account with the billing contact email, accepted terms/privacy metadata, free-credit allowance, current-period usage, currency, and monthly spend cap.
 
 The billing contact email is the human owner/contact for billing and support. It is not automatically created as a human TextMine login.
 
 ## Agent API access
 
-The third-party agent calls Public API V3 with the returned service-account API key:
+After the trusted runtime decrypts and stores the service-account API key, the third-party agent calls Public API V3 with that credential:
 
 ```bash
 curl "<TEXTMINE_PUBLIC_API_BASE_URL>/v3/..." \
@@ -111,7 +118,7 @@ The signup response includes a `gettingStarted` object and `setupChecklist`. Use
 
 Before typed document processing, complete the required steps:
 
-1. Store the service-account API key.
+1. Generate a runtime keypair, send `credentialDeliveryPublicKey`, decrypt `encryptedApiKey`, and store the API key outside model context.
 2. Accept terms and privacy notices during signup.
 3. Create or select a Vault workspace, or pass `vault_id` when uploading.
 4. Configure document types, default tags, and extraction questions before uploading typed documents.
