@@ -136,6 +136,7 @@ After signup:
      -H "Authorization: Bearer $TEXTMINE_API_KEY" \
      -F "file=@agreement.pdf"
    ```
+   `vault_id` is optional. If the agent omits it, TextMine reuses the first accessible vault or creates the default `Agent Vault` workspace for that API-key organization before uploading the document.
 5. Create and message a task:
    ```bash
    curl -X POST https://public-api.textmine.com/v3/tasks \
