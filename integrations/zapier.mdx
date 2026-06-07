@@ -1,22 +1,32 @@
 ---
 title: "Zapier"
-description: "Set up Zapier with TextMine Public API V3 and API-key authentication."
+description: "Connect TextMine to Zapier for document, record, task, report, workflow, and agent automation through Public API V3."
 sidebarTitle: "Zapier"
 ---
 
 Use the TextMine Zapier integration when a Zap should read from or write to TextMine through Public API V3.
 
-Zapier authenticates with a TextMine service-account API key. That key can come from [third-party agent signup](/integrations/third-party-agent-signup) where self-service signup is enabled, or from TextMine provisioning for an existing organization.
+- Public Zapier page: [TextMine on Zapier](https://zapier.com/apps/textmine/integrations)
+- Developer API docs: [developers.textmine.com](https://developers.textmine.com)
+- Service-account provisioning: [Third-party agent signup](/integrations/third-party-agent-signup)
 
-## Setup options
+Zapier authenticates with a TextMine service-account API key. That key can come from third-party agent signup where self-service signup is enabled, or from TextMine provisioning for an existing organization.
+
+## Choose a setup path
 
 | Situation | What to do |
 | --- | --- |
 | New third-party agent or automation customer | Use [third-party agent signup](/integrations/third-party-agent-signup) when available. Signup provisions an organization, service account, API key, billing account, and getting-started checklist. |
-| Existing TextMine organization | Use the service account API key and Public API base URL issued or shown by TextMine for that organization. |
-| Service account access is not enabled | Contact TextMine or ask an administrator to enable third-party access for the tenant. |
+| Existing TextMine organization | Use the service-account API key and Public API base URL issued or shown by TextMine for that organization. |
+| Service-account access is not enabled | Use **Contact TextMine** from the Zapier section in TextMine Settings, or ask an administrator to enable third-party access for the tenant. |
 
 Do not create or guess an API key outside the TextMine signup or provisioning flow.
+
+## Find TextMine in Zapier
+
+Open [TextMine on Zapier](https://zapier.com/apps/textmine/integrations), then choose **TextMine** when building or editing a Zap.
+
+TextMine Settings also links to the TextMine Zapier app directory page when service-account access is enabled. Use that route when users need to discover supported triggers, searches, actions, and popular app pairings.
 
 ## Discover signup availability
 
@@ -42,7 +52,7 @@ The Zapier section shows:
 | Public API V3 URL | Copy this into Zapier as the Public API Base URL. |
 | Authentication | Confirms that the connection uses a TextMine service-account API key. |
 
-If service account access is not enabled for the existing organization, use **Contact TextMine** from the Zapier section.
+If service-account access is not enabled for the existing organization, use **Contact TextMine** from the Zapier section.
 
 ## Connect TextMine in Zapier
 
@@ -57,6 +67,53 @@ Enter these fields:
 
 Zapier tests the connection by calling the Public API health endpoint with the API key. If the key or base URL does not match the service account's environment, authentication fails.
 
+## Available Zapier capabilities
+
+The current Zapier integration is aligned to Public API V3 and includes visible triggers for:
+
+| Trigger | Use it for |
+| --- | --- |
+| New Document | Start a Zap when a document is uploaded, imported, or processed in a TextMine Vault. |
+| New or Updated Agent Task | Start a Zap when a TextMine agent task appears or changes status. |
+| New Business Record | Start a Zap when extracted or validated business data appears in a record schema. |
+| New Report | Start a Zap when a report appears in a TextMine Vault. |
+
+Searches:
+
+| Search | Use it for |
+| --- | --- |
+| Find Document | Retrieve one document by ID. |
+| Search Documents | Search documents by query, team, Vault, document type, status, or date. |
+| Find Task | Retrieve one agent task by ID. |
+| Find Business Record | Retrieve one business record by ID. |
+| Search Business Records | Search records in a TextMine record schema. |
+| Find Report | Retrieve one report by ID. |
+
+Actions:
+
+| Action | Use it for |
+| --- | --- |
+| Import Document From Connected App | Import a file from Google Drive, Box, OneDrive, or SharePoint into TextMine document processing. |
+| Update Document | Rename a document, change its document type, or queue reprocessing. |
+| Reprocess Document | Queue processing for an existing document. |
+| Create Agent Task | Create a TextMine agent task for document review, extraction, or follow-up work. |
+| Add Task Message | Add a follow-up instruction or clarification to a task. |
+| Start Task | Start or resume a draft or waiting task. |
+| Cancel Task | Cancel a non-terminal task. |
+| Decide Task Approval | Approve or reject a pending task approval. |
+| Create Vault | Create a Vault for an existing team. |
+| Create Record Schema | Create a business record schema. |
+| Suggest Record Schema | Create a suggested record schema from a prompt or supplied definition. |
+| Create Business Record | Create a business record. |
+| Create or Replace Record Field Value | Create or replace a field value on a business record. |
+| Generate AI Report | Generate a report from a prompt, documents, or a Vault. |
+| Create Report Template | Create a custom report template. |
+| Create Magic Workflow | Create an enabled Magic Workflow. |
+| Create Agent | Create a TextMine Magic Agent. |
+| Add Document Assignee | Add an assignee or reviewer to a document. |
+
+Zapier does not create API keys from inside the Zap editor. Use third-party agent signup where available, or contact TextMine when a new existing-organization service-account key is required.
+
 ## Tenant and permission behavior
 
 The Public API base URL is an auth/config field so different TextMine deployments can connect to the correct Public API host. Users should use the URL used for signup/discovery or issued by TextMine for their service account. Do not present a tenant picker or tenant-name list in Zapier; the service-account API key scopes the connection to its organization.
@@ -65,19 +122,17 @@ The service account API key controls the organization, permissions, [Vault](/vau
 
 Keep API keys environment-specific. Do not use a staging key against production, or a production key against another deployment.
 
-## Available Zapier capabilities
+## Popular Zap patterns
 
-The current Zapier integration is aligned to Public API V3 and includes triggers, searches, and actions for:
+Common TextMine automations include:
 
-- [Documents and provider imports](/vault/overview).
-- [Tasks, task messages, task status changes, and approval decisions](/agents/overview).
-- [Business records, record schemas, and record field values](/records/overview).
-- [Reports and report templates](/reports-and-exports/overview).
-- [Vaults and Vault tags](/vault/overview).
-- [Workflows](/workflows/overview) and [agents](/agents/overview).
-- [Document assignees](/vault/overview).
+- Send new processed document metadata to Google Sheets.
+- Notify Slack when an agent task needs review or approval.
+- Update HubSpot, Salesforce, or Pipedrive when TextMine extracts validated business records.
+- Generate a TextMine AI report from newly imported documents.
+- Import files from a connected storage app into Vault processing.
 
-Zapier does not create API keys from inside the Zap editor. Use third-party agent signup where available, or contact TextMine when a new existing-organization service account key is required.
+Use [TextMine on Zapier](https://zapier.com/apps/textmine/integrations) to browse available pairings and templates.
 
 ## Troubleshooting
 
