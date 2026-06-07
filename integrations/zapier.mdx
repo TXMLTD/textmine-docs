@@ -28,7 +28,7 @@ Before asking a new third-party agent to connect Zapier, check whether self-serv
 | `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
 | `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
-When signup is available, call `POST /v3/third-party-agents/signup/self-service`. Store the returned `apiKey`; it is shown once and is the credential used in Zapier.
+When signup is available, call `POST /v3/third-party-agents/signup/self-service` with `credentialDeliveryPublicKey`. The response returns `encryptedApiKey`; decrypt it only inside the trusted runtime or support-managed credential setup, then enter the decrypted service-account API key in Zapier. Do not expose the raw key to model-visible prompts, logs, or shared documentation.
 
 ## Find values in TextMine Settings
 
@@ -52,7 +52,7 @@ Enter these fields:
 
 | Zapier field | Value |
 | --- | --- |
-| TextMine API Key | The service account API key returned by third-party agent signup or issued by TextMine. |
+| TextMine API Key | The decrypted service-account API key from third-party agent signup, or the key issued by TextMine provisioning. |
 | Public API Base URL | The root Public API URL used for signup/discovery or shown in TextMine Settings. Do not add `/v3`. |
 
 Zapier tests the connection by calling the Public API health endpoint with the API key. If the key or base URL does not match the service account's environment, authentication fails.
@@ -90,10 +90,10 @@ If signup is unavailable:
 
 If the Zapier connection fails:
 
-1. Confirm the API key was returned by signup or issued by TextMine for the correct organization.
+1. Confirm the API key was decrypted from the signup response or issued by TextMine for the correct organization.
 2. Confirm the Public API Base URL is the root URL only, without `/v3` or another path.
 3. Confirm the key and Public API URL belong to the same TextMine environment.
-4. Confirm the key has been stored exactly as returned.
+4. Confirm the key has been decrypted and stored exactly.
 5. Contact TextMine if the Settings page says setup is required or if the key has expired.
 
 Never paste API keys into tickets, screenshots, prompts, source code, or shared documentation.
