@@ -17,6 +17,7 @@ Availability depends on organisation configuration, enabled features, user conne
 | Expose TextMine to agents | Let external agents call TextMine tools through the hosted TextMine MCP server or Public API V3. |
 | Discover API docs | Let agents use the developer hub and ReadMe MCP surface for exact schemas and API operation discovery. |
 | Automate with Zapier | Let Zapier triggers, searches, and actions call TextMine through Public API V3. |
+| Provision third-party agents | Create a multitenant, non-enterprise agent workspace, service-account API key, and billing account through the supported signup flow. |
 
 ## User-connected providers
 
@@ -133,7 +134,11 @@ Manual provider connections store an endpoint URL and optional credential metada
 
 ## Zapier
 
-Use [Zapier](/integrations/zapier) when a Zap should automate TextMine work through Public API V3. Zapier uses a TextMine-issued service account API key and the Public API base URL shown in TextMine Settings.
+Use [Zapier](/integrations/zapier) when a Zap should automate TextMine work through Public API V3. Zapier uses a TextMine service-account API key from third-party agent signup or TextMine provisioning, plus the matching Public API base URL.
+
+## Third-party agent signup
+
+Use [Third-party agent signup](/integrations/third-party-agent-signup) when an external agent needs its own TextMine organization, service-account API key, and billing account in the multitenant, non-enterprise deployment. Enterprise and dedicated deployments should contact TextMine support for provisioning.
 
 ## TextMine MCP and developer hub
 

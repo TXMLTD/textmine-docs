@@ -1,0 +1,179 @@
+---
+title: "Third-party agent signup"
+sidebarTitle: "Third-party agents"
+description: "How third-party agents get a TextMine organization, API key, billing, human access, and task-agent service account access."
+---
+
+Self-service third-party agent signup provisions a TextMine organization and API credential for an external agent that needs to call Public API V3.
+
+> **Availability:** self-service signup is only for TextMine's multitenant, non-enterprise deployment. Enterprise, private, and customer-dedicated deployments use support-led provisioning instead of the public self-service flow.
+
+## Discovery and availability
+
+Agents and automation tools should discover signup state before submitting a signup request.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `/.well-known/textmine-agent.json` | Public discovery document for third-party agent signup, billing, API, and MCP metadata. |
+| `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
+| `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
+
+The discovery response includes:
+
+- Whether signup is available.
+- The signup method and signup URL.
+- Required signup fields and required acceptances.
+- Terms and privacy URLs and versions.
+- Free-credit and per-action credit settings for the current deployment.
+- Authentication format for the returned API key.
+- Billing, Public API, and MCP endpoint metadata.
+- A setup checklist for the agent workspace.
+
+Current self-service signup does not require pre-authentication or human verification. It can still be unavailable if the deployment switch, tenant switch, or signup protection settings are disabled.
+
+## How signup is enabled
+
+Self-service signup is available only when both are true:
+
+- The deployment-level third-party agent switch is enabled.
+- Tenant-level third-party access is enabled.
+
+Backoffice administrators can view and update tenant-level third-party access from Tenant Settings. If signup is unavailable, check the availability message before trying again. Do not bypass the supported signup flow or reuse an API key from another deployment.
+
+## Submit self-service signup
+
+When signup is available, call:
+
+```http
+POST /v3/third-party-agents/signup/self-service
+```
+
+Required request fields:
+
+| Field | Description |
+| --- | --- |
+| `organizationName` | Name of the TextMine organization to create for the agent workspace. |
+| `agentName` | Display name used for the service account and service-account API key. |
+| `contactEmail` | Billing and operational contact email. |
+| `acceptedTerms` | Must be `true`. |
+| `acceptedPrivacy` | Must be `true`. |
+
+The response returns:
+
+- `organizationId` and `organizationName`.
+- `serviceAccountUserId`.
+- `apiKeyId`.
+- `apiKey` and `apiKeyPrefix`.
+- Billing status, free-credit allowance, and currency.
+- `gettingStarted` summary.
+- `setupChecklist`.
+
+Store the raw `apiKey` immediately. It is shown once and is the bearer credential agents and Zapier use.
+
+## What signup creates
+
+When signup succeeds, TextMine creates a third-party agent workspace with:
+
+- A corporate TextMine organization for the agent workspace.
+- The standard feature set needed for agent work: Vault, Scribe, Agents, Workflows, and Playbooks.
+- An `Agent` business unit and organization role assignment for the service-account actor.
+- A service-account user for the third-party agent.
+- A `tm_...` service-account API key. The raw key is returned once in the signup response.
+- An agent billing account with the billing contact email, accepted terms/privacy metadata, free-credit allowance, current-period usage, currency, and monthly spend cap.
+
+The billing contact email is the human owner/contact for billing and support. It is not automatically created as a human TextMine login.
+
+## Agent API access
+
+The third-party agent calls Public API V3 with the returned service-account API key:
+
+```bash
+curl "<TEXTMINE_PUBLIC_API_BASE_URL>/v3/..." \
+  -H "Authorization: Bearer $TEXTMINE_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+The Public API base URL is the root host where the agent performed discovery/signup, or the deployment-specific host issued by TextMine. Do not append `/v3` when configuring clients such as Zapier; clients append endpoint paths themselves.
+
+Public API resolves the key to the service-account actor and the organization created at signup. The key's organization determines which Vaults, document types, workflows, records, agents, and other resources the external agent can access.
+
+The discovery metadata also declares an alternate API-key header:
+
+```text
+X-TextMine-Api-Key: tm_<key>
+```
+
+Use the bearer header for Public API clients unless a platform owns the `Authorization` header.
+
+## First setup steps
+
+The signup response includes a `gettingStarted` object and `setupChecklist`. Use those values to drive the agent's onboarding UI.
+
+Before typed document processing, complete the required steps:
+
+1. Store the service-account API key.
+2. Accept terms and privacy notices during signup.
+3. Create or select a Vault workspace, or pass `vault_id` when uploading.
+4. Configure document types, default tags, and extraction questions before uploading typed documents.
+
+Optional setup depends on what the agent will do:
+
+- Configure Playbooks before running review, redline, or playbook-rule checks.
+- Create or select Workflows before invoking workflow automation.
+- Create clear task instructions before using task agents.
+
+## Billing and upgrades
+
+Third-party agent work starts on the configured free-credit allowance for the billing period. Credit costs are returned by the availability and billing-status endpoints, including document processing, workflow execution, Workbench tasks, and agent tasks.
+
+When the free allowance is exhausted, API-key usage that requires more credits can return `402 Payment Required`. The agent should then:
+
+1. Call `GET /v3/agent-billing/status` to show the current billing status, remaining free credits, checkout requirement, setup checklist, and Stripe price metadata.
+2. Call `POST /v3/agent-billing/checkout` to create a Stripe Checkout session.
+3. Send the returned checkout URL to the billing owner or show it in the agent's billing UI.
+4. After checkout completes and the subscription is active, continue API work.
+
+Use `POST /v3/agent-billing/portal` when an existing billed organization needs a Stripe billing portal session. If checkout has not happened yet, the API can require checkout first.
+
+## Human access
+
+Self-service signup creates the agent's organization and service-account API key. It does not automatically create a human user account for the billing owner.
+
+If a human user needs to access the TextMine web app for the same organization, contact TextMine support with:
+
+- Organization name and organization ID from signup.
+- Human user's email address.
+- Requested access level or role.
+- Whether the user needs API-key management, Vault setup, document type setup, workflows, or billing support.
+
+After TextMine support links the human user to the organization, the user signs in through the normal TextMine web app. Human users should use their own web session or their own user API key where permitted. Do not share the third-party agent service-account key as a human login credential.
+
+## Service accounts and task-agent email
+
+There are two related service-account concepts:
+
+| Service-account concept | What it is | How it is enabled |
+| --- | --- | --- |
+| Third-party agent service account | The API actor and `tm_...` key created by third-party agent signup. | Created during signup. |
+| Task-agent service account email route | An organization-level inbound email route that lets organization users create and reply to task-agent tasks by email. | Activated by TextMine support for the organization. |
+
+The task-agent email route is separate from the third-party agent API key. It must be activated at the organization level before email can create task-agent work. Third-party agent organizations can have this route too, but it is not automatically enabled just because signup created an API service account.
+
+When enabled, TextMine assigns the organization an address like `agent+org-<organizationId>@<task-agent-domain>`. Incoming email to that address can create an agent task only when:
+
+- The task-agent service account route is enabled for the organization.
+- The sender is a TextMine user in that organization.
+- Agent billing allows the task-agent credit usage.
+
+If the route is disabled, TextMine does not create the task and returns an `AGENT_TASK_SERVICE_ACCOUNT_DISABLED` style error. Replies use signed task-specific reply addresses, and only the user who requested the task can reply to that task by email.
+
+Contact TextMine support to activate or troubleshoot task-agent email routing for a third-party agent organization.
+
+## Operational notes
+
+- Self-service signup and agent billing are tenant-level capabilities for multitenant, non-enterprise TextMine.
+- Enterprise or dedicated deployments should use TextMine support-led provisioning.
+- The Public API base URL and API key must belong to the same TextMine environment.
+- The billing contact is not the same thing as the service-account API actor.
+- Human access, support-managed activation, and task-agent email routing should be requested through TextMine support.
+- Agents should use idempotency keys where the API supports them, poll asynchronous work, and show resource IDs in user-visible audit summaries.
