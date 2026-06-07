@@ -65,6 +65,8 @@ Enter these fields:
 | TextMine API Key | The decrypted service-account API key from third-party agent signup, or the key issued by TextMine provisioning. |
 | Public API Base URL | The root Public API URL used for signup/discovery or shown in TextMine Settings. Do not add `/v3`. |
 
+For the UK multitenant deployment, enter `https://public-api.textmine.com` as the Public API Base URL. Do not enter `https://app.textmine.com` or the internal API host.
+
 Zapier tests the connection by calling the Public API health endpoint with the API key. If the key or base URL does not match the service account's environment, authentication fails.
 
 ## Available Zapier capabilities
