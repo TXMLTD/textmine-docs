@@ -13,7 +13,7 @@ Mintlify is the product and context layer for agents. Use it to understand what 
 | --- | --- |
 | Product context | This docs site and [Product map](/getting-started/product-map) |
 | Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
-| Machine-readable onboarding | `/.well-known/textmine-agent.json` and `/v3/third-party-agents/signup/discovery` |
+| Machine-readable onboarding | `https://public-api.textmine.com/.well-known/textmine-agent.json` and `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` |
 | TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
 | MCP setup guides | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
 | Current API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
@@ -54,9 +54,9 @@ Use [agent self-service signup](/integrations/third-party-agent-signup) when an 
 Autonomous clients should discover signup metadata first:
 
 ```text
-GET /.well-known/textmine-agent.json
-GET /v3/third-party-agents/signup/discovery
-GET /v3/third-party-agents/signup/availability
+GET https://public-api.textmine.com/.well-known/textmine-agent.json
+GET https://public-api.textmine.com/v3/third-party-agents/signup/discovery
+GET https://public-api.textmine.com/v3/third-party-agents/signup/availability
 ```
 
 The trusted runtime should decrypt and store the returned `tm_...` API key outside model-visible context. The model should only see non-secret identifiers such as `credentialRef` and `apiKeyPrefix`.

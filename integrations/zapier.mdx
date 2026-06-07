@@ -34,11 +34,11 @@ Before asking a new third-party agent to connect Zapier, check whether self-serv
 
 | Endpoint | Purpose |
 | --- | --- |
-| `/.well-known/textmine-agent.json` | Public discovery document for third-party agent signup, billing, API, and MCP metadata. |
-| `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
-| `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
+| `https://public-api.textmine.com/.well-known/textmine-agent.json` | Public discovery document for third-party agent signup, billing, API, and MCP metadata. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
+| `https://public-api.textmine.com/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
-When signup is available, call `POST /v3/third-party-agents/signup/self-service` with `credentialDeliveryPublicKey`. The response returns `encryptedApiKey`; decrypt it only inside the trusted runtime or support-managed credential setup, then enter the decrypted service-account API key in Zapier. Do not expose the raw key to model-visible prompts, logs, or shared documentation.
+When signup is available, call `POST https://public-api.textmine.com/v3/third-party-agents/signup/self-service` with `credentialDeliveryPublicKey`. The response returns `encryptedApiKey`; decrypt it only inside the trusted runtime or support-managed credential setup, then enter the decrypted service-account API key in Zapier. Do not expose the raw key to model-visible prompts, logs, or shared documentation.
 
 ## Find values in TextMine Settings
 
@@ -138,7 +138,7 @@ Use [TextMine on Zapier](https://zapier.com/apps/textmine/integrations) to brows
 
 If signup is unavailable:
 
-1. Check `/v3/third-party-agents/signup/availability` for the availability message.
+1. Check `https://public-api.textmine.com/v3/third-party-agents/signup/availability` for the availability message.
 2. Confirm third-party access is enabled for the tenant.
 3. Confirm self-service signup is enabled for the deployment.
 4. Contact TextMine if the tenant or deployment is not configured.
