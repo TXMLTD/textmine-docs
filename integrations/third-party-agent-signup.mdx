@@ -18,6 +18,17 @@ Agents and automation tools should discover signup state before submitting a sig
 | `/v3/third-party-agents/signup/discovery` | Public API V3 discovery document with the same setup metadata. |
 | `/v3/third-party-agents/signup/availability` | Returns whether self-service signup is currently available and includes terms, privacy, pricing, and setup checklist metadata. |
 
+For the UK multitenant app, use `https://app.textmine.com` as the root base URL. The commonly used signup URLs are:
+
+| URL | Purpose |
+| --- | --- |
+| `https://app.textmine.com/.well-known/textmine-agent.json` | Public discovery document. |
+| `https://app.textmine.com/v3/third-party-agents/signup/availability` | Signup availability. |
+| `https://app.textmine.com/v3/third-party-agents/signup/discovery` | Public API V3 signup discovery. |
+| `https://app.textmine.com/v3/third-party-agents/signup/self-service` | Self-service signup request. |
+
+Use the root base URL `https://app.textmine.com` when configuring clients. Do not use tenant names or tenant-specific aliases as selectable values for external users; the API key resolves the correct organization.
+
 The discovery response includes:
 
 - Whether signup is available.
@@ -82,7 +93,7 @@ Decrypt `encryptedApiKey` inside the trusted agent runtime using the private key
 When signup succeeds, TextMine creates a third-party agent workspace with:
 
 - A corporate TextMine organization for the agent workspace.
-- The standard feature set needed for agent work: Vault, Scribe, Agents, Workflows, and Playbooks.
+- The standard feature set needed for agent work: [Vault](/vault/overview), [Scribe](/scribe/overview), [Agents](/agents/overview), [Workflows](/workflows/overview), and [Playbooks](/playbooks/overview).
 - An `Agent` business unit and organization role assignment for the service-account actor.
 - A service-account user for the third-party agent.
 - A `tm_...` service-account API key. For self-service signup, the key is returned as `encryptedApiKey` encrypted to the trusted runtime's public key.
@@ -102,7 +113,7 @@ curl "<TEXTMINE_PUBLIC_API_BASE_URL>/v3/..." \
 
 The Public API base URL is the root host where the agent performed discovery/signup, or the deployment-specific host issued by TextMine. Do not append `/v3` when configuring clients such as Zapier; clients append endpoint paths themselves.
 
-Public API resolves the key to the service-account actor and the organization created at signup. The key's organization determines which Vaults, document types, workflows, records, agents, and other resources the external agent can access.
+Public API resolves the key to the service-account actor and the organization created at signup. The key's organization determines which [Vault](/vault/overview) workspaces, [document types](/vault/document-types-and-tags), [workflows](/workflows/overview), [records](/records/overview), [agents](/agents/overview), and other resources the external agent can access.
 
 The discovery metadata also declares an alternate API-key header:
 
@@ -120,18 +131,18 @@ Before typed document processing, complete the required steps:
 
 1. Generate a runtime keypair, send `credentialDeliveryPublicKey`, decrypt `encryptedApiKey`, and store the API key outside model context.
 2. Accept terms and privacy notices during signup.
-3. Create or select a Vault workspace, or pass `vault_id` when uploading.
-4. Configure document types, default tags, and extraction questions before uploading typed documents.
+3. Create or select a [Vault workspace](/vault/overview), or pass `vault_id` when uploading.
+4. Configure [document types](/vault/document-types-and-tags), [default tags and extraction questions](/vault/tags-and-extraction) before uploading typed documents.
 
 Optional setup depends on what the agent will do:
 
-- Configure Playbooks before running review, redline, or playbook-rule checks.
-- Create or select Workflows before invoking workflow automation.
-- Create clear task instructions before using task agents.
+- Configure [Playbooks](/playbooks/overview) before running review, redline, or playbook-rule checks.
+- Create or select [Workflows](/workflows/overview) before invoking workflow automation.
+- Create clear task instructions before using [task agents](/agents/overview).
 
 ## Billing and upgrades
 
-Third-party agent work starts on the configured free-credit allowance for the billing period. Credit costs are returned by the availability and billing-status endpoints, including document processing, workflow execution, Workbench tasks, and agent tasks.
+Third-party agent work starts on the configured free-credit allowance for the billing period. Credit costs are returned by the availability and billing-status endpoints, including [Vault document processing](/vault/overview), [workflow execution](/workflows/overview), [Workbench tasks](/workbench/overview), and [agent tasks](/agents/overview).
 
 When the free allowance is exhausted, API-key usage that requires more credits can return `402 Payment Required`. The agent should then:
 
@@ -151,7 +162,7 @@ If a human user needs to access the TextMine web app for the same organization, 
 - Organization name and organization ID from signup.
 - Human user's email address.
 - Requested access level or role.
-- Whether the user needs API-key management, Vault setup, document type setup, workflows, or billing support.
+- Whether the user needs API-key management, [Vault setup](/vault/overview), [document type setup](/vault/document-types-and-tags), [workflows](/workflows/overview), or billing support.
 
 After TextMine support links the human user to the organization, the user signs in through the normal TextMine web app. Human users should use their own web session or their own user API key where permitted. Do not share the third-party agent service-account key as a human login credential.
 

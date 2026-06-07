@@ -59,9 +59,9 @@ Zapier tests the connection by calling the Public API health endpoint with the A
 
 ## Tenant and permission behavior
 
-The Public API base URL is an auth/config field so different TextMine deployments can connect to the correct Public API host. Users should use the URL used for signup/discovery or issued by TextMine for their service account.
+The Public API base URL is an auth/config field so different TextMine deployments can connect to the correct Public API host. Users should use the URL used for signup/discovery or issued by TextMine for their service account. Do not present a tenant picker or tenant-name list in Zapier; the service-account API key scopes the connection to its organization.
 
-The service account API key controls the organization, permissions, Vault access, available records, workflows, and other resources. Entering another customer's Public API host does not grant access to that customer's data.
+The service account API key controls the organization, permissions, [Vault](/vault/overview) access, available [records](/records/overview), [workflows](/workflows/overview), and other resources. Entering another customer's Public API host does not grant access to that customer's data.
 
 Keep API keys environment-specific. Do not use a staging key against production, or a production key against another deployment.
 
@@ -69,13 +69,13 @@ Keep API keys environment-specific. Do not use a staging key against production,
 
 The current Zapier integration is aligned to Public API V3 and includes triggers, searches, and actions for:
 
-- Documents and provider imports.
-- Tasks, task messages, task status changes, and approval decisions.
-- Business records, record schemas, and record field values.
-- Reports and report templates.
-- Vaults and Vault tags.
-- Workflows and agents.
-- Document assignees.
+- [Documents and provider imports](/vault/overview).
+- [Tasks, task messages, task status changes, and approval decisions](/agents/overview).
+- [Business records, record schemas, and record field values](/records/overview).
+- [Reports and report templates](/reports-and-exports/overview).
+- [Vaults and Vault tags](/vault/overview).
+- [Workflows](/workflows/overview) and [agents](/agents/overview).
+- [Document assignees](/vault/overview).
 
 Zapier does not create API keys from inside the Zap editor. Use third-party agent signup where available, or contact TextMine when a new existing-organization service account key is required.
 

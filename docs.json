@@ -486,5 +486,44 @@
     "dark": "https://app.textmine.com/assets/text-mine-logo.svg",
     "href": "https://www.textmine.com"
   },
-  "favicon": "https://app.textmine.com/favicon.ico"
+  "favicon": "https://app.textmine.com/favicon.ico",
+  "footer": {
+    "links": [
+      {
+        "header": "For agents",
+        "items": [
+          {
+            "label": "Agent guide",
+            "href": "https://docs.textmine.com/getting-started/for-agents"
+          },
+          {
+            "label": "Developer agent docs",
+            "href": "https://developers.textmine.com/docs/for-agents"
+          },
+          {
+            "label": "Open in ChatGPT",
+            "href": "https://chatgpt.com/?q=Use%20TextMine%27s%20agent%20guide%20at%20https%3A%2F%2Fdocs.textmine.com%2Fgetting-started%2Ffor-agents%20and%20developer%20agent%20docs%20at%20https%3A%2F%2Fdevelopers.textmine.com%2Fdocs%2Ffor-agents.%20Help%20me%20choose%20the%20right%20TextMine%20surface%2C%20API%2C%20MCP%20tool%2C%20or%20Zapier%20setup%20for%20my%20task."
+          },
+          {
+            "label": "Open in Claude",
+            "href": "https://claude.ai/new?q=Use%20TextMine%27s%20agent%20guide%20at%20https%3A%2F%2Fdocs.textmine.com%2Fgetting-started%2Ffor-agents%20and%20developer%20agent%20docs%20at%20https%3A%2F%2Fdevelopers.textmine.com%2Fdocs%2Ffor-agents.%20Help%20me%20choose%20the%20right%20TextMine%20surface%2C%20API%2C%20MCP%20tool%2C%20or%20Zapier%20setup%20for%20my%20task."
+          },
+          {
+            "label": "Open in Perplexity",
+            "href": "https://www.perplexity.ai/search/new?q=Use%20TextMine%27s%20agent%20guide%20at%20https%3A%2F%2Fdocs.textmine.com%2Fgetting-started%2Ffor-agents%20and%20developer%20agent%20docs%20at%20https%3A%2F%2Fdevelopers.textmine.com%2Fdocs%2Ffor-agents.%20Help%20me%20choose%20the%20right%20TextMine%20surface%2C%20API%2C%20MCP%20tool%2C%20or%20Zapier%20setup%20for%20my%20task."
+          }
+        ]
+      }
+    ]
+  },
+  "contextual": {
+    "options": [
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "copy",
+      "view"
+    ],
+    "display": "header"
+  }
 }
