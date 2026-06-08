@@ -1,0 +1,47 @@
+---
+title: "7 June 2026"
+description: "Task-agent email updates, clearer result emails, and document extraction reliability improvements."
+---
+
+We have improved how task agents work over email and how their results are returned to requesters.
+
+## Task-agent email conversations
+
+Task-agent email must be activated for an organization before emails can create or update task-agent work. Once activated, users can send requests to the organization's TextMine task-agent address and continue the conversation by replying.
+
+If task-agent email has not been activated for the organization, TextMine will not create a task from the incoming email. The requester receives a clear message explaining that the task-agent email route needs to be enabled first.
+
+When a task is received, TextMine now sends a clearer acknowledgement so the requester knows the task has been queued and can reply with extra context while it runs.
+
+Task agents can also ask for more information by email. When a task needs clarification, the email now includes the question and tells the requester that replying will resume the task from that point.
+
+## Results in completion emails
+
+Completion emails now share the task results directly in the message body where available, rather than only saying that the task completed.
+
+The wording is more natural across task states:
+
+- Queued tasks explain that TextMine has picked up the work.
+- Completed tasks include the results and invite follow-up by reply.
+- Failed tasks explain what happened and how to provide a correction.
+- Approval requests clearly state why approval is needed before the task continues.
+
+This makes task-agent email feel more like a working conversation and less like a system notification.
+
+## Smarter progress updates
+
+Task agents now reserve progress-update emails for long-running work where an interim update is useful.
+
+For ordinary tasks, TextMine avoids sending a separate final notification step when the normal completion email already covers the result. This reduces duplicate emails and keeps the requester focused on the useful outcome.
+
+## Better self-contained responses
+
+Task agents can now complete simple, self-contained response tasks without requiring a Vault, document, workflow, or integration lookup.
+
+This helps with email-based confirmations, short acknowledgements, and concise responses where the instruction itself contains enough context.
+
+## Document extraction reliability
+
+Document extraction is more robust for automated and service-account-driven flows. When a task or service-account action uploads a document, TextMine now handles missing user profile preferences safely while still applying the configured extraction profile.
+
+This improves reliability for document processing that starts outside an interactive user session.
