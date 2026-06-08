@@ -1,47 +1,34 @@
 ---
 title: "7 June 2026"
-description: "Task-agent email updates, clearer result emails, and document extraction reliability improvements."
+description: "Task-agent email activation, operational inboxes, and Copilot Studio setup."
 ---
 
-We have improved how task agents work over email and how their results are returned to requesters.
+We have made task-agent email easier to use in operational workflows and added guidance for connecting TextMine to Microsoft Copilot Studio.
 
-## Task-agent email conversations
+## Task-agent email for operational requests
 
-Task-agent email must be activated for an organization before emails can create or update task-agent work. Once activated, users can send requests to the organization's TextMine task-agent address and continue the conversation by replying.
+Organizations can now route more task-agent work through email once task-agent email has been activated for that organization.
 
-If task-agent email has not been activated for the organization, TextMine will not create a task from the incoming email. The requester receives a clear message explaining that the task-agent email route needs to be enabled first.
+This is useful for shared service accounts, intake inboxes, ticketing systems, Zapier automations, and connected operational channels such as ServiceNow. A team can send a request to its TextMine task-agent address, then continue the same work by replying to the thread.
 
-When a task is received, TextMine now sends a clearer acknowledgement so the requester knows the task has been queued and can reply with extra context while it runs.
+Task-agent email must be activated before incoming emails can create or update task-agent work. If it has not been activated, TextMine does not create the task and the requester receives a clear message explaining that the email route needs to be enabled first.
 
-Task agents can also ask for more information by email. When a task needs clarification, the email now includes the question and tells the requester that replying will resume the task from that point.
+## More useful email replies
 
-## Results in completion emails
+Task-agent emails now read more like a working conversation.
 
-Completion emails now share the task results directly in the message body where available, rather than only saying that the task completed.
+When TextMine receives a task, the acknowledgement tells the requester that the work has started and that they can reply with extra context. If the task agent needs clarification, the email includes the question and explains that a reply will resume the task.
 
-The wording is more natural across task states:
+When a task completes, the result is included directly in the completion email where available, so users do not need to hunt for the outcome in another screen.
 
-- Queued tasks explain that TextMine has picked up the work.
-- Completed tasks include the results and invite follow-up by reply.
-- Failed tasks explain what happened and how to provide a correction.
-- Approval requests clearly state why approval is needed before the task continues.
+## Copilot Studio setup guide
 
-This makes task-agent email feel more like a working conversation and less like a system notification.
+We have added a [Copilot Studio setup guide](/integrations/copilot-studio) for teams that want a Microsoft Copilot Studio agent to use TextMine.
 
-## Smarter progress updates
+The guide walks through the recommended setup, the custom connector fallback, and the first checks to run after connecting an agent.
 
-Task agents now reserve progress-update emails for long-running work where an interim update is useful.
+## Document intake reliability
 
-For ordinary tasks, TextMine avoids sending a separate final notification step when the normal completion email already covers the result. This reduces duplicate emails and keeps the requester focused on the useful outcome.
+Document intake is more reliable for automated and service-account-driven flows.
 
-## Better self-contained responses
-
-Task agents can now complete simple, self-contained response tasks without requiring a Vault, document, workflow, or integration lookup.
-
-This helps with email-based confirmations, short acknowledgements, and concise responses where the instruction itself contains enough context.
-
-## Document extraction reliability
-
-Document extraction is more robust for automated and service-account-driven flows. When a task or service-account action uploads a document, TextMine now handles missing user profile preferences safely while still applying the configured extraction profile.
-
-This improves reliability for document processing that starts outside an interactive user session.
+This helps requests that arrive from shared inboxes, workflow-generated emails, Zapier automations, ServiceNow-backed processes, and other non-interactive routes.
