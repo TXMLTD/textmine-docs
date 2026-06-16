@@ -1,0 +1,42 @@
+---
+title: "15 June 2026"
+description: "Workflow export blocks, Workbench scoping, private folders, and report reliability."
+---
+
+This update improves Workbench source scoping, workflow creation and debugging, report generation, and export paths for operational teams.
+
+## Workbench source scoping
+
+Workbench is better at keeping work tied to the source the user actually asked for. It now preserves scoped requests across follow-up questions, distinguishes uploaded files from Vault documents more reliably, and avoids broadening from a selected folder, Vault, document set, or uploaded source unless the latest request explicitly asks for a broader scope.
+
+This helps tasks such as asking about selected documents, comparing uploaded spreadsheets with Vault evidence, creating agents or workflows for a specific Vault, and turning Workbench analysis into a reusable workflow.
+
+## Workflow builder reliability
+
+The workflow builder now provides stronger validation and clearer warning states while a workflow is being drafted. The data map and canvas highlight missing inputs, incompatible connections, empty-input behavior, and scope issues earlier in the design process.
+
+Workflow run views also show richer execution details, generated artifacts, report outputs, and links back to source Vault documents when available.
+
+## New workflow export and integration options
+
+Workflows can now support more downstream delivery patterns:
+
+- Tableau export blocks for view or workbook outputs, including CSV, Excel, PDF, PNG, and PowerPoint formats.
+- Power BI export blocks for report outputs, including PDF, PowerPoint, and PNG formats.
+- REST/API request response handling for text, JSON values, and downloadable files.
+- ServiceNow submission actions that can attach workflow artifacts, update records, or do both.
+- SharePoint submission actions for sending workflow-generated files to configured SharePoint locations.
+
+API and webhook blocks also support secret placeholders in request configuration so teams can keep reusable workflow definitions clean while using protected credentials at run time.
+
+## Better workflow reports
+
+Workflow report generation now carries more document context into report and template steps. This makes scheduled reports, approval packets, agent-generated summaries, and custom report prompts more likely to cite the right source documents and preserve useful artifacts for review.
+
+When a workflow produces files, reports, filled templates, or agent outputs, the run history is better at showing what was generated and where it can be downloaded or followed up.
+
+## Vault folders and table readability
+
+Vault folder privacy controls are more complete. Teams can create or move documents into private folders, preserve parent-folder access behavior, and select the users who should retain access where the folder is private.
+
+Vault table cells and document type labels also render more consistently, especially when extracted values contain highlights or HTML-like source markup.

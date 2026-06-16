@@ -110,6 +110,7 @@
         "group": "Release notes",
         "pages": [
           "release-notes/index",
+          "release-notes/15-june-2026",
           "release-notes/7-june-2026"
         ]
       },

@@ -9,6 +9,8 @@ Workbench can use files from several sources.
 
 Attach files directly to a Workbench request when you want a quick answer, comparison, template fill, or a later import into Vault. Workbench can answer from uploaded text-like documents without requiring Vault processing.
 
+Uploaded files are treated as temporary Workbench context unless you ask to save them into Vault. When a follow-up request refers to "these files", "the uploaded spreadsheet", or a previous uploaded-source result, Workbench should keep the next action scoped to that uploaded source instead of switching to the whole Vault.
+
 If you ask Workbench to save uploaded files into a Vault, it will use the Vault document pipeline and may ask for approval before mutating Vault content.
 
 ## Connected providers
