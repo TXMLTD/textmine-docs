@@ -1,57 +1,105 @@
 ---
 title: "Set up TextMine in Copilot Studio"
-description: "Connect a Microsoft Copilot Studio agent to TextMine through hosted MCP or a Power Platform custom connector."
+description: "Connect a Microsoft Copilot Studio agent to TextMine with the MCP onboarding wizard or a Power Platform custom connector."
 ---
 
 Use this guide when a Microsoft Copilot Studio agent should search TextMine Vaults, ask questions over documents, inspect business records, or create and follow task-agent work.
 
 TextMine is exposed to Copilot Studio through the hosted TextMine MCP server. The MCP server is backed by Public API V3, so the agent acts with the same TextMine permissions as the API key used for the connection.
 
-For general Microsoft setup details, see Microsoft's guides for [connecting an existing MCP server to a Copilot Studio agent](https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent), [adding MCP tools to an agent](https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-components-to-agent), and [using custom connectors in Copilot Studio agents](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-connectors).
+Microsoft supports two setup paths for existing MCP servers in Copilot Studio:
+
+- **Recommended:** add the TextMine MCP server with Copilot Studio's MCP onboarding wizard.
+- **Fallback:** create a Power Platform custom connector in Power Apps and import an OpenAPI 2.0 wrapper for the TextMine MCP endpoint.
+
+## Which setup path should I use?
+
+| Situation | Use this path |
+| --- | --- |
+| The agent's **Tools** page shows **New tool** \> **Model Context Protocol** | Use the MCP onboarding wizard in Copilot Studio. |
+| A TextMine MCP connector already exists in the same Power Platform environment | Add the existing Model Context Protocol connector to the agent. |
+| **Model Context Protocol** is not available under **New tool** | Create the custom connector in Power Apps, then add it to the agent from Copilot Studio. |
+| You need to connect a non-UK TextMine environment | Use the same path, but replace the host with the environment-specific TextMine MCP host. |
+
+Think of Copilot Studio as the place where the agent gets TextMine as a tool. Use Power Apps only when you need to create the fallback custom connector that Copilot Studio will later consume.
+
+For general Microsoft setup details, see Microsoft's guides for [connecting an existing MCP server to a Copilot Studio agent](https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent), [adding MCP tools to an agent](https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-components-to-agent), [using custom connectors in Copilot Studio agents](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-connectors), and [creating a custom connector from an OpenAPI definition](https://learn.microsoft.com/en-us/connectors/custom-connectors/define-openapi-definition).
 
 ## Before you start
 
 You need:
 
-- Access to Microsoft Copilot Studio and a Power Platform environment that allows MCP tools or custom connectors.
-- A TextMine API key for the TextMine organization the agent should use.
+- Access to Microsoft Copilot Studio and the Power Platform environment where the agent lives.
+- Permission to create or use custom connectors in that environment if you need the fallback path.
+- A TextMine API key for the TextMine organization the agent should use. TextMine API keys use the `tm_...` format.
 - The TextMine MCP endpoint for the target environment.
 - Confirmation that any required TextMine features, Vaults, integrations, and task-agent email routes have been activated for that organization.
 
-For the public UK multitenant environment, use:
+For public UK production, use:
+
+```text
+https://public-api.textmine.com/mcp
+```
+
+Some direct MCP clients may use the hosted app URL:
 
 ```text
 https://app.textmine.com/mcp
 ```
 
-For dedicated environments, use the environment-specific MCP endpoint provided by TextMine.
+For Copilot Studio and Power Platform custom connectors, use the environment's public API host shape, such as `https://public-api.textmine.com/mcp` for UK production. For staging, US, BDO, or dedicated deployments, use the environment-specific MCP endpoint provided by TextMine.
 
-Store the TextMine API key in the Copilot Studio or Power Platform connection. Do not paste it into agent instructions, prompts, chat transcripts, screenshots, or documentation.
+Store the TextMine API key only in the Copilot Studio or Power Platform connection. Do not paste it into agent instructions, prompts, chat transcripts, screenshots, or documentation.
 
-## Recommended setup: add the MCP server
+## Recommended setup: MCP onboarding wizard
 
-Use Copilot Studio's MCP onboarding wizard when it is available in your tenant.
+Use Copilot Studio's MCP onboarding wizard when the **Model Context Protocol** option is available in your tenant.
 
-1. Open Copilot Studio.
-2. Select the agent that should use TextMine.
-3. Go to **Tools**.
-4. Select **Add a tool**.
-5. Select **New tool**.
-6. Select **Model Context Protocol**.
-7. Enter a server name such as `TextMine`.
-8. Enter a short description such as `Search TextMine Vaults, ask document questions, inspect records, and create task-agent work.`
-9. Enter the TextMine MCP server URL.
-10. Choose **API key** authentication.
-11. Use header authentication with this header name:
+### Open the wizard
 
-```text
-X-TextMine-Api-Key
-```
+1. Go to [Copilot Studio](https://copilotstudio.microsoft.com/).
+2. Select the same Power Platform environment that should contain the TextMine connection.
+3. Open the agent that should use TextMine.
+4. In the agent, open **Tools**.
+5. Select **Add a tool**.
+6. Select **New tool**.
+7. Select **Model Context Protocol**.
 
-12. Create a new connection and enter the TextMine API key value.
-13. Add the MCP server to the agent.
+If **Model Context Protocol** appears, the MCP onboarding wizard opens. If it is not available, use the [custom connector fallback](#custom-connector-fallback).
 
-After the server is added, open the tool settings and check the list of tools Copilot Studio discovered from TextMine.
+### Configure TextMine
+
+In the MCP onboarding wizard, enter:
+
+| Field | Value |
+| --- | --- |
+| Server name | `TextMine` |
+| Server description | `Search TextMine Vaults, ask document questions, inspect records, and create task-agent work.` |
+| Server URL | `https://public-api.textmine.com/mcp` for UK production, or the TextMine endpoint for your environment |
+| Authentication type | `API key` |
+| API key type | `Header` |
+| Header name | `X-TextMine-Api-Key` |
+
+Then:
+
+1. Select **Create**.
+2. In the **Add tool** dialog, create a new connection or choose an existing TextMine connection.
+3. When prompted for the API key, enter the raw TextMine key value, for example `tm_...`.
+4. Select **Add to agent**.
+5. Open the TextMine tool settings and review the tools discovered from the MCP server.
+
+## Add an existing TextMine MCP connector to an agent
+
+If someone has already created the MCP connector in the same Power Platform environment:
+
+1. Open the agent in Copilot Studio.
+2. Go to **Tools**.
+3. Select **Add a tool**.
+4. Select **Model Context Protocol**.
+5. Choose the TextMine MCP connector from the list.
+6. Authorize or create the connection with the `tm_...` TextMine API key.
+7. Select **Add and configure**.
+8. Open the TextMine tool settings and confirm the available tools and resources.
 
 ## Choose the tools to allow
 
@@ -62,6 +110,8 @@ Useful starting tools include:
 - `list_vaults`
 - `search_documents`
 - `fetch_document`
+- `get_document_text`
+- `get_document_metadata`
 - `ask_vault`
 - `list_record_schemas`
 - `get_schema_records`
@@ -71,7 +121,9 @@ Useful starting tools include:
 - `getTask`
 - `addTaskMessage`
 
-For tools that create tasks, approve work, send messages, or change TextMine data, add clear agent instructions requiring confirmation before the agent acts.
+In Copilot Studio, open the TextMine tool settings. If **Allow all** is on, Copilot Studio can use all tools exposed by the MCP server. To restrict the agent, turn **Allow all** off and enable only the individual tools you want the agent to use.
+
+For tools that create tasks, approve work, send messages, upload files, import provider files, or change TextMine data, add clear agent instructions requiring confirmation before the agent acts.
 
 ## Test the connection
 
@@ -99,7 +151,7 @@ The results should only include Vaults, documents, records, and tasks that the c
 
 If the MCP onboarding wizard is not available, create a Power Platform custom connector that wraps the TextMine MCP endpoint.
 
-Microsoft's custom connector import flow expects an OpenAPI 2.0 file. The wrapper describes the MCP endpoint for Power Platform; it is not the full TextMine Public API specification.
+Microsoft's custom connector import flow expects an OpenAPI 2.0 file. The wrapper describes the MCP endpoint for Power Platform; it is not the full TextMine Public API specification. Use the [TextMine developer hub](https://developers.textmine.com) for the full REST API reference.
 
 For UK production, use this shape:
 
@@ -107,7 +159,7 @@ For UK production, use this shape:
 swagger: "2.0"
 info:
   title: TextMine MCP UK
-  description: OpenAPI 2.0 custom connector wrapper for the TextMine UK Streamable MCP endpoint.
+  description: OpenAPI 2.0 custom connector wrapper for the TextMine UK production Streamable MCP endpoint. Configure API key authentication in Power Platform with header name X-TextMine-Api-Key, then create connections with the value tm_<key>.
   version: 1.0.0
 host: public-api.textmine.com
 basePath: /
@@ -118,13 +170,14 @@ securityDefinitions:
     type: apiKey
     name: X-TextMine-Api-Key
     in: header
+    description: TextMine API key value: tm_<key>. The MCP server normalizes this to Authorization: Bearer tm_<key> for Public API.
 security:
   - api_key: []
 paths:
   /mcp:
     post:
       summary: Invoke TextMine MCP
-      description: Streamable MCP entrypoint for TextMine.
+      description: Streamable MCP entrypoint for TextMine. Copilot Studio discovers TextMine vault, integration, business record, and task-agent tools from this endpoint.
       x-ms-agentic-protocol: mcp-streamable-1.0
       operationId: InvokeTextMineMcp
       consumes:
@@ -135,7 +188,7 @@ paths:
       parameters:
         - name: Accept
           in: header
-          description: Required by Streamable MCP.
+          description: Required by Streamable MCP so the transport can return JSON or server-sent event messages.
           required: true
           type: string
           default: application/json,text/event-stream
@@ -145,19 +198,77 @@ paths:
           description: Success
 ```
 
-To import it:
+### Import the wrapper in Power Apps
 
-1. In Copilot Studio, open the agent and go to **Tools**.
-2. Select **Add a tool**.
-3. Select **New tool**.
-4. Select **Custom connector**.
-5. In Power Apps, create a new custom connector by importing the OpenAPI file.
-6. In the connector security settings, use API-key authentication.
-7. Set the parameter name to `X-TextMine-Api-Key` and the location to `Header`.
-8. Create a connection with a TextMine `tm_...` API key from the same TextMine environment as the connector host.
-9. Return to Copilot Studio and add the connector to the agent.
+1. Copy the YAML above into a file named `textmine-mcp-uk.openapi.yaml`.
+2. Go to [Power Apps](https://make.powerapps.com/).
+3. Select the same Power Platform environment as the Copilot Studio agent.
+4. In the left navigation, select **More** if needed, then select **Discover all**.
+5. Under **Data**, select **Custom connectors**.
+6. Select **New custom connector**.
+7. Select **Import an OpenAPI file**.
+8. Enter a connector name such as `TextMine MCP UK`.
+9. Upload `textmine-mcp-uk.openapi.yaml`.
+10. Select **Continue**.
 
-For staging, US, BDO, or dedicated deployments, use the host provided for that environment instead of `public-api.textmine.com`.
+### Review the connector settings
+
+In the custom connector wizard:
+
+1. On **General**, confirm:
+   - **Host:** `public-api.textmine.com`
+   - **Base URL:** `/`
+   - **Scheme:** `HTTPS`
+2. On **Security**, confirm:
+   - **Authentication type:** `API Key`
+   - **Parameter label:** `api_key` or `TextMine API key`
+   - **Parameter name:** `X-TextMine-Api-Key`
+   - **Parameter location:** `Header`
+3. On **Definition**, confirm the action is `InvokeTextMineMcp` and that the `/mcp` `POST` operation includes `x-ms-agentic-protocol: mcp-streamable-1.0`.
+4. Confirm the `Accept` header parameter is internal and defaults to `application/json,text/event-stream`.
+5. Select **Create connector** or **Update connector**.
+
+Do not add an `Authorization` header parameter to the Power Platform connector. Power Platform owns authorization handling for connector calls. TextMine expects the connector connection to send the TextMine key through `X-TextMine-Api-Key`.
+
+### Create the connection
+
+1. In the connector, open **Test**.
+2. Select **New connection**.
+3. Paste the TextMine API key value, for example `tm_...`.
+4. Create the connection.
+5. If the connection does not appear immediately on the **Test** tab, wait a few minutes and refresh the connection list.
+
+The API key must come from the same TextMine environment as the connector host. A UK production key should be used with `public-api.textmine.com`, not a staging, US, BDO, or dedicated host.
+
+### Add the custom connector to Copilot Studio
+
+After the connector exists in Power Apps:
+
+1. Return to Copilot Studio.
+2. Open the agent.
+3. Go to **Tools**.
+4. Select **Add a tool**.
+5. Select **Model Context Protocol**.
+6. Select the TextMine custom connector.
+7. Authorize the connection if prompted.
+8. Select **Add and configure**.
+9. Open the tool settings and review the discovered TextMine MCP tools.
+
+If the connector does not appear, confirm that the connector and agent are in the same Power Platform environment and that the OpenAPI operation includes `x-ms-agentic-protocol: mcp-streamable-1.0`.
+
+## Environment hosts
+
+Use the host that matches the TextMine API key and deployment:
+
+| Environment | Connector host | MCP path |
+| --- | --- | --- |
+| UK production | `public-api.textmine.com` | `/mcp` |
+| Staging | `public-staging.textmine.com` | `/mcp` |
+| US production | `public-mufg.api.textmine.com` | `/mcp` |
+| BDO production | `public-bdo.api.textmine.com` | `/mcp` |
+| Dedicated deployment | Provided by TextMine | `/mcp` |
+
+For a non-UK environment, keep the same OpenAPI wrapper shape and replace the `info.title`, `info.description`, and `host` values with the target environment details.
 
 ## Agent instructions
 
@@ -166,7 +277,7 @@ Add instructions that keep the Copilot Studio agent predictable:
 ```text
 Use TextMine when the user asks about TextMine Vault documents, contract data, business records, or TextMine task-agent work.
 
-Before creating tasks, approving work, sending emails, changing records, or triggering workflows, explain the planned action and ask for confirmation.
+Before creating tasks, approving work, sending emails, uploading files, importing provider files, changing records, or triggering workflows, explain the planned action and ask for confirmation.
 
 When answering from TextMine documents, include the document names and source references returned by TextMine.
 
@@ -177,9 +288,12 @@ If TextMine says a Vault, integration, or task-agent email route is not availabl
 
 | Symptom | Check |
 | --- | --- |
-| The agent cannot connect to TextMine | Confirm the MCP endpoint matches the TextMine environment for the API key. |
+| **Model Context Protocol** is not available under **New tool** | The MCP onboarding wizard may not be enabled for the tenant or environment. Use the custom connector fallback. |
+| The TextMine connector does not appear in Copilot Studio | Confirm the connector and agent are in the same Power Platform environment and the OpenAPI operation includes `x-ms-agentic-protocol: mcp-streamable-1.0`. |
+| The agent cannot connect to TextMine | Confirm the MCP endpoint host matches the TextMine environment for the API key. |
 | Authentication fails | Confirm the connection sends `X-TextMine-Api-Key` with the raw `tm_...` key value. |
-| No tools appear | Confirm the tenant allows MCP/custom connector tools and that the connector includes `x-ms-agentic-protocol: mcp-streamable-1.0`. |
+| No tools appear | Confirm the tenant allows MCP/custom connector tools and that the connector was added as a Model Context Protocol tool. |
+| Streamable MCP errors mention `Accept` | Confirm the custom connector includes the internal `Accept` header with `application/json,text/event-stream`. |
 | A Vault or document is missing | Confirm the connected TextMine API key has access to that Vault or document. |
 | ServiceNow or another provider is unavailable | Confirm the integration is activated and connected in TextMine before asking the agent to use it. |
 | Task-agent email does not create work | Confirm task-agent email has been activated for the organization. |
