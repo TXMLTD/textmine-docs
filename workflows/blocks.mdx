@@ -71,8 +71,10 @@ Conditions should be as specific as possible. Use deterministic conditions for k
 | `reconcile_data` | Compares inputs or outputs and reports breaks or exceptions. | Use for matching, variance checks, and exception reports. |
 | `compare_to_accepted_output` | Compares generated output with an approved answer, table, CSV, JSON, or Excel file. | Use for QA and regression-style checks. |
 | `enrich_values` | Searches web or named sources and can download files. | Use when external context is needed. |
-| `api_request` | Runs a structured REST API request. | cURL or Python snippets can be imported as configuration, but arbitrary code is not executed. |
-| `webhook` | Calls an outbound webhook or HTTP callback. | Uses the same structured request model as API request. |
+| `api_request` | Runs a structured REST API request. | cURL or Python snippets can be imported as configuration, but arbitrary code is not executed. Responses can be captured as text, JSON values, or downloadable files. |
+| `webhook` | Calls an outbound webhook or HTTP callback. | Uses the same structured request model as API request and can use secret placeholders in headers or bodies. |
+| `tableau_export` | Exports Tableau views or workbooks. | Supports CSV, Excel, PDF, PNG, and PowerPoint outputs where the Tableau integration is configured. |
+| `power_bi_export` | Exports Power BI reports. | Supports PDF, PowerPoint, and PNG outputs where the Power BI integration is configured. |
 
 ## Records and analytics actions
 
@@ -100,8 +102,8 @@ Conditions should be as specific as possible. Use deterministic conditions for k
 | Block | What it does | Notes |
 | --- | --- | --- |
 | `fill_template` | Fills a spreadsheet, CSV, text, Word, or form template from workflow data. | Can use AI field matching. |
-| `send_report_template` | Generates a report from a predefined template. | Use when a standard report exists. |
-| `send_report_custom` | Generates a report from a free-form prompt. | Use for one-off or flexible report outputs. |
+| `send_report_template` | Generates a report from a predefined template. | Use when a standard report exists; workflow document context is passed into the report step. |
+| `send_report_custom` | Generates a report from a free-form prompt. | Use for one-off or flexible report outputs grounded in the current workflow scope. |
 
 ## Delivery and integration actions
 
@@ -109,7 +111,7 @@ Conditions should be as specific as possible. Use deterministic conditions for k
 | --- | --- | --- |
 | `send_to_legislate` | Publishes in-scope imported documents to Legislate. | Use after validation when documents or data should enter the Legislate archive. |
 | `import_from_integration` | Pulls records and attachments from an external system into the workflow Vault. | Current catalog supports ServiceNow. |
-| `submit_to_integration` | Pushes outputs to an external system. | Current implementation supports SharePoint output. |
+| `submit_to_integration` | Pushes outputs to an external system. | Supports SharePoint file uploads and ServiceNow submissions for attaching workflow artifacts, updating records, or both where enabled. |
 | `send_email` | Sends an email notification and can attach outputs, reports, documents, templates, or intake attachments. | Use sender modes such as original sender or intake submitter for inbound workflows. |
 
 ## Agent guidance

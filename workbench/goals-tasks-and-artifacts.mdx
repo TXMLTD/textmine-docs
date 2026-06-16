@@ -9,12 +9,18 @@ For the full capability list, see [Workbench capabilities](/workbench/capabiliti
 
 ## Tasks
 
-Tasks are used when a request needs backend execution, asynchronous processing, or approval. Examples include running table extraction, generating reports, running agents, applying playbooks, importing documents, creating workflows, or updating records.
+Tasks are used when a request needs backend execution, asynchronous processing, source-scope checks, or approval. Examples include running table extraction, generating reports, running agents, applying playbooks, importing documents, creating workflows, or updating records.
+
+Workbench should resolve the intended source before starting a task. That source may be selected Vault documents, a folder, a Vault, uploaded files, a provider import, a workflow run, a record set, or a previous artifact.
 
 ## Approvals
 
 Some Workbench capabilities mutate reusable data or trigger broad processing. These actions require approval, such as creating workflows, creating playbooks, importing documents into Vault, creating tags, running agents, updating records, or changing record schemas.
 
+Approval prompts should show the important scope and side effects: which Vault, documents, folders, workflow, records, provider files, or output destinations are involved.
+
 ## Artifacts
 
-When a task produces a useful answer, report, table, or structured output, Workbench can save it back to the session as an artifact so it can be reviewed later.
+When a task produces a useful answer, report, table, file, or structured output, Workbench can save it back to the session as an artifact so it can be reviewed later.
+
+Artifacts can also serve as source context for the next step. For example, a generated table can feed a report, a filled template can be attached to an email or integration step, and a workflow draft can be reviewed before it is created.

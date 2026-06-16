@@ -20,7 +20,7 @@ Use this page to understand what Workbench can do. External agents should use [T
 | Capability | What it does | Notes |
 | --- | --- | --- |
 | `inspect_vault_documents` | Reads document metadata, IDs, Vault scope, and processing state. | Use early when a task depends on Vault documents. |
-| `search_accessible_vault_documents` | Searches documents and extracted tags across accessible Vaults. | Resolves source scopes before asking Vault or creating reports. |
+| `search_accessible_vault_documents` | Searches documents and extracted tags across accessible Vaults. | Resolves source scopes before asking Vault, creating reports, or running workflow-backed actions. |
 | `ask_vault` | Answers using Vault documents, extracted tags, and optional uploaded reference text. | Read-only analysis, comparison, summarization, and evidence-backed answers. |
 | `answer_reference_document` | Answers directly from uploaded reference text without requiring Vault processing. | Good for quick uploaded-file analysis. |
 | `import_uploaded_documents` | Imports Workbench-uploaded files into a selected Vault. | Requires approval and uses the durable Vault document pipeline. |
@@ -71,7 +71,7 @@ The provider import path is intentionally bounded: Workbench imports selected fi
 
 | Capability | What it does | Notes |
 | --- | --- | --- |
-| `create_report` | Creates a report, table, comparison, summary, or analysis over selected documents. | Asynchronous; should honor resolved source scope. |
+| `create_report` | Creates a report, table, comparison, summary, or analysis over selected documents. | Asynchronous; should honor resolved source scope and carry document context into the report. |
 | `wait_for_report_completion` | Waits for a report job to complete. | Reads status and result. |
 | `fill_template` | Fills an uploaded Word, Excel, CSV, text, form, or spreadsheet template. | Uses uploaded template files and conversation context. |
 | `synthesize_workbench_result` | Produces a partial answer from successful prior steps if a dependent analyzer failed. | Fallback for resilient task completion. |
@@ -81,8 +81,8 @@ The provider import path is intentionally bounded: Workbench imports selected fi
 | Capability | What it does | Notes |
 | --- | --- | --- |
 | `read_workflows` | Lists available workflows. | Read-only inventory. |
-| `create_workflow` | Creates a reusable workflow using the workflow block catalog. | Requires approval; see [Workflow blocks](/workflows/blocks). |
-| `run_workflow` | Runs an existing workflow or one-off workflow-backed action. | Asynchronous; followed by `wait_for_workflow_completion`. |
+| `create_workflow` | Creates a reusable workflow using the workflow block catalog. | Requires approval; should preserve the selected Vault or document scope and surface warnings before creation. See [Workflow blocks](/workflows/blocks). |
+| `run_workflow` | Runs an existing workflow or one-off workflow-backed action. | Asynchronous; followed by `wait_for_workflow_completion`; should confirm scope before side-effecting runs. |
 | `cleanup_one_off_workflow` | Soft-deletes a temporary one-off workflow after completion. | Host-inserted cleanup. |
 | `read_agents` | Lists on-demand agents. | Read-only inventory. |
 | `create_agent` | Creates an on-demand agent. | Requires approval. |

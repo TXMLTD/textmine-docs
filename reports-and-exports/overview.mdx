@@ -13,10 +13,10 @@ Use reports when a user needs a narrative, table, review memo, exception list, o
 | --- | --- | --- |
 | Vault / Ask Vault | Document summaries, comparison reports, extracted-field reports, table summaries | Best when the report is grounded in selected Vault documents. |
 | Workbench | Exploratory research outputs, multi-file analysis, generated tables, documents, charts, and follow-up files | Best for supervised, iterative work. |
-| Workflows | Scheduled reports, approval packets, exception reports, template-based reports | Best for repeatable processes and audit history. |
+| Workflows | Scheduled reports, approval packets, exception reports, template-based reports, BI exports, integration submissions | Best for repeatable processes and audit history. |
 | Playbooks | Clause review outputs, policy checklists, negotiation guidance, comparison artifacts | Best for reusable review rules. |
 | Records | Entity summaries, missing-field reports, graph or relationship summaries, candidate review reports | Best for structured business data. |
-| Public API / MCP | Programmatic report generation and status polling | Best for developer and agent workflows. |
+| Public API / MCP | Programmatic report generation, status polling, and workflow-backed file outputs | Best for developer and agent workflows. |
 
 ## Report types
 
@@ -30,6 +30,7 @@ TextMine can support several output shapes depending on the originating surface 
 - Approval packets.
 - Evidence-backed summaries with source documents and passages.
 - Export files for external systems.
+- Tableau and Power BI export artifacts.
 
 ## Workflow report blocks
 
@@ -37,11 +38,13 @@ Workflows can generate reports as part of a repeatable process.
 
 | Block | Use it for |
 | --- | --- |
-| `send_report_template` | A standard report template exists and should be reused. |
-| `send_report_custom` | The report should be generated from a prompt or custom instruction. |
+| `send_report_template` | A standard report template exists and should be reused with the current workflow document context. |
+| `send_report_custom` | The report should be generated from a prompt or custom instruction grounded in workflow scope. |
 | `fill_template` | A spreadsheet, CSV, text, Word, or form template should be filled from workflow values. |
+| `api_request` | A REST call should return text, extracted JSON values, or a downloadable file for later steps. |
+| `tableau_export` / `power_bi_export` | BI content should be exported as a workflow artifact. |
 | `send_email` | The generated report or export should be delivered to recipients. |
-| `submit_to_integration` | The output should be sent to an external system such as SharePoint where enabled. |
+| `submit_to_integration` | The output should be sent to an external system such as SharePoint or ServiceNow where enabled. |
 
 ## Exports and external systems
 
@@ -50,6 +53,7 @@ Exports can be used to move TextMine outputs into downstream systems. Depending 
 - Downloading generated files from Workbench or report outputs.
 - Sending workflow outputs by email.
 - Submitting workflow outputs to SharePoint.
+- Attaching workflow artifacts to ServiceNow records or updating ServiceNow fields.
 - Publishing validated documents from Vault to Legislate.
 - Exporting Records data for review or external sync.
 - Using Public API V3 to retrieve generated outputs or poll asynchronous jobs.

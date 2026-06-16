@@ -13,8 +13,10 @@ For the full backend capability reference, see [Workbench capabilities](/workben
 
 - Inspect selected Vault documents before acting.
 - Search accessible Vaults and return document or tag tables.
+- Keep follow-up work scoped to the selected Vault, folder, document set, uploaded file, provider import, or previous result unless the user asks to broaden it.
 - Read Legislate team-document inventory when the user asks about published Legislate documents.
 - Ask Vault questions using documents, extracted tags, and uploaded reference files.
+- Analyze uploaded files as temporary context without requiring Vault processing.
 - Import uploaded files into a Vault when approved.
 - Browse and import files from enabled MCP providers such as connected storage systems.
 - Create reports, workflows, playbooks, document types, tags, agents, records, and record schemas.
@@ -43,5 +45,6 @@ When an external agent needs to modify TextMine state, prefer the API or MCP too
 
 - Start with Workbench to explore a messy request, then save the repeatable parts as a workflow.
 - Upload files into Workbench for temporary context, then import them into Vault only when they need durable processing and governance.
+- Name the source scope in the prompt when it matters: a Vault, folder, selected documents, uploaded files, provider import, or previous table.
 - Ask Workbench to use Legislate when the question is about validated, published document data.
 - Use records when the answer should become structured business data rather than a one-off response.
