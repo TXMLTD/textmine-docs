@@ -547,5 +547,8 @@
     ],
     "display": "header"
   },
-  "description": "Self-service help for getting started with TextMine, working with documents and data, automating reviews, integrations, permissions, and product updates."
+  "description": "Self-service help for getting started with TextMine, working with documents and data, automating reviews, integrations, permissions, and product updates.",
+  "interaction": {
+    "drilldown": true
+  }
 }
