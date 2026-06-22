@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "TextMine Documentation",
+  "name": "TextMine Help Center",
   "theme": "mint",
   "colors": {
     "primary": "#009BFF",
@@ -10,7 +10,7 @@
   "navigation": {
     "groups": [
       {
-        "group": "Overview",
+        "group": "Start here",
         "pages": [
           "index",
           "getting-started/product-map",
@@ -19,7 +19,7 @@
         ]
       },
       {
-        "group": "Workbench",
+        "group": "Use Workbench",
         "pages": [
           "workbench/overview",
           "workbench/capabilities",
@@ -28,34 +28,79 @@
         ]
       },
       {
-        "group": "Vault",
+        "group": "Manage documents and data",
         "pages": [
-          "vault/overview",
-          "vault/capabilities",
-          "vault/document-types-and-tags",
-          "vault/tags-and-extraction",
-          "vault/ask-vault-and-reports"
+          "documents-and-data/index",
+          {
+            "group": "Vault",
+            "pages": [
+              "vault/overview",
+              "vault/capabilities",
+              "vault/document-types-and-tags",
+              "vault/tags-and-extraction",
+              "vault/ask-vault-and-reports"
+            ]
+          },
+          {
+            "group": "Legislate",
+            "pages": [
+              "legislate/overview"
+            ]
+          },
+          {
+            "group": "Records",
+            "pages": [
+              "records/overview",
+              "records/schemas-and-candidates",
+              "records/ask-graph-and-enrichment"
+            ]
+          },
+          {
+            "group": "Reports and exports",
+            "pages": [
+              "reports-and-exports/overview"
+            ]
+          },
+          {
+            "group": "Scribe",
+            "pages": [
+              "scribe/overview"
+            ]
+          }
         ]
       },
       {
-        "group": "Legislate",
+        "group": "Automate work",
         "pages": [
-          "legislate/overview"
+          "automation/index",
+          {
+            "group": "Workflows",
+            "pages": [
+              "workflows/overview",
+              "workflows/blocks",
+              "workflows/examples",
+              "workflows/create-a-workflow",
+              "workflows/email-intake-and-approvals",
+              "workflows/records-and-integrations"
+            ]
+          },
+          {
+            "group": "Playbooks",
+            "pages": [
+              "playbooks/overview",
+              "playbooks/create-and-run"
+            ]
+          },
+          {
+            "group": "Agents",
+            "pages": [
+              "agents/overview"
+            ]
+          }
         ]
       },
       {
-        "group": "Workflows",
-        "pages": [
-          "workflows/overview",
-          "workflows/blocks",
-          "workflows/examples",
-          "workflows/create-a-workflow",
-          "workflows/email-intake-and-approvals",
-          "workflows/records-and-integrations"
-        ]
-      },
-      {
-        "group": "Integrations",
+        "group": "Connect TextMine",
         "pages": [
           "integrations/overview",
           "integrations/third-party-agent-signup",
@@ -68,56 +113,29 @@
         ]
       },
       {
-        "group": "Playbooks",
+        "group": "Admin and updates",
         "pages": [
-          "playbooks/overview",
-          "playbooks/create-and-run"
-        ]
-      },
-      {
-        "group": "Records",
-        "pages": [
-          "records/overview",
-          "records/schemas-and-candidates",
-          "records/ask-graph-and-enrichment"
-        ]
-      },
-      {
-        "group": "Agents",
-        "pages": [
-          "agents/overview"
-        ]
-      },
-      {
-        "group": "Reports and exports",
-        "pages": [
-          "reports-and-exports/overview"
-        ]
-      },
-      {
-        "group": "Scribe",
-        "pages": [
-          "scribe/overview"
-        ]
-      },
-      {
-        "group": "Administration",
-        "pages": [
-          "administration/permissions"
-        ]
-      },
-      {
-        "group": "Release notes",
-        "pages": [
-          "release-notes/index",
-          "release-notes/15-june-2026",
-          "release-notes/7-june-2026"
-        ]
-      },
-      {
-        "group": "Archive",
-        "pages": [
-          "archive/intercom/index"
+          "admin-and-updates/index",
+          {
+            "group": "Administration",
+            "pages": [
+              "administration/permissions"
+            ]
+          },
+          {
+            "group": "Release notes",
+            "pages": [
+              "release-notes/index",
+              "release-notes/15-june-2026",
+              "release-notes/7-june-2026"
+            ]
+          },
+          {
+            "group": "Archive",
+            "pages": [
+              "archive/intercom/index"
+            ]
+          }
         ]
       }
     ]
@@ -528,5 +546,6 @@
       "view"
     ],
     "display": "header"
-  }
+  },
+  "description": "Self-service help for getting started with TextMine, working with documents and data, automating reviews, integrations, permissions, and product updates."
 }
