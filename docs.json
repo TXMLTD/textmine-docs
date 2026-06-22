@@ -3,9 +3,9 @@
   "name": "TextMine Help Center",
   "theme": "mint",
   "colors": {
-    "primary": "#009BFF",
-    "light": "#80CDFF",
-    "dark": "#002740"
+    "primary": "#0066CC",
+    "light": "#3399FF",
+    "dark": "#80CDFF"
   },
   "navigation": {
     "groups": [
@@ -499,8 +499,13 @@
   ],
   "seo": {
     "metatags": {
-      "canonical": "https://docs.textmine.com"
-    }
+      "canonical": "https://docs.textmine.com",
+      "og:title": "TextMine Help Center",
+      "og:description": "Self-service help for TextMine Workbench, Vault, workflows, records, integrations, permissions, product updates, and agent/API setup.",
+      "twitter:title": "TextMine Help Center",
+      "twitter:description": "Self-service help for TextMine Workbench, Vault, workflows, records, integrations, permissions, product updates, and agent/API setup."
+    },
+    "indexing": "all"
   },
   "logo": {
     "light": "https://app.textmine.com/assets/text-mine-logo.svg",
@@ -547,8 +552,17 @@
     ],
     "display": "header"
   },
-  "description": "Self-service help for getting started with TextMine, working with documents and data, automating reviews, integrations, permissions, and product updates.",
+  "description": "Self-service help for TextMine Workbench, Vault, workflows, records, integrations, permissions, product updates, and agent/API setup.",
   "interaction": {
     "drilldown": true
+  },
+  "search": {
+    "prompt": "Search the TextMine Help Center for Workbench, Vault, workflows, records, integrations, permissions, product updates, or agent and API setup."
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
+  },
+  "metadata": {
+    "timestamp": true
   }
 }
