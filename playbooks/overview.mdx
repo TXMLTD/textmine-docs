@@ -1,6 +1,6 @@
 ---
 title: "Playbooks overview"
-description: "Learn how TextMine playbooks apply reusable document review rules, checklists, negotiation guidance, and structured findings to Vault documents."
+description: "Learn how TextMine playbooks apply reusable document review rules, checklists, negotiation guidance, analytics, and structured findings to Vault documents."
 ---
 
 Playbooks turn review policies, clause checklists, rule tables, fallback positions, and negotiation guidance into reusable document reviews.
@@ -23,7 +23,7 @@ A playbook can include:
 - Reviewer guidance.
 - Comparison criteria.
 
-TextMine can parse playbook content from source text, policies, checklists, tables, or uploaded documents and convert it into structured review rules.
+TextMine can parse playbook content from source text, policies, checklists, tables, uploaded documents, or Knowledge Base artifacts and convert it into structured review rules.
 
 ## Playbook types
 
@@ -58,6 +58,12 @@ A playbook run can produce:
 - Evidence references to the underlying document.
 - Escalation or approval inputs for a workflow.
 
+## Analytics and improvement
+
+Use [Playbook analytics](/playbooks/analytics) after a playbook has completed runs. Analytics shows compliant rules, non-compliant rules, rules needing review, unobserved rules, potential conflicts, and recommendations for improving rule wording or correction guidance.
+
+Analytics helps playbook owners decide whether repeated exceptions are genuine document issues, missing evidence, or playbook rules that should be clarified.
+
 ## Example use cases
 
 | Team | Playbook | Output |
@@ -71,4 +77,4 @@ A playbook run can produce:
 
 Agents should inspect existing playbooks before creating a new one. If the user wants a repeatable policy review, propose a playbook. If the user wants routing, scheduling, approvals, emails, or integration steps, propose a workflow that applies a playbook.
 
-Before running a playbook across many documents, confirm the scope, Vault, document type, and expected output.
+Before running a playbook across many documents, confirm the scope, Vault, document type, and expected output. Before changing a mature playbook, inspect analytics and ask before applying recommendations.

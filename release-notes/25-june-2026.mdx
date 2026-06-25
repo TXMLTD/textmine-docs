@@ -1,0 +1,46 @@
+---
+title: "25 June 2026"
+description: "Python workflow blocks, Knowledge Bases, and Playbook analytics."
+---
+
+This release adds more programmable workflow steps, launches Knowledge Bases for shared source libraries and AI-assisted deliverables, and introduces analytics for improving playbooks after real review runs.
+
+## Workflow blocks for data analysis and regulated-source workflows
+
+Workflows now include more blocks for data transformation, analysis, source collection, and review operations.
+
+The biggest addition in [Workflow blocks](/workflows/blocks) is `run_python`. This block runs a bounded Python data-analysis script over workflow inputs, labels, arrays, variables, and table outputs. Workflow labels are exposed as snake\_case variables and `*_list` arrays, while top-level result keys and public variables can be saved back as workflow variables for later blocks.
+
+`run_python` is designed for analysis inside the workflow context: calculations, table cleanup, reconciliation prep, exception summaries, and intermediate values that later reports, records, emails, or approvals can reuse. Network access is blocked in the Python runtime, so external calls should still use `api_request` or `webhook` blocks.
+
+Other new workflow blocks help teams build richer automations without leaving the workflow builder:
+
+- `run_workbench_capability` runs Workbench from a natural-language instruction using the workflow's current Vault, document, and input scope.
+- `move_document_to_folder` moves the current workflow document scope into a target Vault folder.
+- `resolve_ecfr_sources` fetches official eCFR text from CFR/eCFR citations and can follow capped cross-references.
+- `resolve_fca_handbook_sources` fetches FCA Handbook provision text and can follow capped Handbook cross-references.
+- `extract_tables_or_line_items` captures tables or line items from in-scope documents for downstream review and reporting.
+- `get_analytics_metric` reads workflow analytics, starting with pages processed for an organization or workflow Vault over a selected period.
+- `sample_population` selects fixed-size or percentage samples and can emit a sample register for audit and QA.
+
+Together these blocks make workflows better suited to data-heavy processes such as regulatory monitoring, population testing, report generation, control checks, and recurring document reviews.
+
+## Knowledge Bases
+
+[Knowledge Bases](/knowledge-bases/overview) are now available for teams that want a shared, curated place to collect source material and ask questions over it.
+
+A Knowledge Base can hold uploaded files, Vault documents, Legislate documents, and business records. Teams can organize sources into folders, add members, manage private or team visibility, and keep a recent activity trail for the hub.
+
+Each source can be profiled with summaries, document type labels, topics, starter questions, extracted context, tables, entities, and reusable tags. Teams can also define feedback fields so reviewers can capture structured source-level feedback such as status, priority, owner, date, or notes.
+
+Users can ask a Knowledge Base questions and receive answers grounded in the selected hub sources, with source references and evidence where available. Knowledge Bases also support generated artifacts and reports, including document, presentation, PDF, and report-style outputs. Artifacts can be refreshed, revised, versioned, exported to Word, PowerPoint, or PDF, and promoted into a playbook when a drafted review artifact should become reusable review logic.
+
+## Playbook analytics
+
+Playbooks now have a [Playbook analytics](/playbooks/analytics) view that turns completed playbook runs into rule-level feedback.
+
+The analytics dashboard shows how each playbook is performing across completed runs, including compliant rules, non-compliant rules, rules that need review, and rules that were not observed. Teams can filter by playbook, open the related runs, and inspect rule outcomes without leaving the Playbooks area.
+
+For reviewed Word document iterations, analytics can also show resolution signals such as resolved non-compliance, average iterations to resolution, and reviewed versions compared. This helps teams understand whether playbook findings are leading to corrected document language over time.
+
+The new analytics tabs separate consistently compliant rules, rules needing attention, recommendations, potential conflicts, and unobserved rules. Where TextMine detects a recurring issue, analytics can recommend playbook corrections, show the proposed change, and let reviewers apply, discard, restore, or apply all recommendations. Teams can also export playbook analytics to PDF for review packs or governance reporting.

@@ -33,6 +33,12 @@
         "pages": [
           "documents-and-data/index",
           {
+            "group": "Knowledge Bases",
+            "pages": [
+              "knowledge-bases/overview"
+            ]
+          },
+          {
             "group": "Vault",
             "pages": [
               "vault/overview",
@@ -89,7 +95,8 @@
             "group": "Playbooks",
             "pages": [
               "playbooks/overview",
-              "playbooks/create-and-run"
+              "playbooks/create-and-run",
+              "playbooks/analytics"
             ]
           },
           {
@@ -127,6 +134,7 @@
             "group": "Release notes",
             "pages": [
               "release-notes/index",
+              "release-notes/25-june-2026",
               "release-notes/15-june-2026",
               "release-notes/7-june-2026"
             ]
