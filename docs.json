@@ -33,6 +33,12 @@
         "pages": [
           "documents-and-data/index",
           {
+            "group": "Knowledge Bases",
+            "pages": [
+              "knowledge-bases/overview"
+            ]
+          },
+          {
             "group": "Vault",
             "pages": [
               "vault/overview",
@@ -89,7 +95,8 @@
             "group": "Playbooks",
             "pages": [
               "playbooks/overview",
-              "playbooks/create-and-run"
+              "playbooks/create-and-run",
+              "playbooks/analytics"
             ]
           },
           {

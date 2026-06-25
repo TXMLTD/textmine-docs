@@ -9,7 +9,7 @@ This release adds more programmable workflow steps, launches Knowledge Bases for
 
 Workflows now include more blocks for data transformation, analysis, source collection, and review operations.
 
-The biggest addition is `run_python`. This block runs a bounded Python data-analysis script over workflow inputs, labels, arrays, variables, and table outputs. Workflow labels are exposed as snake\_case variables and `*_list` arrays, while top-level result keys and public variables can be saved back as workflow variables for later blocks.
+The biggest addition in [Workflow blocks](/workflows/blocks) is `run_python`. This block runs a bounded Python data-analysis script over workflow inputs, labels, arrays, variables, and table outputs. Workflow labels are exposed as snake\_case variables and `*_list` arrays, while top-level result keys and public variables can be saved back as workflow variables for later blocks.
 
 `run_python` is designed for analysis inside the workflow context: calculations, table cleanup, reconciliation prep, exception summaries, and intermediate values that later reports, records, emails, or approvals can reuse. Network access is blocked in the Python runtime, so external calls should still use `api_request` or `webhook` blocks.
 
@@ -27,7 +27,7 @@ Together these blocks make workflows better suited to data-heavy processes such 
 
 ## Knowledge Bases
 
-Knowledge Bases are now available for teams that want a shared, curated place to collect source material and ask questions over it.
+[Knowledge Bases](/knowledge-bases/overview) are now available for teams that want a shared, curated place to collect source material and ask questions over it.
 
 A Knowledge Base can hold uploaded files, Vault documents, Legislate documents, and business records. Teams can organize sources into folders, add members, manage private or team visibility, and keep a recent activity trail for the hub.
 
@@ -37,7 +37,7 @@ Users can ask a Knowledge Base questions and receive answers grounded in the sel
 
 ## Playbook analytics
 
-Playbooks now have an analytics view that turns completed playbook runs into rule-level feedback.
+Playbooks now have a [Playbook analytics](/playbooks/analytics) view that turns completed playbook runs into rule-level feedback.
 
 The analytics dashboard shows how each playbook is performing across completed runs, including compliant rules, non-compliant rules, rules that need review, and rules that were not observed. Teams can filter by playbook, open the related runs, and inspect rule outcomes without leaving the Playbooks area.
 

@@ -15,7 +15,7 @@ Each block has a type, configuration, input context, and output. Later blocks ca
 - **Conditions** decide which route should run.
 - **Actions** do work, create outputs, or change TextMine or external systems.
 
-Blocks that create durable effects should be treated carefully by agents. Request confirmation before publishing, sending email, changing assignments, creating records, submitting to integrations, or triggering a workflow with business side effects.
+Blocks that create durable effects should be treated carefully by agents. Request confirmation before publishing, sending email, changing assignments, creating records, moving documents, submitting to integrations, or triggering a workflow with business side effects.
 
 ## Trigger blocks
 
@@ -52,12 +52,13 @@ Conditions should be as specific as possible. Use deterministic conditions for k
 | `create_alert` | Creates a task, reminder, or alert. | Can include recipients and due dates. |
 | `request_approval` | Pauses the workflow until approvers approve or reject. | Use before publishing, sending, external submission, or other high-impact actions. |
 
-## AI and playbook actions
+## AI, Workbench, and playbook actions
 
 | Block | What it does | Notes |
 | --- | --- | --- |
 | `ai_review` | Runs an AI review pass against extracted tags using an instruction. | Best for validating extraction or review quality. |
 | `run_general_action` | Runs an analytical instruction and captures a labeled output. | Use for summaries, classifications, or reusable reasoning outputs. |
+| `run_workbench_capability` | Runs Workbench from a natural-language instruction using the workflow's Vault, document, and input scope. | Use when the workflow needs Workbench-style planning or analysis as a step. |
 | `run_agent` | Triggers a preconfigured agent and waits for the result. | The agent result becomes workflow output. |
 | `apply_playbook` | Runs a playbook against documents and can create a Word artifact. | Use when review rules should be reusable and auditable. |
 
@@ -70,11 +71,14 @@ Conditions should be as specific as possible. Use deterministic conditions for k
 | `organise_values` | Extracts, normalizes, deduplicates, or reformats values. | Use before records, reports, or API calls. |
 | `reconcile_data` | Compares inputs or outputs and reports breaks or exceptions. | Use for matching, variance checks, and exception reports. |
 | `compare_to_accepted_output` | Compares generated output with an approved answer, table, CSV, JSON, or Excel file. | Use for QA and regression-style checks. |
+| `run_python` | Runs a bounded Python data-analysis script over workflow inputs, labels, arrays, variables, and table outputs. | Use for calculations, table cleanup, exception summaries, and intermediate values. REST and network calls are blocked; use `api_request` for external APIs. |
 | `enrich_values` | Searches web or named sources and can download files. | Use when external context is needed. |
 | `api_request` | Runs a structured REST API request. | cURL or Python snippets can be imported as configuration, but arbitrary code is not executed. Responses can be captured as text, JSON values, or downloadable files. |
 | `webhook` | Calls an outbound webhook or HTTP callback. | Uses the same structured request model as API request and can use secret placeholders in headers or bodies. |
 | `tableau_export` | Exports Tableau views or workbooks. | Supports CSV, Excel, PDF, PNG, and PowerPoint outputs where the Tableau integration is configured. |
 | `power_bi_export` | Exports Power BI reports. | Supports PDF, PowerPoint, and PNG outputs where the Power BI integration is configured. |
+
+`run_python` exposes workflow context such as `workflow_input`, `collection`, `inputs`, `arrays`, `variables`, `tables`, `workflow_tables`, `vault_tables`, `agent_tables`, `workbench_tables`, and `tables_by_label`. Workflow labels are also exposed as `snake_case` variables with `*_list` arrays. Top-level result keys and public variables can be saved as workflow variables for later blocks.
 
 ## Records and analytics actions
 
@@ -85,13 +89,16 @@ Conditions should be as specific as possible. Use deterministic conditions for k
 | `get_analytics_metric` | Reads an analytics metric for a scope and period. | Current catalog includes pages processed. |
 | `sample_population` | Selects a fixed or percentage sample and emits a sample register. | Use for audit, QA, and population testing. |
 
-## Document and ingest actions
+## Document, source, and ingest actions
 
 | Block | What it does | Notes |
 | --- | --- | --- |
 | `workbench_uploaded_files` | Uses files attached in Workbench as workflow input. | Good for turning supervised Workbench work into automation. |
 | `upload_to_vault` | Uploads inbound attachments into the workflow Vault. | Common after email triggers. |
+| `move_document_to_folder` | Moves the current workflow document scope into a target Vault folder. | Use after intake, classification, approval, or exception routing. |
 | `extract_text` | Extracts plain text from submitted files. | Common after intake form upload. |
+| `resolve_ecfr_sources` | Extracts CFR/eCFR citations, fetches official eCFR text, and can follow capped one-hop cross-references. | Use before regulatory analysis, comparison, or report steps. |
+| `resolve_fca_handbook_sources` | Extracts FCA Handbook references, fetches official provision text, and can follow capped one-hop cross-references. | Use when FCA source text should ground downstream analysis. |
 | `search_edgar_filings` | Searches SEC EDGAR filing text and saves matching filings. | Use when filings should feed later workflow steps. |
 | `fetch_sec_filings` | Imports recent SEC filings for companies in scope. | Supports filing type and folder behavior configuration. |
 | `wait_for_document_processing` | Blocks until in-scope documents finish processing. | Use before steps that need extracted text, tags, or document state. |

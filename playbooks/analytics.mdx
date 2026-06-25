@@ -1,0 +1,60 @@
+---
+title: "Playbook analytics"
+description: "Use rule-level playbook analytics to monitor review outcomes, identify exceptions, and improve playbook rules."
+keywords: ["TextMine playbook analytics", "playbook recommendations", "rule outcomes", "contract review analytics"]
+---
+
+Playbook analytics turns completed playbook runs into rule-level feedback. Use it to see which rules are consistently satisfied, which rules create exceptions, and where the playbook itself may need clearer wording.
+
+## What analytics shows
+
+The analytics view summarizes each playbook across completed runs. It can show:
+
+- Total and completed runs.
+- Compliant, non-compliant, and needs-review rule counts.
+- Rules that were not observed in the reviewed documents.
+- Potential conflicts between playbook rules.
+- Recommendations for improving rule wording or correction guidance.
+- Related runs for the selected playbook.
+
+Analytics is most useful after the same playbook has been applied to multiple comparable documents.
+
+## Rule outcome sections
+
+Analytics separates rule outcomes into focused sections:
+
+| Section | What it means |
+| --- | --- |
+| Consistently compliant | Rules that are being satisfied across observed runs. |
+| Rules needing attention | Rules with non-compliant, missing, or not-assessable signals. |
+| Recommendations | Suggested playbook corrections based on repeated run patterns. |
+| Potential conflicts | Rules that may overlap, contradict, or need clearer priority. |
+| Not observed | Rules that did not appear in the reviewed document set. |
+
+Use these sections to distinguish real document exceptions from playbook wording issues.
+
+## Recommendations and corrections
+
+When TextMine detects recurring issues, analytics can suggest changes to a playbook rule. A recommendation can explain why a rule needs attention, preview the current wording, and show the proposed correction.
+
+Reviewers can apply, discard, restore, or apply all recommendations. Applied recommendations update the playbook draft so the team can inspect the changes before relying on the revised version.
+
+Do not apply recommendations blindly. Treat them as review assistance for the playbook owner, especially when the playbook governs legal, compliance, credit, procurement, or client-facing work.
+
+## Reviewed document iterations
+
+Where reviewed Word document versions are available, analytics can also show resolution signals. These include resolved non-compliance, average iterations to resolution, and the number of reviewed versions compared.
+
+Use these metrics to understand whether playbook findings are leading to corrected document language over time.
+
+## Export analytics
+
+Playbook analytics can be exported to PDF. Use exports for review packs, governance reporting, quality reviews, or discussions with playbook owners.
+
+When exporting several playbooks, filter the analytics view first so the PDF contains the playbooks relevant to the review.
+
+## Agent guidance
+
+Agents should read analytics before proposing changes to a mature playbook. Summaries should include the playbook ID, run count, high-risk rules, repeated non-compliance, unobserved rules, and any recommendations the user approved.
+
+Ask before applying recommendations or enabling a revised playbook, because those changes affect future document reviews.
