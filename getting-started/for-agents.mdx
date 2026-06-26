@@ -16,6 +16,7 @@ TextMine supports two integration styles for agents and developer platforms:
 | Agent self-service signup | [Agent self-service signup](/integrations/third-party-agent-signup) |
 | Machine-readable onboarding | `https://public-api.textmine.com/.well-known/textmine-agent.json` and `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` |
 | TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
+| Hosted TextMine MCP endpoint | `https://mcp.textmine.com/mcp` |
 | MCP setup guides | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
 | Current API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
 | Agent instructions for API execution | [TextMine developer For Agents](https://developers.textmine.com/docs/for-agents) |
@@ -23,7 +24,7 @@ TextMine supports two integration styles for agents and developer platforms:
 | ReadMe agent index | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
 | Full developer context pack | [Agent Context Pack](https://developers.textmine.com/page/llms-full) |
 | Integration and MCP provider catalog | [Integration catalog](/integrations/catalog) |
-Self-service agents do **not** need MCP. They sign up through Public API V3, receive an encrypted `tm_...` service-account API key, and then call Public API V3 directly.
+| Important | Self-service agents do **not** need MCP. They sign up through Public API V3, receive an encrypted `tm_...` service-account API key, and then call Public API V3 directly. |
 
 ## Which Path Should I Use?
 
@@ -177,26 +178,31 @@ Document credits are recorded when document processing completes. Agent-task cre
 
 ## Optional TextMine MCP Server
 
-The hosted TextMine MCP server is a Streamable HTTP MCP endpoint backed by Public API V3. It uses the same `tm_...` key.
+The hosted TextMine MCP server is a Streamable HTTP MCP endpoint backed by Public API V3. Use the central setup URL:
 
-Direct MCP clients can send:
+```text
+https://mcp.textmine.com/mcp
+```
+
+Direct MCP clients can send the same `tm_...` key used for Public API V3:
 
 ```text
 Authorization: Bearer tm_...
+Accept: application/json,text/event-stream
 ```
 
-Clients that cannot control `Authorization`, such as some connector platforms, can send:
+Clients that cannot control `Authorization`, such as some connector platforms, can send the key in the alternate header:
 
 ```text
-GET https://public-api.textmine.com/.well-known/textmine-agent.json
-GET https://public-api.textmine.com/v3/third-party-agents/signup/discovery
-GET https://public-api.textmine.com/v3/third-party-agents/signup/availability
 X-TextMine-Api-Key: tm_...
+Accept: application/json,text/event-stream
 ```
+
+OAuth-based marketplace apps should use their OAuth connection flow instead of asking users to paste `tm_...` keys into prompts or app manifests.
 
 Streamable HTTP requires a session handshake:
 
-1. Send `initialize`.
+1. Send `initialize` to `https://mcp.textmine.com/mcp`.
 2. Keep the returned `mcp-session-id` response header.
 3. Send `notifications/initialized` with `mcp-session-id`.
 4. Call `tools/list` or `tools/call` with `mcp-session-id`.
