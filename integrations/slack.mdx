@@ -1,0 +1,94 @@
+---
+title: "Slack"
+sidebarTitle: "Slack"
+description: "Connect Slack to TextMine so approved users can ask questions, route work, and use TextMine MCP tools from Slack."
+keywords: ["TextMine Slack", "Slack integration", "Slack Marketplace", "TextMine MCP", "Slack MCP", "agent integrations"]
+---
+
+Use this guide when your organization wants to connect Slack to TextMine. The Slack app lets approved Slack users route document questions, task-agent work, and MCP-backed actions to TextMine while TextMine keeps permission checks, audit controls, and organization routing server-side.
+
+TextMine uses one public Slack app and one central MCP endpoint. You do not choose a TextMine environment in Slack. If TextMine needs routing information for your organization, your TextMine administrator enters a TextMine-provided connection value during setup, such as a workspace setup code, organization slug, or approved TextMine URL.
+
+## Before you start
+
+You need:
+
+- Permission to install apps in the Slack workspace.
+- A TextMine account with access to the organization, Vaults, workflows, and agents you want to use from Slack.
+- A TextMine-provided connection value if your organization requires guided setup.
+- Confirmation from TextMine that the Slack app is available for your organization.
+
+If you do not have a setup code or approved TextMine URL, contact your TextMine administrator or TextMine support.
+
+## Install the Slack app
+
+1. Open the TextMine Slack app listing or install link provided by TextMine.
+2. Select **Add to Slack**.
+3. Review the requested Slack permissions.
+4. Approve the installation.
+5. When redirected to TextMine, sign in if prompted.
+6. Enter the TextMine-provided connection value.
+7. Confirm the TextMine organization that should be connected to this Slack workspace.
+8. Finish setup.
+
+After setup, TextMine privately resolves the correct routing for your organization. The Slack workspace does not expose a public environment selector.
+
+## Link your Slack user to TextMine
+
+The workspace-level install connects Slack to TextMine. Each person still needs to link their Slack identity to their TextMine user before TextMine can answer with their permissions.
+
+When you first mention TextMine in Slack, TextMine may reply with a link. Open the link, sign in to TextMine, and approve the connection. After linking, TextMine applies your normal TextMine permissions when answering from Slack.
+
+## Use TextMine in Slack
+
+Mention TextMine in a channel or thread where the app is present. Start with low-risk requests:
+
+```text
+@TextMine search for supplier agreements mentioning renewal.
+```
+
+```text
+@TextMine ask the Commercial Contracts Vault what the termination notice period is in the latest Acme agreement.
+```
+
+```text
+@TextMine create a task to review the uploaded agreement and summarize missing fields.
+```
+
+For actions that change data, send messages, create tasks, upload files, trigger workflows, or publish outputs, TextMine agents should explain the planned action and ask for confirmation before acting.
+
+## Use Slack with TextMine MCP
+
+Some Slack and agent surfaces can connect to TextMine through Model Context Protocol (MCP). Use the central TextMine MCP endpoint:
+
+```text
+https://mcp.textmine.com/mcp
+```
+
+For Slack Marketplace or shared-host setup, use the OAuth flow provided by the Slack app or TextMine setup page. TextMine resolves the user, organization, and private routing server-side.
+
+Do not paste TextMine API keys into Slack prompts, public app manifests, screenshots, or shared documentation. Direct/private MCP clients that are not using Slack OAuth may use a `tm_...` TextMine API key, but that key should be stored only in the client connection settings.
+
+## Security model
+
+TextMine keeps Slack, TextMine, and MCP permissions separate:
+
+- Slack workspace installation controls whether the TextMine app can receive events and reply in Slack.
+- TextMine account linking controls which TextMine user a Slack user maps to.
+- TextMine permissions control which Vaults, documents, workflows, records, and agents can be used.
+- MCP authentication controls which TextMine user or service account an external client represents.
+
+A Slack user cannot access TextMine content unless their linked TextMine account has permission to that content.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| The Slack app cannot be installed | Confirm you have Slack app-install permission or ask a Slack admin to install it. |
+| TextMine asks for a connection value | Enter the setup code, organization slug, or approved TextMine URL provided by TextMine. Do not choose from environment names. |
+| TextMine replies with an account-link message | Open the link and sign in to TextMine to connect your Slack identity. |
+| TextMine cannot find a Vault or document | Confirm your TextMine account can access that Vault or document in the TextMine app. |
+| File download or document upload fails | Confirm the app has permission in the Slack channel and that the file is available to the bot. |
+| MCP authentication fails | Use the Slack/TextMine OAuth setup flow for shared-host Slack connections, or store a `tm_...` key only in direct/private MCP client settings. |
+
+For product capability context, see [TextMine MCP server](/integrations/textmine-mcp-server), [Integration catalog](/integrations/catalog), and [Contact support](/support).
