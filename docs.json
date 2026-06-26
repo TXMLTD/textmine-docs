@@ -115,6 +115,7 @@
           "integrations/catalog",
           "integrations/workbench-mcp-providers",
           "integrations/textmine-mcp-server",
+          "integrations/slack",
           "integrations/copilot-studio",
           "integrations/api-and-developer-docs",
           "integrations/zapier"
