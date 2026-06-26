@@ -1,11 +1,23 @@
 ---
 title: "TextMine MCP server"
-description: "Expose TextMine Public API tools to MCP-compatible agent clients."
+description: "Set up the central TextMine MCP endpoint for MCP-compatible agent clients."
 ---
 
-The TextMine MCP server is the TextMine-hosted MCP surface for external agent clients. It lets Codex, Claude, Cursor, Windsurf, ChatGPT, and automation clients discover and call TextMine tools through an agent-friendly protocol.
+The TextMine MCP server is the TextMine-hosted Streamable HTTP MCP surface for external agent clients. It lets Codex, Claude, Cursor, Windsurf, ChatGPT, Microsoft Copilot, and automation clients discover and call TextMine tools through an agent-friendly protocol.
 
 Use it when an external agent needs to read or act on TextMine data. Use Workbench when a human is working inside the TextMine app.
+
+## Public endpoint
+
+Use the central TextMine MCP endpoint for public setup guides, MCP registry metadata, and marketplace-style configuration:
+
+```text
+https://mcp.textmine.com/mcp
+```
+
+Dedicated, private, or staging deployments may still use an environment-specific MCP host issued by TextMine. Use those hosts only when TextMine support or the deployment guide explicitly provides one.
+
+Do not use `https://developers.textmine.com/mcp` for TextMine product tool calls. That is the developer hub MCP endpoint for API reference discovery.
 
 ## How it fits
 
@@ -16,6 +28,40 @@ TextMine has three agent-facing surfaces that are easy to confuse:
 - **Workbench MCP providers** are in-app integrations that let Workbench browse and import files from connected providers such as storage systems.
 
 For API operation details, examples, and client setup, use [API and developer docs](/integrations/api-and-developer-docs) or the developer hub's [agent guide](https://developers.textmine.com/docs/for-agents). For provider and integration inventory, see [Integration catalog](/integrations/catalog).
+
+## Set up a client
+
+Configure MCP clients with:
+
+```text
+Server URL: https://mcp.textmine.com/mcp
+Transport: Streamable HTTP
+```
+
+Direct MCP clients that can send an `Authorization` header should use a TextMine API key as a bearer token:
+
+```text
+Authorization: Bearer tm_<key>
+Accept: application/json,text/event-stream
+```
+
+Connector platforms that own the `Authorization` header, such as Power Platform custom connectors, can send the TextMine key in the alternate header:
+
+```text
+X-TextMine-Api-Key: tm_<key>
+Accept: application/json,text/event-stream
+```
+
+OAuth-based marketplace apps should use the OAuth flow described by that app. In those flows, TextMine resolves the user, organization, and environment server-side; users should not paste `tm_...` keys into prompts or app package manifests.
+
+Streamable HTTP clients must create a session before calling tools:
+
+1. Send `initialize` to `https://mcp.textmine.com/mcp`.
+2. Keep the returned `mcp-session-id` response header.
+3. Send `notifications/initialized` with that `mcp-session-id`.
+4. Call `tools/list` or `tools/call` with the same `mcp-session-id`.
+
+A direct `tools/call` without `mcp-session-id` is rejected.
 
 ## What it exposes
 
@@ -48,9 +94,11 @@ Use this split when documenting or building agents:
 
 ## Authentication model
 
-The current MCP service forwards the caller's Authorization header to Public API. In practice, MCP clients should call the server with a TextMine bearer key so Public API can resolve the real user and organisation.
+The MCP service forwards the authenticated caller to Public API V3. Public API resolves the real user or service-account organization and applies normal TextMine permissions.
 
-Requests without a valid forwarded bearer are rejected by Public API. Do not rely on a shared service user for user-facing MCP clients.
+Self-service agents should first get a `tm_...` service-account key through [Agent self-service signup](/integrations/third-party-agent-signup). Enterprise, private, and customer-dedicated deployments should use support-led provisioning.
+
+Do not rely on a shared service user for user-facing MCP clients. Each connection should represent the TextMine user or service account whose Vaults, records, integrations, and tasks the agent may access.
 
 For setup examples, see the developer hub pages for [TextMine MCP](https://developers.textmine.com/docs/textmine-mcp), [Codex](https://developers.textmine.com/docs/codex-mcp), [Claude](https://developers.textmine.com/docs/claude-mcp), [Cursor and Windsurf](https://developers.textmine.com/docs/cursor-windsurf-mcp), and [ChatGPT/OpenAI](https://developers.textmine.com/docs/chatgpt-mcp). For Microsoft Copilot Studio, use [Set up TextMine in Copilot Studio](/integrations/copilot-studio).
 
