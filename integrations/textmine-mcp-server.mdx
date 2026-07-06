@@ -15,7 +15,7 @@ Use the central TextMine MCP endpoint for public setup guides, MCP registry meta
 https://mcp.textmine.com/mcp
 ```
 
-Dedicated, private, or staging deployments may still use an environment-specific MCP host issued by TextMine. Use those hosts only when TextMine support or the deployment guide explicitly provides one.
+Use a different TextMine-issued MCP host only when a customer-specific deployment guide explicitly provides one.
 
 Do not use `https://developers.textmine.com/mcp` for TextMine product tool calls. That is the developer hub MCP endpoint for API reference discovery.
 
@@ -45,7 +45,7 @@ Authorization: Bearer tm_<key>
 Accept: application/json,text/event-stream
 ```
 
-Connector platforms that own the `Authorization` header, such as Power Platform custom connectors, can send the TextMine key in the alternate header:
+Connector platforms that cannot set an `Authorization` header can send the TextMine key in the alternate header:
 
 ```text
 X-TextMine-Api-Key: tm_<key>
