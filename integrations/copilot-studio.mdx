@@ -47,6 +47,70 @@ Dedicated, private, or staging validation may use an environment-specific MCP en
 
 Store the TextMine API key only in the Copilot Studio or Power Platform connection. Do not paste it into agent instructions, prompts, chat transcripts, screenshots, app manifests, or documentation.
 
+## Tutorial: create a new agent and add it to Teams
+
+Use this path when you are starting from a blank Copilot Studio agent and want users to chat with TextMine from Microsoft Teams.
+
+### Create the agent
+
+1. Go to [Copilot Studio](https://copilotstudio.microsoft.com/).
+2. Select the Power Platform environment where the TextMine connection should live.
+3. Create a new agent.
+4. Give the agent a name and instructions that match the TextMine work it should support.
+5. Save the agent.
+
+![Create a new agent in Copilot Studio](/images/integrations/copilot-studio/create-new-agent.png)
+
+### Add TextMine MCP as a tool
+
+1. In the saved agent, select **Add a tool**.
+2. Select **New tool** if Copilot Studio asks whether to create or reuse a tool.
+3. Open the **Model Context Protocol** tab.
+4. Select **TextMine MCP** from the list.
+5. Select **Create connection** when Copilot Studio asks for a connection.
+6. Paste the TextMine API key supplied by TextMine. The key should use the `tm_...` format.
+7. Create or authorize the connection, then add the TextMine MCP tool to the agent.
+8. Review the discovered tools and choose whether the agent can use all TextMine tools or only selected tools.
+
+![Saved agent with Add a tool selected](/images/integrations/copilot-studio/save-agent-add-tool.png)
+
+![Model Context Protocol tab with TextMine MCP selected](/images/integrations/copilot-studio/model-context-protocol-tab.png)
+
+![Create a new TextMine MCP connection](/images/integrations/copilot-studio/create-textmine-connection.png)
+
+![Enter the TextMine API key for the connection](/images/integrations/copilot-studio/enter-api-key.png)
+
+If **TextMine MCP** is not listed, follow [Recommended setup: MCP onboarding wizard](#recommended-setup-mcp-onboarding-wizard) to create it, or use the [custom connector fallback](#custom-connector-fallback) if the MCP onboarding wizard is not available.
+
+### Test the agent
+
+1. Open **Test your agent**.
+2. Ask a low-risk TextMine question, such as listing the Vaults the connection can access.
+3. Confirm that the answer only uses TextMine data available to the connected API key.
+4. If Copilot Studio prompts you to reconnect, open the connection manager from the prompt, reconnect the TextMine MCP connection, then test again.
+
+![Test the agent and reconnect from connection manager if prompted](/images/integrations/copilot-studio/test-agent-reconnect.png)
+
+### Publish and add the Teams channel
+
+1. When the test answers look right, select **Publish**.
+2. After publishing completes, open the **Channels** tab.
+3. Add a channel.
+4. Select **Microsoft Teams**.
+5. Follow the Teams channel setup prompts to make the agent available in Teams.
+6. If the connection manager prompts you to revalidate, revalidate the TextMine MCP connection before continuing.
+7. Open the agent in Teams and ask a TextMine question to confirm the Teams experience works end to end.
+
+![Publish the Copilot Studio agent](/images/integrations/copilot-studio/publish-agent.png)
+
+![Open Channels and add a channel](/images/integrations/copilot-studio/channels-tab.png)
+
+![Select Teams as the channel](/images/integrations/copilot-studio/add-to-teams.png)
+
+![Revalidate the TextMine MCP connection if prompted](/images/integrations/copilot-studio/revalidate-connection.png)
+
+![Interact with TextMine in Teams through the agent](/images/integrations/copilot-studio/use-textmine-in-teams.png)
+
 ## Recommended setup: MCP onboarding wizard
 
 Use Copilot Studio's MCP onboarding wizard when the **Model Context Protocol** option is available in your tenant.
