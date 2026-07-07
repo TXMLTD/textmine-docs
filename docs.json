@@ -117,6 +117,8 @@
           "integrations/textmine-mcp-server",
           "integrations/slack",
           "integrations/copilot-studio",
+          "integrations/textmine-cli",
+          "integrations/cli-quickstart",
           "integrations/api-and-developer-docs",
           "integrations/zapier"
         ]
