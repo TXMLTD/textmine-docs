@@ -1,0 +1,64 @@
+---
+title: "TextMine CLI"
+sidebarTitle: "TextMine CLI"
+description: "Introduce the TextMine command-line interface for Public API, MCP, and agent setup workflows."
+keywords: ["TextMine CLI", "command line", "Public API V3", "TextMine MCP", "agent setup"]
+---
+
+The TextMine CLI is the command-line entry point for developers, operators, and trusted agent runtimes that need repeatable TextMine workflows from a terminal.
+
+Use the CLI when you want to run the same TextMine operation from a local shell, CI job, deployment script, support runbook, or automation runtime. Use the web app when a person needs to inspect documents, review model output, approve changes, or work interactively in Workbench, Vault, Workflows, Records, Playbooks, Scribe, or Legislate.
+
+## What the CLI is for
+
+The CLI should make API-backed work easier without changing TextMine's permission model.
+
+Common uses include:
+
+- Checking which TextMine environment and account a runtime is configured for.
+- Running safe read-only checks before an integration goes live.
+- Calling Public API V3 operations from scripts.
+- Uploading or polling documents in trusted automation.
+- Starting and inspecting task-agent work.
+- Smoke-testing the hosted TextMine MCP endpoint.
+- Capturing reproducible support diagnostics without exposing secrets.
+
+For exact operation IDs and request shapes, use [API and developer docs](/integrations/api-and-developer-docs) and the [Public API reference](https://developers.textmine.com/reference). For agent-facing protocol setup, use [TextMine MCP server](/integrations/textmine-mcp-server).
+
+## How it authenticates
+
+The CLI uses the same credentials as Public API V3 and TextMine MCP. It is not a separate access layer.
+
+| Authentication option | Use it for | Notes |
+| --- | --- | --- |
+| `tm_...` TextMine API key | Direct/private CLI use, support-led provisioning, customer-managed automation, and service-account agents. | Store it in a secret manager or local environment variable such as `TEXTMINE_API_KEY`. |
+| OAuth bearer token | Marketplace/shared-host app flows and user-authorized environments where TextMine has enabled OAuth. | Use the OAuth flow provided by the app or setup guide. Do not paste tokens into prompts, screenshots, tickets, or source code. |
+
+OAuth client registrations can use TextMine's protected-resource metadata:
+
+```text
+https://public-api.textmine.com/.well-known/oauth-protected-resource
+```
+
+## Environment configuration
+
+Use TextMine-issued environment URLs. For the public UK multitenant deployment, the common values are:
+
+```text
+TEXTMINE_PUBLIC_API_BASE_URL=https://public-api.textmine.com
+TEXTMINE_MCP_URL=https://mcp.textmine.com/mcp
+```
+
+Dedicated or customer-specific deployments should use the URLs supplied by TextMine. Do not guess a tenant URL, and do not mix staging credentials with production URLs.
+
+## Safety model
+
+CLI commands can represent real users or service accounts. Treat them like API and MCP tools:
+
+- Read before mutating when current state matters.
+- Ask for human confirmation before creating, deleting, publishing, sending, assigning, or triggering workflow actions.
+- Keep secrets out of terminal history, logs, prompts, tickets, screenshots, commits, and shared documentation.
+- Prefer idempotency keys for retryable create or trigger operations when the API supports them.
+- Include Vault, document, workflow, run, record, or task IDs in audit summaries.
+
+Start with [CLI quickstart](/integrations/cli-quickstart) when setting up a new terminal or automation runtime.

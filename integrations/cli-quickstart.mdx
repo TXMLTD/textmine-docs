@@ -1,0 +1,77 @@
+---
+title: "CLI quickstart"
+sidebarTitle: "CLI quickstart"
+description: "Configure the TextMine CLI for safe Public API and MCP workflows."
+keywords: ["TextMine CLI quickstart", "command-line setup", "Public API V3", "MCP authentication"]
+---
+
+Use this quickstart to prepare a terminal, CI job, or trusted agent runtime for TextMine command-line work.
+
+This page focuses on configuration and first safe checks. Use the install command and command reference supplied with the CLI release or the developer hub for the exact command names in your version.
+
+## 1. Choose the environment
+
+Use the Public API base URL and MCP URL for the TextMine environment you are allowed to access.
+
+For the public UK multitenant deployment:
+
+```bash
+export TEXTMINE_PUBLIC_API_BASE_URL="https://public-api.textmine.com"
+export TEXTMINE_MCP_URL="https://mcp.textmine.com/mcp"
+```
+
+For a dedicated deployment, use the values supplied by TextMine. Do not infer the API URL from a web app URL unless the setup guide explicitly says to do that.
+
+## 2. Choose an authentication method
+
+Use one of the supported authentication paths.
+
+For direct/private automation, store a TextMine API key outside model-visible context:
+
+```bash
+export TEXTMINE_API_KEY="tm_..."
+```
+
+For OAuth-enabled marketplace or shared-host flows, use the OAuth flow from that app or setup guide and store the resulting access token in the runtime's approved secret store. OAuth client registrations can use:
+
+```text
+https://public-api.textmine.com/.well-known/oauth-protected-resource
+```
+
+Do not paste API keys, OAuth tokens, refresh tokens, or client secrets into prompts, screenshots, tickets, source code, shell history, or shared documentation.
+
+## 3. Run read-only checks first
+
+Before running commands that create or update TextMine data, confirm the CLI can complete low-risk checks for the configured environment:
+
+| Check | What it proves |
+| --- | --- |
+| Auth/session status | The runtime can find its credential and target environment. |
+| API health or account lookup | Public API V3 is reachable and the credential is valid. |
+| Vault listing | The credential has the expected TextMine organization and Vault access. |
+| MCP tools listing | The hosted MCP endpoint is reachable and the Streamable HTTP session handshake works. |
+
+If any check returns an unexpected organization, empty Vault list, or authentication error, stop and fix the environment or credential before running mutating commands.
+
+## 4. Use the right surface
+
+| Goal | Prefer |
+| --- | --- |
+| Exact REST operation, schema, or automation script | CLI over Public API V3. |
+| MCP-native tool discovery or tool call smoke test | CLI over the hosted TextMine MCP endpoint. |
+| Human review, document inspection, or approval | TextMine web app or Workbench. |
+| New autonomous agent signup | Public API V3 signup flow; then configure the CLI with the resulting credential. |
+
+## 5. Keep CLI output audit-friendly
+
+For support and audit trails, capture non-secret identifiers in CLI output:
+
+- Organization or environment label.
+- Vault ID and document ID.
+- Workflow ID and run ID.
+- Record schema ID and record ID.
+- Task ID and task event IDs.
+
+Do not capture raw credentials. If a command prints a secret by mistake, treat the output as sensitive and rotate the credential if needed.
+
+Next, read [TextMine MCP server](/integrations/textmine-mcp-server) for MCP setup details or [Agent self-service signup](/integrations/third-party-agent-signup) for service-account onboarding.

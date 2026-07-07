@@ -38,12 +38,28 @@ Server URL: https://mcp.textmine.com/mcp
 Transport: Streamable HTTP
 ```
 
-Direct MCP clients that can send an `Authorization` header should use a TextMine API key as a bearer token:
+MCP authentication has two supported patterns:
+
+| Authentication option | Best for | Header |
+| --- | --- | --- |
+| TextMine API key | Direct/private MCP clients and customer-managed setup. | `Authorization: Bearer tm_<key>` |
+| OAuth bearer token | Marketplace apps, shared-host clients, and app-store connection flows where TextMine has enabled OAuth. | `Authorization: Bearer <oauth_access_token>` |
+
+Direct MCP clients that can send an `Authorization` header can use a TextMine API key as a bearer token:
 
 ```text
 Authorization: Bearer tm_<key>
 Accept: application/json,text/event-stream
 ```
+
+OAuth-enabled app flows can also send an OAuth access token as the bearer token:
+
+```text
+Authorization: Bearer <oauth_access_token>
+Accept: application/json,text/event-stream
+```
+
+Use the OAuth flow described by the app or marketplace setup guide. TextMine resolves the user, organization, and environment server-side; users should not paste `tm_...` keys or OAuth tokens into prompts, app package manifests, screenshots, or shared documentation.
 
 Connector platforms that cannot set an `Authorization` header can send the TextMine key in the alternate header:
 
@@ -52,7 +68,11 @@ X-TextMine-Api-Key: tm_<key>
 Accept: application/json,text/event-stream
 ```
 
-OAuth-based marketplace apps should use the OAuth flow described by that app. In those flows, TextMine resolves the user, organization, and environment server-side; users should not paste `tm_...` keys into prompts or app package manifests.
+OAuth client registrations can use TextMine's protected-resource metadata:
+
+```text
+https://public-api.textmine.com/.well-known/oauth-protected-resource
+```
 
 Streamable HTTP clients must create a session before calling tools:
 
@@ -96,11 +116,13 @@ Use this split when documenting or building agents:
 
 The MCP service forwards the authenticated caller to Public API V3. Public API resolves the real user or service-account organization and applies normal TextMine permissions.
 
-Self-service agents should first get a `tm_...` service-account key through [Agent self-service signup](/integrations/third-party-agent-signup). Enterprise, private, and customer-dedicated deployments should use support-led provisioning.
+The caller can be represented by a `tm_...` TextMine API key or, for enabled marketplace/shared-host app flows, an OAuth bearer token. OAuth callers are resolved server-side before the MCP request reaches Public API V3.
+
+Self-service agents should first get a `tm_...` service-account key through [Agent self-service signup](/integrations/third-party-agent-signup). Enterprise, private, and customer-dedicated deployments should use support-led provisioning unless their setup guide provides an OAuth connection flow.
 
 Do not rely on a shared service user for user-facing MCP clients. Each connection should represent the TextMine user or service account whose Vaults, records, integrations, and tasks the agent may access.
 
-For setup examples, see the developer hub pages for [TextMine MCP](https://developers.textmine.com/docs/textmine-mcp), [Codex](https://developers.textmine.com/docs/codex-mcp), [Claude](https://developers.textmine.com/docs/claude-mcp), [Cursor and Windsurf](https://developers.textmine.com/docs/cursor-windsurf-mcp), and [ChatGPT/OpenAI](https://developers.textmine.com/docs/chatgpt-mcp). For Microsoft Copilot Studio, use [Set up TextMine in Copilot Studio](/integrations/copilot-studio).
+For setup examples, see the developer hub pages for [TextMine MCP](https://developers.textmine.com/docs/textmine-mcp), [Codex](https://developers.textmine.com/docs/codex-mcp), [Claude](https://developers.textmine.com/docs/claude-mcp), [Cursor and Windsurf](https://developers.textmine.com/docs/cursor-windsurf-mcp), and [ChatGPT/OpenAI](https://developers.textmine.com/docs/chatgpt-mcp). For command-line workflows, use [TextMine CLI](/integrations/textmine-cli) and [CLI quickstart](/integrations/cli-quickstart). For Microsoft Copilot Studio, use [Set up TextMine in Copilot Studio](/integrations/copilot-studio).
 
 ## Adding a new MCP tool
 

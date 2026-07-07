@@ -5,7 +5,7 @@ description: "Connect a Microsoft Copilot Studio agent to TextMine from Azure Ma
 
 Use this guide when a Microsoft Copilot Studio agent should search TextMine Vaults, ask questions over documents, inspect business records, or create and follow task-agent work.
 
-TextMine is available to Copilot Studio through Azure Marketplace as **TextMine MCP**. The marketplace listing connects Copilot Studio to the central hosted TextMine MCP server. The MCP server is backed by Public API V3, so the agent acts with the same TextMine permissions as the API key used for the connection.
+TextMine is available to Copilot Studio through Azure Marketplace as **TextMine MCP**. The marketplace listing connects Copilot Studio to the central hosted TextMine MCP server. The MCP server is backed by Public API V3, so the agent acts with the same TextMine permissions as the OAuth user or API key used for the connection.
 
 Add TextMine from Copilot Studio as a Model Context Protocol tool. The current setup path is Azure Marketplace, Copilot Studio, and TextMine MCP; separate Power Apps setup is not needed.
 
@@ -31,7 +31,7 @@ You need:
 - Access to Microsoft Copilot Studio and the environment where the agent lives.
 - Permission to add Azure Marketplace and MCP tools to the agent.
 - Access to the **TextMine MCP** Azure Marketplace listing in that environment.
-- A TextMine API key for the TextMine organization the agent should use, if the connection flow prompts for one. TextMine API keys use the `tm_...` format.
+- A TextMine OAuth connection or a TextMine API key for the TextMine organization the agent should use, depending on the connection flow. TextMine API keys use the `tm_...` format.
 - Confirmation that any required TextMine features, Vaults, integrations, and task-agent email routes have been activated for that organization.
 
 If Copilot Studio asks for a server URL, use the central TextMine MCP endpoint:
@@ -42,7 +42,7 @@ https://mcp.textmine.com/mcp
 
 Do not use `https://developers.textmine.com/mcp`; that is the developer hub MCP endpoint for API reference discovery, not the TextMine product MCP server.
 
-Store the TextMine API key only in the Copilot Studio connection. Do not paste it into agent instructions, prompts, chat transcripts, screenshots, app manifests, or documentation.
+Store TextMine credentials only in the Copilot Studio connection or OAuth vault. Do not paste API keys, OAuth tokens, client secrets, or refresh tokens into agent instructions, prompts, chat transcripts, screenshots, app manifests, or documentation.
 
 ## Tutorial: create a new agent and add it to Teams
 
@@ -65,7 +65,7 @@ Use this path when you are starting from a blank Copilot Studio agent and want u
 3. Open the **Model Context Protocol** tab.
 4. Select **TextMine MCP** from the list.
 5. Select **Create connection** when Copilot Studio asks for a connection.
-6. Paste the TextMine API key supplied by TextMine. The key should use the `tm_...` format.
+6. Complete the OAuth authorization flow, or paste the TextMine API key supplied by TextMine if Copilot Studio prompts for an API-key connection. TextMine API keys use the `tm_...` format.
 7. Create or authorize the connection, then add the TextMine MCP tool to the agent.
 8. Review the discovered tools and choose whether the agent can use all TextMine tools or only selected tools.
 
@@ -83,7 +83,7 @@ If **TextMine MCP** is not listed, follow [Recommended setup: Azure Marketplace 
 
 1. Open **Test your agent**.
 2. Ask a low-risk TextMine question, such as listing the Vaults the connection can access.
-3. Confirm that the answer only uses TextMine data available to the connected API key.
+3. Confirm that the answer only uses TextMine data available to the connected OAuth user or API key.
 4. If Copilot Studio prompts you to reconnect, open the connection manager from the prompt, reconnect the TextMine MCP connection, then test again.
 
 ![Test the agent and reconnect from connection manager if prompted](/images/integrations/copilot-studio/test-agent-reconnect.png)
@@ -116,5 +116,5 @@ If **TextMine MCP** is not listed, follow [Recommended setup: Azure Marketplace 
 | --- | --- |
 | **TextMine MCP** is not listed | Confirm the selected Copilot Studio environment can use Azure Marketplace and MCP tools. Ask your Microsoft administrator or TextMine support to make **TextMine MCP** available. |
 | Copilot Studio asks you to reconnect or revalidate | Open the connection manager from the prompt, reconnect or revalidate the TextMine MCP connection, then test the agent again. |
-| Authentication fails | Confirm the connection uses `https://mcp.textmine.com/mcp`, sends `X-TextMine-Api-Key`, and stores the raw `tm_...` key value. |
-| Vaults, documents, records, or tasks are missing | Confirm the connected TextMine API key has access to that data and that required TextMine features, integrations, Vaults, or task-agent email routes are activated for the organization. |
+| Authentication fails | Confirm the connection uses `https://mcp.textmine.com/mcp`. For OAuth setup, reauthorize the TextMine connection. For API-key setup, confirm Copilot Studio sends `X-TextMine-Api-Key` and stores the raw `tm_...` key value. |
+| Vaults, documents, records, or tasks are missing | Confirm the connected OAuth user or TextMine API key has access to that data and that required TextMine features, integrations, Vaults, or task-agent email routes are activated for the organization. |

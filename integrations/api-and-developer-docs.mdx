@@ -41,6 +41,8 @@ curl "<TEXTMINE_API_BASE_URL>/v3/..." \
 
 Use the base URL and environment shown in the developer hub or provided by the TextMine team. Do not paste bearer tokens into prompts, tickets, screenshots, source code, or shared documentation.
 
+For command-line workflows, start with [TextMine CLI](/integrations/textmine-cli) and [CLI quickstart](/integrations/cli-quickstart). The CLI uses the same Public API and MCP credentials; it is not a separate permission layer.
+
 ## Client setup guides
 
 The developer hub has setup pages for common agent clients:
@@ -49,6 +51,8 @@ The developer hub has setup pages for common agent clients:
 - [Claude MCP Setup](https://developers.textmine.com/docs/claude-mcp)
 - [Cursor and Windsurf MCP Setup](https://developers.textmine.com/docs/cursor-windsurf-mcp)
 - [ChatGPT and OpenAI MCP Setup](https://developers.textmine.com/docs/chatgpt-mcp)
+- [TextMine CLI](/integrations/textmine-cli)
+- [CLI quickstart](/integrations/cli-quickstart)
 - [Copilot Studio Setup](/integrations/copilot-studio)
 
 ## MCP access
@@ -61,7 +65,9 @@ Use MCP when an agent client should discover and call TextMine tools from docume
 | ReadMe MCP endpoint | Documentation-backed API discovery and execution from [developers.textmine.com/mcp](https://developers.textmine.com/mcp). |
 | Workbench MCP providers | In-app provider scan/import flows that let Workbench browse external repositories and import files into a Workbench session. |
 
-For setup, start with [MCP quickstart](https://developers.textmine.com/docs/textmine-mcp), then use the client-specific guide for Codex, Claude, Cursor/Windsurf, or ChatGPT/OpenAI.
+For setup, start with [MCP quickstart](https://developers.textmine.com/docs/textmine-mcp), then use the client-specific guide for Codex, Claude, Cursor/Windsurf, ChatGPT/OpenAI, or the [TextMine CLI](/integrations/textmine-cli).
+
+MCP clients can authenticate with a `tm_...` TextMine API key for direct/private setup, or with an OAuth bearer token for enabled marketplace/shared-host app flows.
 
 ## How to choose the right layer
 

@@ -17,8 +17,10 @@ TextMine supports two integration styles for agents and developer platforms:
 | Machine-readable onboarding | `https://public-api.textmine.com/.well-known/textmine-agent.json` and `https://public-api.textmine.com/v3/third-party-agents/signup/discovery` |
 | TextMine MCP server | [TextMine MCP server](/integrations/textmine-mcp-server) |
 | Hosted TextMine MCP endpoint | `https://mcp.textmine.com/mcp` |
+| MCP authentication options | `tm_...` TextMine API key for direct/private clients, or OAuth bearer token for enabled marketplace/shared-host app flows. |
 | MCP setup guides | [TextMine MCP quickstart](https://developers.textmine.com/docs/textmine-mcp) |
 | Current API reference | [developers.textmine.com/reference](https://developers.textmine.com/reference) |
+| TextMine CLI | [TextMine CLI](/integrations/textmine-cli) and [CLI quickstart](/integrations/cli-quickstart) |
 | Agent instructions for API execution | [TextMine developer For Agents](https://developers.textmine.com/docs/for-agents) |
 | ReadMe MCP endpoint | [developers.textmine.com/mcp](https://developers.textmine.com/mcp) |
 | ReadMe agent index | [developers.textmine.com/llms.txt](https://developers.textmine.com/llms.txt) |
@@ -198,7 +200,14 @@ X-TextMine-Api-Key: tm_...
 Accept: application/json,text/event-stream
 ```
 
-OAuth-based marketplace apps should use their OAuth connection flow instead of asking users to paste `tm_...` keys into prompts or app manifests.
+OAuth is also supported for enabled marketplace/shared-host app flows. Those clients should use their OAuth connection flow and send the resulting access token as the MCP bearer token instead of asking users to paste `tm_...` keys into prompts or app manifests.
+
+```text
+Authorization: Bearer <oauth_access_token>
+Accept: application/json,text/event-stream
+```
+
+OAuth client registrations can use TextMine's protected-resource metadata at `https://public-api.textmine.com/.well-known/oauth-protected-resource`.
 
 Streamable HTTP requires a session handshake:
 
